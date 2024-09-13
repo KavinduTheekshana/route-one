@@ -1,0 +1,1 @@
+<h1>SAMPLE PAGE</h1>
