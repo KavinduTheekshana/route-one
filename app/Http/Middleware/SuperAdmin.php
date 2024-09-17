@@ -16,10 +16,12 @@ class SuperAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
+
+
         if (Auth::user()->user_type == 'superadmin') {
             return $next($request);
         }
-        return redirect('/');
-        // abort(401);
+        // return redirect('/');
+        abort(401);
     }
 }

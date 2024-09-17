@@ -9195,22 +9195,23 @@ button:focus {
 }
 
 .dashboard-footer {
-    margin-inline-start: 24px;
-    margin-inline-end: 24px;
+    /* margin-inline-start: 24px; */
+    /* margin-inline-end: 24px; */
 }
 
 @media screen and (max-width: 1199px) {
     .dashboard-footer {
-        margin-inline-start: 16px;
-        margin-inline-end: 16px;
+        /* margin-inline-start: 16px; */
+        /* margin-inline-end: 16px; */
     }
 }
 /* ===================== Dashboard Main wrapper css End ========================= */
 /* ========================== Dashboard Footer Css Start ================================== */
 .dashboard-footer {
+    z-index: 11;
     margin-top: auto;
     padding: 20px;
-    border-radius: 16px 16px 0 0;
+    /* border-radius: 16px 16px 0 0; */
     background-color: hsl(var(--white));
 }
 

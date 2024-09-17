@@ -15,41 +15,34 @@
         <div class="sidebar-menu-wrapper overflow-y-auto scroll-sm">
             <div class="p-20 pt-10">
                 <ul class="sidebar-menu">
-                    <li class="sidebar-menu__item has-dropdown">
-                        <a href="javascript:void(0)" class="sidebar-menu__link">
+                    <li class="sidebar-menu__item">
+                        <a href="students.html" class="sidebar-menu__link">
                             <span class="icon"><i class="ph ph-squares-four"></i></span>
                             <span class="text">Dashboard</span>
-                            <span class="link-badge">3</span>
                         </a>
-                        <!-- Submenu start -->
-                        <ul class="sidebar-submenu">
-                            <li class="sidebar-submenu__item">
-                                <a href="index.html" class="sidebar-submenu__link"> Dashboard One </a>
-                            </li>
-                            <li class="sidebar-submenu__item">
-                                <a href="index-2.html" class="sidebar-submenu__link"> Dashboard Two </a>
-                            </li>
-                            <li class="sidebar-submenu__item">
-                                <a href="index-3.html" class="sidebar-submenu__link"> Dashboard Three </a>
-                            </li>
-                        </ul>
-                        <!-- Submenu End -->
                     </li>
+
+                    <li class="sidebar-menu__item">
+                        <a href="{{ route('team.manage') }}" class="sidebar-menu__link {{ request()->segment(1) === 'team' ? 'activePage' : '' }}">
+                            <span class="icon"><i class="ph ph-users"></i></span>
+                            <span class="text">Team</span>
+                        </a>
+                    </li>
+
+
                     <li class="sidebar-menu__item has-dropdown">
                         <a href="javascript:void(0)" class="sidebar-menu__link">
-                            <span class="icon"><i class="ph ph-graduation-cap"></i></span>
-                            <span class="text">Courses</span>
+                            <span class="icon"><i class="ph ph-users"></i></span>
+                            <span class="text">Users</span>
                         </a>
                         <!-- Submenu start -->
                         <ul class="sidebar-submenu">
                             <li class="sidebar-submenu__item">
-                                <a href="student-courses.html" class="sidebar-submenu__link"> Student Courses </a>
-                            </li>
+                                <li class="sidebar-submenu__item">
+                                    <a href="" class="sidebar-submenu__link"> Manage Users </a>
+                                </li>    </li>
                             <li class="sidebar-submenu__item">
-                                <a href="mentor-courses.html" class="sidebar-submenu__link"> Mentor Courses </a>
-                            </li>
-                            <li class="sidebar-submenu__item">
-                                <a href="create-course.html" class="sidebar-submenu__link"> Create Course </a>
+                                <a href="mentor-courses.html" class="sidebar-submenu__link"> Create User  </a>
                             </li>
                         </ul>
                         <!-- Submenu End -->

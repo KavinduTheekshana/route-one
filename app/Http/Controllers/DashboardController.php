@@ -13,14 +13,14 @@ class DashboardController extends Controller
             // Separate dashboard for 'user' role
             return view('frontend.user.dashboard');
         } else {
-            return view('backend.dashboard.index');
+            return view('backend.index');
         }
     }
 
     public function account()
     {
 
-            return view('backend.dashboard.account.settings');
+            return view('backend.account.settings');
 
     }
 }

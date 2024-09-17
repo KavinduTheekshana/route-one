@@ -19,7 +19,7 @@ class User
         if (Auth::user()->user_type == 'user') {
             return $next($request);
         }
-        return redirect('/');
-        // abort(401);
+        // return redirect('/');
+        abort(401);
     }
 }

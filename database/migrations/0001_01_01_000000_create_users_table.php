@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('user_type')->default('user');
             $table->string('country')->nullable();
             $table->string('phone')->nullable();
+            $table->boolean('status')->default(0);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

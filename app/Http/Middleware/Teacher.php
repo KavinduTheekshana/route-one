@@ -19,7 +19,7 @@ class Teacher
         if (Auth::user()->user_type == 'teacher') {
             return $next($request);
         }
-        return redirect('/');
-        // abort(401);
+        // return redirect('/');
+        abort(401);
     }
 }

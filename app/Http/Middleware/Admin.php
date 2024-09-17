@@ -19,8 +19,8 @@ class Admin
         if (Auth::user()->user_type == 'admin') {
             return $next($request);
         }
-        return redirect('/');
-        // abort(401);
+        // return redirect('/');
+        abort(401);
 
     }
 }
