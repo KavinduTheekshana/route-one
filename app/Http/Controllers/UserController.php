@@ -91,7 +91,7 @@ class UserController extends Controller
         // Validate the form input
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'role' => 'required|in:admin,superadmin,teacher',
+            'role' => 'required|in:admin,superadmin,teacher,agent',
             'email' => 'required|email|unique:users,email',
             'country' => 'nullable|string|max:255',
             'phone' => 'nullable|numeric',

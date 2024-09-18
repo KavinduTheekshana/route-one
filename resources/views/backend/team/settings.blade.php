@@ -111,6 +111,7 @@
                             <label for="phone" class="form-label mb-8 h6">Role</label>
                             <select name="role" class="form-select py-9 placeholder-13 text-15 mb-10">
                                 <option value="admin" {{ $user->user_type === 'admin' ? 'selected' : '' }}>Admin</option>
+                                <option value="agent" {{ $user->user_type === 'agent' ? 'selected' : '' }}>Agent</option>
                                 <option value="superadmin" {{ $user->user_type === 'superadmin' ? 'selected' : '' }}>Super Admin</option>
                                 <option value="teacher" {{ $user->user_type === 'teacher' ? 'selected' : '' }}>Teacher</option>
                             </select>

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class SuperAdmin
+class Agent
 {
     /**
      * Handle an incoming request.
@@ -16,9 +16,7 @@ class SuperAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-
-
-        if (Auth::user()->user_type == 'superadmin') {
+        if (Auth::user()->user_type == 'agent') {
             return $next($request);
         }
         abort(401);

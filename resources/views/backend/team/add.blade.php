@@ -15,6 +15,7 @@
         <label for="role">Role</label>
         <select name="role" class="form-select py-9 placeholder-13 text-15 mb-10">
             <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+            <option value="agent" {{ old('role') == 'agent' ? 'selected' : '' }}>Agent</option>
             <option value="superadmin" {{ old('role') == 'superadmin' ? 'selected' : '' }}>Super Admin</option>
             <option value="teacher" {{ old('role') == 'teacher' ? 'selected' : '' }}>Teacher</option>
         </select>
@@ -36,12 +37,12 @@
 
 
         <label for="country">Password</label>
-        <input type="text" name="password" class="text-counter placeholder-13 form-control py-11"
+        <input type="password" name="password" class="text-counter placeholder-13 form-control py-11"
             placeholder="Enter Password">
 
 
         <label for="country">Password</label>
-        <input type="text" name="password_confirmation" class="text-counter placeholder-13 form-control py-11"
+        <input type="password" name="password_confirmation" class="text-counter placeholder-13 form-control py-11"
             placeholder="Enter Password Confirmation">
 
 
