@@ -21,87 +21,10 @@
         .round-image {
             border-radius: 50%;
             object-fit: cover;
-            /* Ensures the image covers the area */
         }
 
         a:hover {
             text-decoration: none !important;
-        }
-
-        .ml-auto-mw-80 {
-            margin-left: auto !important;
-            max-width: 80%;
-        }
-
-
-
-        .open-form-btn {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 1;
-        }
-
-        .form-container {
-            position: fixed;
-            top: 75px;
-            right: -400px;
-            width: 400px;
-            height: 100%;
-            background-color: #ffffff;
-            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
-            overflow-x: hidden;
-            transition: 0.5s ease;
-            z-index: 2;
-            padding-bottom: 100px;
-            overflow: scroll;
-        }
-
-        .form-content {
-            margin: 20px;
-        }
-
-        .form-content input,
-        .form-content textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .form-content button {
-            padding: 10px;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-            width: 100%;
-        }
-
-        /* Add animation class */
-        .form-container.active {
-            right: 0;
-        }
-
-        /* Close button styling */
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #333;
-        }
-
-        /* Close button hover effect */
-        .close-btn:hover {
-            color: red;
         }
     </style>
 @endpush
@@ -112,7 +35,7 @@
 
     <div class="breadcrumb-with-buttons mb-24 flex-between flex-wrap gap-8">
         {{-- Breadcrumb  --}}
-    @section('page_name', 'Team Management')
+    @section('page_name', 'User Management')
     @include('backend.components.breadcrumb')
 
     <!-- Breadcrumb Right Start -->
@@ -121,19 +44,17 @@
         <div
             class="flex-align text-gray-500 text-13 border border-gray-100 rounded-4 ps-20 focus-border-main-600 bg-white">
             <span class="text-lg"><i class="ph ph-plus"></i></span>
-            <button id="openFormBtn"
-                class="form-control ps-8 pe-20 py-16 border-0 text-inherit rounded-4 text-center">ADD MEMBER</button>
+            <a href="{{ route('user.create') }}" class="form-control ps-8 pe-20 py-16 border-0 text-inherit rounded-4 text-center">ADD USER</a>
         </div>
     </div>
     <!-- Breadcrumb Right End -->
 </div>
 
-@include('backend.team.add')
 
 @include('backend.components.alert')
 
 <div class="card overflow-hidden p-16">
-    <h4 class="mb-0 ml-4"><b>Routeone Team Management</b></h4>
+    <h4 class="mb-0 ml-4"><b>Routeone User Management</b></h4>
     <div class="card-body p-16">
 
 
@@ -143,7 +64,7 @@
                     <th>Image</th>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Role</th>
+                    <th>Phone</th>
                     <th>Country</th>
                     <th>Status</th>
                     <th>Join date</th>
@@ -157,7 +78,7 @@
                                 class="rounded-circle round-profile" height="50px"></td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>{{ ucfirst($user->user_type) }}</td>
+                        <td>{{ $user->phone }}</td>
                         <td>{{ $user->country ?? 'N/A' }}</td>
                         <td>
                             @if ($user->status == 1)
@@ -176,19 +97,14 @@
                         </td>
                         <td>{{ $user->created_at->format('Y-m-d') }}</td>
                         <td>
-                            @if (Auth::id() == $user->id)
-                                <a href="{{ route('auth.account') }}" class="btn btn-warning btn-sm"><i
-                                        class="ph ph-eye"></i></a>
-                            @endif
 
-                            @if (Auth::id() !== $user->id)
                                 @if ($user->status == 1)
-                                    <a href="{{ route('team.block', $user->id) }}" class="btn btn-danger btn-sm"><i class="ph ph-lock"></i></a>
+                                    <a href="{{ route('user.block', $user->id) }}" class="btn btn-danger btn-sm"><i class="ph ph-lock"></i></a>
                                 @else
-                                    <a href="{{ route('team.unblock', $user->id) }}" class="btn btn-success btn-sm"><i class="ph ph-lock-open"></i></a>
+                                    <a href="{{ route('user.unblock', $user->id) }}" class="btn btn-success btn-sm"><i class="ph ph-lock-open"></i></a>
                                 @endif
 
-                                <a href="{{ route('team.settings', $user->id) }}" class="btn btn-warning btn-sm"><i
+                                <a href="{{ route('user.settings', $user->id) }}" class="btn btn-warning btn-sm"><i
                                         class="ph ph-eye"></i></a>
                                 <!-- Delete Button -->
                                 <button class="btn btn-dark btn-sm" onclick="confirmDelete({{ $user->id }})">
@@ -197,12 +113,12 @@
 
                                 <!-- Delete Form -->
                                 <form id="delete-form-{{ $user->id }}"
-                                    action="{{ route('team.destroy', $user->id) }}" method="POST"
+                                    action="{{ route('user.destroy', $user->id) }}" method="POST"
                                     style="display: none;">
                                     @csrf
                                     @method('DELETE')
                                 </form>
-                            @endif
+
                         </td>
                     </tr>
                 @endforeach
@@ -212,7 +128,7 @@
                     <th>Image</th>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Role</th>
+                    <th>Phone</th>
                     <th>Country</th>
                     <th>Status</th>
                     <th>Join date</th>
@@ -238,22 +154,7 @@
     new DataTable('#example');
 </script>
 
-<script>
-    // Get the button, form container, and close button
-    const openFormBtn = document.getElementById('openFormBtn');
-    const formContainer = document.getElementById('formContainer');
-    const closeFormBtn = document.getElementById('closeFormBtn');
 
-    // Event listener to open the form
-    openFormBtn.addEventListener('click', function() {
-        formContainer.classList.add('active'); // Add 'active' to slide in the form
-    });
-
-    // Event listener to close the form
-    closeFormBtn.addEventListener('click', function() {
-        formContainer.classList.remove('active'); // Remove 'active' to hide the form
-    });
-</script>
 
 <script>
     function confirmDelete(userId) {

@@ -2,7 +2,7 @@
 
 @section('content')
     {{-- Breadcrumb  --}}
-@section('page_name', 'Team Management')
+@section('page_name', 'User Management')
 @include('backend.components.breadcrumb')
 
 <div class="card overflow-hidden">
@@ -82,7 +82,7 @@
                 @include('backend.components.alert')
 
 
-                <form action="{{ route('team.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="row gy-4">
@@ -105,16 +105,6 @@
                             <label for="phone" class="form-label mb-8 h6">Phone Number</label>
                             <input type="number" class="form-control py-11" name="phone"
                                 placeholder="Enter Phone Number" value="{{ $user->phone }}">
-                        </div>
-
-                        <div class="col-sm-6 col-xs-6">
-                            <label for="phone" class="form-label mb-8 h6">Role</label>
-                            <select name="role" class="form-select py-9 placeholder-13 text-15 mb-10">
-                                <option value="admin" {{ $user->user_type === 'admin' ? 'selected' : '' }}>Admin</option>
-                                <option value="agent" {{ $user->user_type === 'agent' ? 'selected' : '' }}>Agent</option>
-                                <option value="superadmin" {{ $user->user_type === 'superadmin' ? 'selected' : '' }}>Super Admin</option>
-                                <option value="teacher" {{ $user->user_type === 'teacher' ? 'selected' : '' }}>Teacher</option>
-                            </select>
                         </div>
 
 
@@ -243,7 +233,6 @@
     }
     uploadImageFunction('#coverImageUpload', '#coverImagePreview');
     uploadImageFunction('#imageUpload', '#profileImagePreview');
-
 
 
 

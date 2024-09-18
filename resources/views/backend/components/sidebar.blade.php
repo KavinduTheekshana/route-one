@@ -31,7 +31,7 @@
 
 
                     <li class="sidebar-menu__item has-dropdown">
-                        <a href="javascript:void(0)" class="sidebar-menu__link">
+                        <a href="javascript:void(0)" class="sidebar-menu__link {{ request()->segment(1) === 'user' ? 'activePage' : '' }}">
                             <span class="icon"><i class="ph ph-users"></i></span>
                             <span class="text">Users</span>
                         </a>
@@ -39,10 +39,10 @@
                         <ul class="sidebar-submenu">
                             <li class="sidebar-submenu__item">
                                 <li class="sidebar-submenu__item">
-                                    <a href="" class="sidebar-submenu__link"> Manage Users </a>
+                                    <a href="{{ route('user.manage') }}" class="sidebar-submenu__link {{ request()->is('user/manage') ? 'active-sub-menu' : '' }}"> Manage Users </a>
                                 </li>    </li>
                             <li class="sidebar-submenu__item">
-                                <a href="mentor-courses.html" class="sidebar-submenu__link"> Create User  </a>
+                                <a href="{{ route('user.create') }}" class="sidebar-submenu__link {{ request()->is('user/create') ? 'active-sub-menu' : '' }}"> Create User  </a>
                             </li>
                         </ul>
                         <!-- Submenu End -->

@@ -6,3 +6,12 @@
     width: 50px;
     height: 50px;
 }
+.active-sub-menu{
+    color: #1d72f2 !important;
+}
+.dt-length label {
+    margin-left: 10px
+}
+.rounded-circle{
+    object-fit: cover;
+}
