@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Title -->
-    <title>{{ strtoupper(auth()->user()->user_type) }} DASHBOARD - Route One Recruitment</title>
+    <title>{{ ucfirst(auth()->user()->user_type) }} Dashboard - Route One Recruitment</title>
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('backend/images/logo/favicon.svg') }}">
     <!-- Bootstrap -->
