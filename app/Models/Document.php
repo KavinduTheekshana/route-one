@@ -15,6 +15,8 @@ class Document extends Model
         'file_path',
         'file_name',
         'file_original_name',
+        'file_size',
+        'file_type',
     ];
 
     public function user()

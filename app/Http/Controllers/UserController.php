@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Document;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -74,7 +75,8 @@ class UserController extends Controller
     public function user_settings($id)
     {
         $user = User::findOrFail($id);
-        return view('backend.user.settings.settings', compact('user'));
+        $documents = Document::where('user_id', $id)->get();
+        return view('backend.user.settings.settings', compact('user', 'documents'));
     }
 
     public function user_update(Request $request, $id)

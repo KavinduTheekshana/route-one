@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Assuming you have a users table
             $table->string('document_type');
             $table->string('file_name')->nullable();
+            $table->string('file_size');
+            $table->string('file_type');
             $table->string('file_path');
             $table->string('file_original_name');
             $table->timestamps();

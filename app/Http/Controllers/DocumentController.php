@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends Controller
 {
@@ -39,8 +40,20 @@ class DocumentController extends Controller
         $user_id = $request->input('user_id');
         $file_name = $request->input('file_name');
         $file = $request->file('file');
-        $filePath = $file->store('asdfad');
+
+        // Check if the user already has a document of the same type
+        // $existingDocument = Document::where('user_id', $user_id)
+        //     ->where('document_type', $document_type)
+        //     ->first();
+
+        // if ($existingDocument) {
+        //     return redirect()->back()->withErrors(['document_type' => 'You have already uploaded a document of this type.']);
+        // }
+
+        $filePath = $request->file('file')->store('Documents', 'public');
         $fileOriginalName = $file->getClientOriginalName();
+        $fileSize = $file->getSize(); // Get file size in bytes
+        $fileMimeType = $file->getMimeType(); // Get MIME type
 
         // Debugging: Check if file is present
         if (!$file) {
@@ -53,6 +66,8 @@ class DocumentController extends Controller
             'file_name' => $file_name,
             'file_path' => $filePath,
             'file_original_name' => $fileOriginalName,
+            'file_size' => $fileSize,
+            'file_type' => $fileMimeType, // Store MIME type
         ]);
 
         return redirect()->back()->with('success', 'Document uploaded successfully!');
@@ -82,11 +97,11 @@ class DocumentController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Document $document)
     {
-        //
+        Storage::delete($document->file_path);
+        $document->delete();
+
+        return redirect()->back()->with('success', 'Document deleted successfully!');
     }
 }
