@@ -1,0 +1,22 @@
+.company-logo{
+    max-width: 200px !important;
+    width: 200px;
+}
+.active{
+    color: rgb(252, 37, 63);
+}
+.straight{
+    transform:rotate(0deg) !important;
+}
+.about-image{
+    width: 410px !important;
+}
+.about-image-second{
+    width: 260px !important;
+}
+.service-icon{
+    padding: 10px;;
+}
+.service-icon i{
+    font-size: 35px !important;
+}

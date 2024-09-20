@@ -49,7 +49,7 @@
             </div>
             <ul class="nav common-tab style-two nav-pills mb-0" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-details-tab" data-bs-toggle="pill"
+                    <button class="nav-link active" id="pills-details-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-details" type="button" role="tab" aria-controls="pills-details"
                         aria-selected="true">User Details</button>
                 </li>
@@ -60,7 +60,7 @@
                 </li>
 
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="pills-documents-tab" data-bs-toggle="pill"
+                    <button class="nav-link" id="pills-documents-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-documents" type="button" role="tab" aria-controls="pills-documents"
                         aria-selected="false">Documents</button>
                 </li>

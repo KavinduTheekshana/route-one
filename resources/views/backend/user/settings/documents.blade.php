@@ -1,5 +1,5 @@
   <!-- Password Tab Start -->
-  <div class="tab-pane fade show active" id="pills-documents" role="tabpanel" aria-labelledby="pills-documents-tab"
+  <div class="tab-pane fade" id="pills-documents" role="tabpanel" aria-labelledby="pills-documents-tab"
       tabindex="0">
       <div class="card mt-24">
           <div class="card-header border-bottom">
@@ -24,13 +24,6 @@
                                       <option value="passport">Passport</option>
                                       <option value="national_id_card">National ID Card (NIC)</option>
                                       <option value="drivers_license">Driver's License</option>
-                                  </optgroup>
-
-                                  <!-- Proof of Work Eligibility -->
-                                  <optgroup label="Proof of Work Eligibility">
-                                      <option value="work_visa">Work Visa / Permit</option>
-                                      <option value="residence_permit">Residence Permit</option>
-                                      <option value="right_to_work">Right to Work Documentation</option>
                                   </optgroup>
 
                                   <!-- Proof of Address -->
@@ -114,12 +107,6 @@
                   document.getElementById('nationalIdCardFields').style.display = 'block';
               } else if (documentType === 'drivers_license') {
                   document.getElementById('licenseFields').style.display = 'block';
-              } else if (documentType === 'work_visa') {
-                  document.getElementById('workVisaFields').style.display = 'block';
-              } else if (documentType === 'residence_permit') {
-                  document.getElementById('residencePermitFields').style.display = 'block';
-              } else if (documentType === 'right_to_work') {
-                  document.getElementById('rightToWorkFields').style.display = 'block';
               } else if (documentType === 'proof_of_address') {
                   document.getElementById('proofOfAddressFields').style.display = 'block';
               } else if (documentType === 'educational_certificates') {
