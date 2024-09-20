@@ -1,15 +1,15 @@
 <!-- NIC Fields -->
-<div id="nationalIdCardFields" class="document-fields" style="display:none;">
+<div id="policeClearanceFields" class="document-fields" style="display:none;">
     <div class="col-12 mt-16">
         <form action="{{ route('documents.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <input type="text" class="form-control py-11" name="document_type" value="national_id_card" hidden>
+            <input type="text" class="form-control py-11" name="document_type" value="police_clearance" hidden>
             <input type="text" class="form-control py-11" name="user_id" value="{{ $user->id }}" hidden>
 
             <div class="form-group">
-                <label>National Id Card Number</label>
+                <label>Police Clearance Certificate Number</label>
                 <input type="text" class="form-control" name="file_name"
-                    placeholder="Enter National Id Card Number" required>
+                    placeholder="Enter Your Police Clearance Certificate Number" required>
             </div>
 
             <div class="upload-card-item p-16 rounded-12 bg-main-50 mb-20 mt-4">
@@ -19,7 +19,7 @@
                     </span>
                     <div class="upload-section">
                         <p class="text-15 text-gray-500">
-                            Please upload a clear image of your National Id Card.
+                            Please upload a clear image of your Police Clearance Certificate.
                             <label class="text-main-600 cursor-pointer file-label">Browse</label>
                             <input name="file" type="file" class="file-input" accept=".jpg,.jpeg,.png,.webp,.pdf"
                                 hidden>
@@ -40,5 +40,4 @@
             </div>
         </form>
     </div>
-
-    </div>
+</div>

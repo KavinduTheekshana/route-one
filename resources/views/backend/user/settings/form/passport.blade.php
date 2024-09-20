@@ -7,8 +7,8 @@
             <input type="text" class="form-control py-11" name="user_id" value="{{ $user->id }}" hidden>
 
             <div class="form-group">
-                <label for="passportNumber">Passport Number</label>
-                <input type="text" class="form-control" id="passportNumber" name="file_name"
+                <label>Passport Number</label>
+                <input type="text" class="form-control" name="file_name"
                     placeholder="Enter Passport Number" required>
             </div>
 
@@ -17,17 +17,17 @@
                     <span class="w-36 h-36 text-lg rounded-circle bg-white flex-center text-main-600 flex-shrink-0">
                         <i class="ph ph-paperclip"></i>
                     </span>
-                    <div class="">
+                    <div class="upload-section">
                         <p class="text-15 text-gray-500">
                             Please upload a clear image of your passport for verification.
-                            <label for="passport" class="text-main-600 cursor-pointer">Browse</label>
-                            <input name="file" type="file" id="passport" accept=".jpg,.jpeg,.png,.webp,.pdf"
-                                hidden>
+                            <label class="text-main-600 cursor-pointer file-label">Browse</label>
+                            <input name="file" type="file" class="file-input" accept=".jpg,.jpeg,.png,.webp,.pdf" hidden>
                         </p>
-                        <p class="text-13 text-gray-600">JPG, PNG, WEBP, or PDF format (max file
-                            size 10MB each)</p>
-                        <span class="show-uploaded-passport-name d-none" id="uploaded-passport-name"></span>
+                        <p class="text-13 text-gray-600">JPG, PNG, WEBP, or PDF format (max file size 10MB each)</p>
+                        <span class="show-uploaded-passport-name d-none"></span>
                     </div>
+
+
                 </div>
             </div>
             <div class="col-12 mt-2-rem">

@@ -1,12 +1,13 @@
-<div class="col-6 mt-16">
+<div class="col-12 mt-16">
     <label for="documentType" class="h5 mb-8 fw-semibold font-heading">Attached Documents</label>
 
     @if ($documents->isEmpty())
         <p>No documents found for this user.</p>
     @else
         <ul>
+            <div class="row">
             @foreach ($documents as $document)
-                <li>
+                <li class="col-6">
                     <div class="upload-card-item p-16 rounded-12 bg-primary-100 mb-20">
                         <div class="flex-between gap-8">
                             <div class="flex-align gap-10 flex-wrap">
@@ -25,7 +26,8 @@
 
                                 </span>
                                 <div class="">
-                                    <p class="text-15 text-gray-500"><strong> {{ ucwords(str_replace('_', ' ', $document->document_type)) }}
+                                    <p class="text-15 text-gray-500"><strong>
+                                            {{ ucwords(str_replace('_', ' ', $document->document_type)) }}
 
                                         </strong> - {{ $document->file_original_name }} </p>
                                     <p class="text-13 text-gray-600">( File Size :
@@ -49,14 +51,16 @@
                                                     <ul>
                                                         <li class="mb-0">
                                                             <button type="button"
-                                                            onclick="viewDocument('{{ asset('storage/' . $document->file_path) }}', '{{ pathinfo($document->file_path, PATHINFO_EXTENSION) }}')"
+                                                                onclick="viewDocument('{{ asset('storage/' . $document->file_path) }}', '{{ pathinfo($document->file_path, PATHINFO_EXTENSION) }}')"
                                                                 class="view-item-btn py-6 text-15 px-8 hover-bg-gray-50 text-gray-300 w-100 rounded-8 fw-normal text-xs d-block text-start">
                                                                 <span class="text">View</span>
                                                             </button>
 
-                                                            <a  href="{{ asset('storage/' . $document->file_path) }}" type="button" download="{{ $document->file_original_name }}"
-                                                            class="delete-item-btn py-6 text-15 px-8 hover-bg-gray-50 text-gray-300 w-100 rounded-8 fw-normal text-xs d-block text-start">
-                                                            <span class="text">Download</span>
+                                                            <a href="{{ asset('storage/' . $document->file_path) }}"
+                                                                type="button"
+                                                                download="{{ $document->file_original_name }}"
+                                                                class="delete-item-btn py-6 text-15 px-8 hover-bg-gray-50 text-gray-300 w-100 rounded-8 fw-normal text-xs d-block text-start">
+                                                                <span class="text">Download</span>
                                                             </a>
 
 
@@ -86,6 +90,7 @@
 
                 </li>
             @endforeach
+        </div>
         </ul>
     @endif
 
@@ -128,22 +133,22 @@
 
 
         function viewDocument(fileUrl, fileType) {
-        const documentFrame = document.getElementById('documentFrame');
-        const modalBody = document.querySelector('.modal-body');
+            const documentFrame = document.getElementById('documentFrame');
+            const modalBody = document.querySelector('.modal-body');
 
-        // Clear the modal content first
-        modalBody.innerHTML = '';
+            // Clear the modal content first
+            modalBody.innerHTML = '';
 
-        if (fileType === 'pdf') {
-            // For PDFs, use an iframe
-            modalBody.innerHTML = `<iframe src="${fileUrl}" width="100%" height="500px" frameborder="0"></iframe>`;
-        } else if (fileType === 'jpeg' || fileType === 'png' || fileType === 'jpg') {
-            // For images, show an image element
-            modalBody.innerHTML = `<img src="${fileUrl}" class="modal-image" />`;
+            if (fileType === 'pdf') {
+                // For PDFs, use an iframe
+                modalBody.innerHTML = `<iframe src="${fileUrl}" width="100%" height="500px" frameborder="0"></iframe>`;
+            } else if (fileType === 'jpeg' || fileType === 'png' || fileType === 'jpg') {
+                // For images, show an image element
+                modalBody.innerHTML = `<img src="${fileUrl}" class="modal-image" />`;
+            }
+
+            // Show the modal
+            $('#documentModal').modal('show');
         }
-
-        // Show the modal
-        $('#documentModal').modal('show');
-    }
     </script>
 @endpush
