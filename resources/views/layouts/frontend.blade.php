@@ -7,7 +7,7 @@
     <title>Route One Recruitement - Bridging the Gap Talent and Opportunity</title>
 
     <!--=====FAB ICON=======-->
-    <link rel="shortcut icon" href="{{ asset('/img/logo/titel1.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('backend/images/logo/favicon.svg') }}">
 
 
     <!--=====CSS=======-->

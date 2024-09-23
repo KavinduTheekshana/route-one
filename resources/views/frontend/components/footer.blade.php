@@ -1,33 +1,6 @@
 
-<div class="footer-cta5" style="background-image: url(assets/img/bg/footer5-bg.png);">
-    <!--===== CTA AREA START =======-->
+<div class="footer-cta5" style="background-image: url({{ asset('frontend/img/bg/footer5-bg.png')}});">
 
-    <div class="cta5">
-        <div class="container">
-          <div class="row cta-border align-items-center">
-            <div class="col-lg-6">
-              <div class="heading1-w">
-                <h2>Ready to Power up your Savings and Reliability?</h2>
-                <div class="space16"></div>
-                <p>Feel free to customize this paragraph to better reflect the <br> specific services offered by your IT solution & the unique </p>
-              </div>
-            </div>
-
-            <div class="col-lg-6">
-              <div class="subscribe-area">
-                <form action="#">
-                      <input type="email" placeholder="Email Address">
-                    <div class="button">
-                      <button type="submit" class="theme-btn4">Subscribe Now <span><i class="fa-solid fa-arrow-right"></i></span></button>
-                    </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!--===== CTA AREA START =======-->
 
       <!--===== FOOTER AREA START =======-->
 
@@ -37,11 +10,11 @@
                       <div class="col-lg-4 col-md-6 col-12">
                            <div class="single-footer-items footer-logo-area">
                                 <div class="footer-logo">
-                                  <a href=""><img src="assets/img/logo/header-logo2.png" alt=""></a>
+                                  <a href=""><img src="{{ asset('frontend/img/logo/routeone_logo_light.svg') }}" alt=""></a>
                                 </div>
                                 <div class="space20"></div>
                                 <div class="heading1-w">
-                                  <p>Our goal is to demystify the process, address your concerns, and empower you with the knowledge to embark.</p>
+                                  <p>We specialize in matching professionals with the right job opportunities for lasting success.</p>
                                 </div>
                                 <ul class="social-icon">
                                      <li><a href="#"><i class="fa-brands fa-linkedin-in"></i></a></li>
@@ -87,28 +60,37 @@
 
                                 <div class="contact-box">
                                   <div class="icon">
-                                    <img src="assets/img/icons/footer-icon1.png" alt="">
+                                    <img src="{{ asset('frontend/img/icons/phone-svgrepo-com.svg')}}" alt="">
                                   </div>
                                   <div class="pera">
-                                    <a href="tel:+880123456789">+880 123 456 789</a>
+                                    <a href="tel:+442031378313">+44 20 313 78 313</a>
                                   </div>
                                 </div>
 
                                 <div class="contact-box">
                                   <div class="icon">
-                                    <img src="assets/img/icons/footer-icon2.png" alt="">
+                                    <img src="{{ asset('frontend/img/icons/whatsapp-svgrepo-com.svg')}}" alt="">
                                   </div>
                                   <div class="pera">
-                                    <a href="mailto:info@mail.com">info@mail.com</a>
+                                    <a href="https://wa.me/447361496391">+44 7361 496391</a>
                                   </div>
                                 </div>
 
                                 <div class="contact-box">
                                   <div class="icon">
-                                    <img src="assets/img/icons/footer-icon3.png" alt="">
+                                    <img src="{{ asset('frontend/img/icons/envelope-open-svgrepo-com.svg')}}" alt="">
                                   </div>
                                   <div class="pera">
-                                    <a href="tel:+880123456789">8502 Preston Rd. <br> Inglewoo Maine 98380</a>
+                                    <a href="mailto:info@routeonerecruitment.com">info@routeonerecruitment.com</a>
+                                  </div>
+                                </div>
+
+                                <div class="contact-box">
+                                  <div class="icon">
+                                    <img src="{{ asset('frontend/img/icons/location-pin-svgrepo-com.svg')}}" alt="">
+                                  </div>
+                                  <div class="pera">
+                                    <a href="tel:+880123456789">24 Colston Rise, Ampthill, <br> Bedford, England MK45 2GN</a>
                                   </div>
                                 </div>
 
@@ -125,7 +107,7 @@
                 <div class="row align-items-center">
                   <div class="col-md-12">
                        <div class="coppyright">
-                         <p>© Copyright 2024 -Recrute. All Right Reserved</p>
+                         <p>© Copyright {{ date('Y') }} - Route One Recruitement. All Right Reserved | Developed by <a href="http://" target="_blank" rel="Codexer">Codexer</a></p>
                        </div>
                   </div>
              </div>

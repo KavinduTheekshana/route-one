@@ -21,7 +21,7 @@
                         <div class="col-lg-4 col-md-6" data-aos="zoom-in-up" data-aos-duration="700">
                             <div class="service5-box">
                                 <div class="icon">
-                                    <img src="{{ asset('frontend/img/icons/service2-iocn1.png')}}" alt="">
+                                    <img class="service-icon-img"  src="{{ asset('frontend/img/icons/free-consultation-icon.svg')}}" alt="">
                                 </div>
                                 <div class="heading5">
                                     <h4><a href="service-details.html">Free Consultation</a></h4>
@@ -37,7 +37,7 @@
                         <div class="col-lg-4 col-md-6" data-aos="zoom-in-up" data-aos-duration="900">
                             <div class="service5-box">
                                 <div class="icon">
-                                    <img src="{{ asset('frontend/img/icons/service2-iocn2.png')}}" alt="">
+                                    <img class="service-icon-img"  src="{{ asset('frontend/img/icons/exam-svgrepo-com.svg')}}" alt="">
                                 </div>
                                 <div class="heading5">
                                     <h4><a href="service-details.html">English Level Test Interview</a></h4>
@@ -53,7 +53,7 @@
                         <div class="col-lg-4 col-md-6" data-aos="zoom-in-up" data-aos-duration="1100">
                             <div class="service5-box">
                                 <div class="icon">
-                                    <img src="{{ asset('frontend/img/icons/service2-iocn3.png')}}" alt="">
+                                    <img class="service-icon-img"  src="{{ asset('frontend/img/icons/interview-icon.svg')}}" alt="">
                                 </div>
                                 <div class="heading5">
                                     <h4><a href="service-details.html">Interview Preparation</a></h4>
