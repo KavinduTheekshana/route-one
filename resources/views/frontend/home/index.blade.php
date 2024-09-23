@@ -8,7 +8,7 @@
     @include('frontend.home.benefits')
     @include('frontend.home.testimonial')
 
-    {{-- @include('frontend.home.contact') --}}
+    @include('frontend.home.contact')
     @include('frontend.home.companies')
 
 
