@@ -26,7 +26,7 @@
 
     <!--=====JQUERY=======-->
     <script src="{{ asset('frontend/js/jquery-3-6-0.min.js') }}"></script>
-    {{-- @vite(['', 'resources/js/app.js']) --}}
+    @vite(['', 'resources/js/app.js'])
 </head>
 
 <body class="body">

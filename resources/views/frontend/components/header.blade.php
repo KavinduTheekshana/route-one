@@ -41,8 +41,8 @@
 
                         <div class="main-menu-ex main-menu-ex1">
                             <ul>
-                                <li><a class="{{ request()->is('/') ? 'active' : '' }}" href="#">Home</a></li>
-                                <li><a href="about.html">About Us</a></li>
+                                <li><a class="{{ request()->is('/') ? 'active' : '' }}" href="{{ route('/') }}">Home</a></li>
+                                <li><a class="{{ request()->is('about') ? 'active' : '' }}" href="{{ route('about') }}">About Us</a></li>
 
 
 
