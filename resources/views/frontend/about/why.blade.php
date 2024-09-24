@@ -26,7 +26,7 @@
                         looking to grow your team, choosing us means gaining a partner dedicated to your success.</p>
 
                     <div class="space10"></div>
-                    <div class="row">
+                    <div class="row" data-aos="fade-left" data-aos-duration="800">
                         <div class="col-lg-12">
                             <ul class="icon-list">
                                 <li><span><i class="fa-solid fa-check"></i></span> Personalized Recruitment</li>

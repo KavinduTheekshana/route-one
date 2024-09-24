@@ -19,7 +19,7 @@
 
                                       <div class="col-lg-6">
                                           <div class="conter-box conter-box2">
-                                              <h3><span class="counter">4+</span>+</h3>
+                                              <h3><span class="counter">4</span>+</h3>
                                               <p>Years of Experienced</p>
                                           </div>
                                           <div class="image overlay-anim">

@@ -43,6 +43,7 @@
                             <ul>
                                 <li><a class="{{ request()->is('/') ? 'active' : '' }}" href="{{ route('/') }}">Home</a></li>
                                 <li><a class="{{ request()->is('about') ? 'active' : '' }}" href="{{ route('about') }}">About Us</a></li>
+                                <li><a class="{{ request()->is('contact') ? 'active' : '' }}" href="{{ route('contact') }}">Contact</a></li>
 
 
 

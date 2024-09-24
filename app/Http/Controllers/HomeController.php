@@ -15,4 +15,8 @@ class HomeController extends Controller
     {
         return view('frontend.about.index');
     }
+    public function contact()
+    {
+        return view('frontend.contact.index');
+    }
 }
