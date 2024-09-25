@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\HomeController;
@@ -14,12 +15,19 @@ Route::get('about', [HomeController::class, 'about'])->name('about');
 Route::get('contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('jobs', [HomeController::class, 'jobs'])->name('jobs');
 Route::get('services', [HomeController::class, 'services'])->name('services');
+Route::get('user/login', [HomeController::class, 'login'])->name('user.login');
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    // User Routes
+    Route::post('/user/profile/update/image', [AccountController::class, 'profile_image'])->name('user.profile.update.image');
+    Route::post('/user/profile/update/details', [AccountController::class, 'profile_details'])->name('user.profile.update.details');
+    Route::get('/user/application', [AccountController::class, 'application'])->name('user.application');
+    Route::post('/user/application/store', [AccountController::class, 'store'])->name('user.application.store');
+
     Route::middleware(['auth', 'status'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

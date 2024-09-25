@@ -1,66 +1,192 @@
-.company-logo{
+.company-logo {
     max-width: 200px !important;
     width: 200px;
 }
-.active{
-    color: #00A0E0;
+.active {
+    color: #00a0e0;
 }
-.straight{
-    transform:rotate(0deg) !important;
+.straight {
+    transform: rotate(0deg) !important;
 }
-.about-image{
+.about-image {
     width: 410px !important;
 }
-.about-image-second{
+.about-image-second {
     width: 260px !important;
 }
-.service-icon{
-    padding: 10px;;
+.service-icon {
+    padding: 10px;
 }
-.service-icon i{
+.service-icon i {
     font-size: 35px !important;
 }
-.benefits-icon{
+.benefits-icon {
     width: 40px !important;
-    filter: invert(100%) sepia(0%) saturate(1%) hue-rotate(189deg) brightness(105%) contrast(101%);
+    filter: invert(100%) sepia(0%) saturate(1%) hue-rotate(189deg)
+        brightness(105%) contrast(101%);
 }
-.service-benefits5 .benefits-box:hover .icon img{
-    filter: invert(38%) sepia(83%) saturate(2026%) hue-rotate(170deg) brightness(102%) contrast(101%);
+.service-benefits5 .benefits-box:hover .icon img {
+    filter: invert(38%) sepia(83%) saturate(2026%) hue-rotate(170deg)
+        brightness(102%) contrast(101%);
 }
-.contact-icon{
+.contact-icon {
     width: 40px !important;
-    filter: invert(38%) sepia(83%) saturate(2026%) hue-rotate(170deg) brightness(102%) contrast(101%);
+    filter: invert(38%) sepia(83%) saturate(2026%) hue-rotate(170deg)
+        brightness(102%) contrast(101%);
 }
-.service-icon-img{
+.service-icon-img {
     width: 40px !important;
-    filter: invert(100%) sepia(0%) saturate(1%) hue-rotate(189deg) brightness(105%) contrast(101%);
+    filter: invert(100%) sepia(0%) saturate(1%) hue-rotate(189deg)
+        brightness(105%) contrast(101%);
 }
-.service5-box:hover .icon img{
-    filter: invert(38%) sepia(83%) saturate(2026%) hue-rotate(170deg) brightness(102%) contrast(101%);
+.service5-box:hover .icon img {
+    filter: invert(38%) sepia(83%) saturate(2026%) hue-rotate(170deg)
+        brightness(102%) contrast(101%);
 }
-.mission-box:hover .icon img{
-    filter: invert(38%) sepia(83%) saturate(2026%) hue-rotate(170deg) brightness(102%) contrast(101%);
+.mission-box:hover .icon img {
+    filter: invert(38%) sepia(83%) saturate(2026%) hue-rotate(170deg)
+        brightness(102%) contrast(101%);
 }
-.single-slider{
+.single-slider {
     padding: 10px !important;
 }
-.single-slider img{
+.single-slider img {
     height: 60px;
     margin: auto;
 }
-.contact-box img{
+.contact-box img {
     width: 15px !important;
-    filter: invert(100%) sepia(91%) saturate(38%) hue-rotate(321deg) brightness(110%) contrast(110%);
+    filter: invert(100%) sepia(91%) saturate(38%) hue-rotate(321deg)
+        brightness(110%) contrast(110%);
 }
-.main-hero-container{
+.main-hero-container {
     margin-top: 60px !important;
 }
-.color-white{
+.color-white {
     color: #fff !important;
 }
-.tes4 .tes4-slider .single-slider{
+.tes4 .tes4-slider .single-slider {
     padding: 32px !important;
 }
-.card-top{
+.card-top {
     margin-top: 70px !important;
 }
+
+.login-input {
+    padding: 20px !important;
+    font-size: 20px;
+    border-radius: 0px;
+}
+.login-input:focus {
+    border-color: black;
+    box-shadow: none;
+}
+.link-row {
+    display: flex;
+    justify-content: space-between; /* Distribute space between the links */
+    width: 100%;
+    margin: 0 !important;
+}
+.link-row .col {
+    padding: 0 !important;
+}
+
+.left-link {
+    text-align: left;
+    margin-right: auto; /* Pushes the link to the left */
+}
+
+.right-link {
+    text-align: right;
+    margin-left: auto; /* Pushes the link to the right */
+}
+
+.link-row a {
+    text-decoration: none;
+    /* color: #1b56f9;  */
+}
+.login-button {
+    padding: 20px;
+    font-size: 20px;
+    border-radius: 0px;
+    width: 100%;
+}
+.img-account-profile{
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    overflow: hidden;
+}
+.text-button {
+    background: none;    /* Remove background */
+    border: none;        /* Remove border */
+    padding: 0;          /* Remove padding */
+    color: inherit;      /* Inherit text color from parent */
+    font: inherit;       /* Inherit font style from parent */
+    cursor: pointer;     /* Keep pointer cursor */
+}
+.img-account-profile {
+    height: 10rem;
+}
+
+.rounded-circle {
+    border-radius: 50% !important;
+}
+
+.card {
+    box-shadow: 0 0.15rem 1.75rem 0 rgb(33 40 50 / 15%);
+}
+
+.card .card-header {
+    font-weight: 500;
+}
+
+.card-header:first-child {
+    border-radius: 0.35rem 0.35rem 0 0;
+}
+
+.card-header {
+    padding: 1rem 1.35rem;
+    margin-bottom: 0;
+    background-color: rgba(33, 40, 50, 0.03);
+    border-bottom: 1px solid rgba(33, 40, 50, 0.125);
+}
+
+.form-control,
+.dataTable-input {
+    display: block;
+    width: 100%;
+    padding: 0.875rem 1.125rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1;
+    color: #69707a;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #c5ccd6;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0.35rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.nav-borders .nav-link.active {
+    color: #0061f2;
+    border-bottom-color: #0061f2;
+}
+
+.nav-borders .nav-link {
+    color: #69707a;
+    border-bottom-width: 0.125rem;
+    border-bottom-style: solid;
+    border-bottom-color: transparent;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+/* ----------------------------------------------------------------  */

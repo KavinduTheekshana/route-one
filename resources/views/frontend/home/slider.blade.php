@@ -11,8 +11,8 @@
               <p data-aos="fade-left" data-aos-duration="800">Welcome to Route One Recruitment Services Ltd, your trusted partner in finding top talent and exceptional job opportunities. Our mission is to connect skilled professionals with employers who value their expertise and dedication.</p>
               <div class="space30"></div>
               <div class="hero2-buttons" data-aos="fade-left" data-aos-duration="900">
-                  <a class="theme-btn4" href="service.html">Book an appointment <span class="straight"><i class="fa-regular fa-calendar-check"></i></span></a>
-                  <a class="theme-btn5" href="service.html">Contact Us <span><i class="fa-solid fa-arrow-right"></i></span></a>
+                  <a class="theme-btn4" href="#">Book an appointment <span class="straight"><i class="fa-regular fa-calendar-check"></i></span></a>
+                  <a class="theme-btn5" href="{{ route('contact') }}">Contact Us <span><i class="fa-solid fa-arrow-right"></i></span></a>
               </div>
           </div>
         </div>

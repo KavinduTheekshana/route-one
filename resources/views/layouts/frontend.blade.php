@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/mobile-menu.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/main.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/custom.css') }}">
-
+    @stack('styles')
 
 
     <!--=====JQUERY=======-->
@@ -64,15 +64,13 @@
 
 
 
-
-
     @include('frontend.components.footer')
 
 
     <script src="{{ asset('frontend/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('frontend/js/aos.js') }}"></script>
     <script src="{{ asset('frontend/js/fontawesome.js') }}"></script>
-    <script src="{{ asset('frontend//js/jquery.countup.js')}}"></script>
+    <script src="{{ asset('frontend//js/jquery.countup.js') }}"></script>
     <script src="{{ asset('frontend/js/mobile-menu.js') }}"></script>
     <script src="{{ asset('frontend/js/jquery.magnific-popup.js') }}"></script>
     <script src="{{ asset('frontend/js/owl.carousel.min.js') }}"></script>
@@ -85,6 +83,8 @@
     <script src="{{ asset('frontend/js/jquery.lineProgressbar.js') }}"></script>
     <script src="{{ asset('frontend/js/tilt.jquery.js') }}"></script>
     <script src="{{ asset('frontend/js/main.js') }}"></script>
+    @stack('scripts')
+
 </body>
 
 </html>

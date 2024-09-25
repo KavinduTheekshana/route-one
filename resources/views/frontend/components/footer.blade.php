@@ -30,11 +30,9 @@
                                 <h3>Quick Links</h3>
 
                                 <ul class="menu-list">
-                                     <li><a href="#">Staff Management</a></li>
-                                     <li><a href="#">Leadership Training</a></li>
-                                     <li><a href="#">Corporate Program </a></li>
-                                     <li><a href="#">Staffing Solutions</a></li>
-                                     <li><a href="#">Blog Standard</a></li>
+                                     <li><a href="#">Terms & Condetions</a></li>
+                                     <li><a href="#">Q&A</a></li>
+                                     <li><a href="#">Testimonial</a></li>
                                 </ul>
                            </div>
                       </div>
@@ -44,11 +42,11 @@
                                 <h3>Explore</h3>
 
                                 <ul class="menu-list">
-                                     <li><a href="index.html">Home </a></li>
-                                     <li><a href="about.html">About Us</a></li>
-                                     <li><a href="service.html">Service</a></li>
-                                     <li><a href="testimonial.html">Testimonial</a></li>
-                                     <li><a href="contact.html">Contact US</a></li>
+                                     <li><a href="{{ route('/') }}">Home </a></li>
+                                     <li><a href="{{ route('about') }}">About Us</a></li>
+                                     <li><a href="{{ route('jobs') }}">Jobs</a></li>
+                                     <li><a href="{{ route('services') }}">Service</a></li>
+                                     <li><a href="{{ route('contact') }}">Contact US</a></li>
                                 </ul>
                            </div>
                       </div>
@@ -90,7 +88,7 @@
                                     <img src="{{ asset('frontend/img/icons/location-pin-svgrepo-com.svg')}}" alt="">
                                   </div>
                                   <div class="pera">
-                                    <a href="tel:+880123456789">24 Colston Rise, Ampthill, <br> Bedford, England MK45 2GN</a>
+                                    <a>24 Colston Rise, Ampthill, <br> Bedford, England MK45 2GN</a>
                                   </div>
                                 </div>
 
@@ -107,7 +105,7 @@
                 <div class="row align-items-center">
                   <div class="col-md-12">
                        <div class="coppyright">
-                         <p>© Copyright {{ date('Y') }} - Route One Recruitement. All Right Reserved | Developed by <a href="http://" target="_blank" rel="Codexer">Codexer</a></p>
+                         <p>© Copyright {{ date('Y') }} - Route One Recruitement. All Right Reserved | Developed by <a href="http://codexer.co.uk" target="_blank" rel="Codexer">Codexer</a></p>
                        </div>
                   </div>
              </div>

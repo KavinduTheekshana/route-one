@@ -70,7 +70,7 @@
 
                     <div class="space30"></div>
                     <div class="buttons-about5 text-center" data-aos="fade-left" data-aos-duration="1000">
-                      <a class="theme-btn4" href="about.html">Our Services<span><i
+                      <a class="theme-btn4" href="{{ route('services') }}">Our Services<span><i
                                   class="fa-solid fa-arrow-right"></i></span></a>
 
                   </div>

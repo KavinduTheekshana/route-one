@@ -38,7 +38,7 @@
 
                          <div class="space30"></div>
                          <div class="buttons-about5" data-aos="fade-left" data-aos-duration="1000">
-                             <a class="theme-btn4" href="about.html">Find Out More <span><i
+                             <a class="theme-btn4" href="{{ route('about') }}">Find Out More <span><i
                                          class="fa-solid fa-arrow-right"></i></span></a>
                              <div class="phone-btn">
                                  <div class="icon">

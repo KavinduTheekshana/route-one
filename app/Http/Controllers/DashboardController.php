@@ -10,8 +10,7 @@ class DashboardController extends Controller
     public function index()
     {
         if (Auth::user()->user_type === 'user') {
-            // Separate dashboard for 'user' role
-            return view('frontend.user.dashboard');
+            return view('frontend.auth.dashboard.profile');
         } else {
             return view('backend.index');
         }

@@ -33,19 +33,25 @@
                 <div class="col-12">
                     <div class="header-elements">
                         <div class="site-logo">
-                            <a href="index.html">
-                                <img src="{{ asset('frontend/img/logo/routeone_logo.svg') }}" alt="" class="company-logo">
+                            <a href="{{ route('/') }}">
+                                <img src="{{ asset('frontend/img/logo/routeone_logo.svg') }}" alt=""
+                                    class="company-logo">
                             </a>
                         </div>
 
 
                         <div class="main-menu-ex main-menu-ex1">
                             <ul>
-                                <li><a class="{{ request()->is('/') ? 'active' : '' }}" href="{{ route('/') }}">Home</a></li>
-                                <li><a class="{{ request()->is('about') ? 'active' : '' }}" href="{{ route('about') }}">About Us</a></li>
-                                <li><a class="{{ request()->is('jobs') ? 'active' : '' }}" href="javascript:void(0)">Jobs</a></li>
-                                <li><a class="{{ request()->is('services') ? 'active' : '' }}" href="{{ route('services') }}">Services</a></li>
-                                <li><a class="{{ request()->is('contact') ? 'active' : '' }}" href="{{ route('contact') }}">Contact</a></li>
+                                <li><a class="{{ request()->is('/') ? 'active' : '' }}"
+                                        href="{{ route('/') }}">Home</a></li>
+                                <li><a class="{{ request()->is('about') ? 'active' : '' }}"
+                                        href="{{ route('about') }}">About Us</a></li>
+                                <li><a class="{{ request()->is('jobs') ? 'active' : '' }}"
+                                        href="javascript:void(0)">Jobs</a></li>
+                                <li><a class="{{ request()->is('services') ? 'active' : '' }}"
+                                        href="{{ route('services') }}">Services</a></li>
+                                <li><a class="{{ request()->is('contact') ? 'active' : '' }}"
+                                        href="{{ route('contact') }}">Contact</a></li>
 
 
 
@@ -57,12 +63,21 @@
                         </div>
 
 
-
-                        <div class="header2-buttons">
-                            <div class="button">
-                                <a class="theme-btn4" href="contact.html">Sign In <span class="straight"><i class="fa-solid fa-right-to-bracket"></i></span></a>
+                        @if (Auth::check())
+                            <div class="header2-buttons">
+                                <div class="button">
+                                    <a class="theme-btn4" href="{{ route('dashboard') }}">My Account</a>
+                                </div>
                             </div>
-                        </div>
+                        @else
+                            <div class="header2-buttons">
+                                <div class="button">
+                                    <a class="theme-btn4" href="{{ route('user.login') }}">Sign In <span
+                                            class="straight"><i class="fa-solid fa-right-to-bracket"></i></span></a>
+                                </div>
+                            </div>
+                        @endif
+
 
                     </div>
                 </div>

@@ -27,4 +27,8 @@ class HomeController extends Controller
     {
         return view('frontend.services.index');
     }
+    public function login()
+    {
+        return view('frontend.auth.login');
+    }
 }
