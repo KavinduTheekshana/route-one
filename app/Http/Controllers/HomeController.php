@@ -19,4 +19,12 @@ class HomeController extends Controller
     {
         return view('frontend.contact.index');
     }
+    public function jobs()
+    {
+        return view('frontend.jobs.index');
+    }
+    public function services()
+    {
+        return view('frontend.services.index');
+    }
 }

@@ -23,7 +23,7 @@
               <img src="{{ asset('frontend/img/bg/hero5-main-image-bg.png')}}" alt="">
             </div>
             <div class="image2">
-              <img src="{{ asset('frontend/img/hero/hero5-main-image.png')}}" alt="">
+              <img src="{{ asset('frontend/img/hero/herobanner.webp')}}" alt="">
             </div>
           </div>
         </div>
