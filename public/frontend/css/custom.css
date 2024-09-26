@@ -5,6 +5,9 @@
 .active {
     color: #00a0e0;
 }
+.active-mob {
+    color: #00a0e0 !important;
+}
 .straight {
     transform: rotate(0deg) !important;
 }
@@ -47,13 +50,31 @@
     filter: invert(38%) sepia(83%) saturate(2026%) hue-rotate(170deg)
         brightness(102%) contrast(101%);
 }
+
 .single-slider {
     padding: 10px !important;
 }
+
 .single-slider img {
     height: 60px;
     margin: auto;
 }
+
+@media only screen and (max-width: 767px) {
+    .logo-slider-area {
+        display: none !important;
+    }
+    .conter-box2 {
+        margin-top: 30px !important;
+    }
+    .about3-heading {
+        margin-top: 30px !important;
+    }
+    .logo-m{
+        width: 200px !important;
+    }
+}
+
 .contact-box img {
     width: 15px !important;
     filter: invert(100%) sepia(91%) saturate(38%) hue-rotate(321deg)
@@ -111,19 +132,19 @@
     border-radius: 0px;
     width: 100%;
 }
-.img-account-profile{
+.img-account-profile {
     width: 160px;
     height: 160px;
     object-fit: cover;
     overflow: hidden;
 }
 .text-button {
-    background: none;    /* Remove background */
-    border: none;        /* Remove border */
-    padding: 0;          /* Remove padding */
-    color: inherit;      /* Inherit text color from parent */
-    font: inherit;       /* Inherit font style from parent */
-    cursor: pointer;     /* Keep pointer cursor */
+    background: none; /* Remove background */
+    border: none; /* Remove border */
+    padding: 0; /* Remove padding */
+    color: inherit; /* Inherit text color from parent */
+    font: inherit; /* Inherit font style from parent */
+    cursor: pointer; /* Keep pointer cursor */
 }
 .img-account-profile {
     height: 10rem;
@@ -188,5 +209,7 @@
     margin-left: 1rem;
     margin-right: 1rem;
 }
-
+.mobile-logo {
+    width: 200px !important;
+}
 /* ----------------------------------------------------------------  */

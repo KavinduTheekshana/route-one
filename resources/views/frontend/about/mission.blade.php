@@ -17,7 +17,7 @@
 
                 <div class="space30"></div>
                 <div class="row">
-                    <div class="col-lg-4 col-md-6" data-aos="zoom-in-up" data-aos-duration="700">
+                    <div class="col-lg-4 col-md-6 mt-4" data-aos="zoom-in-up" data-aos-duration="700">
                         <div class="mission-box">
                             <div class="icon">
                                 <img class="service-icon-img" src="{{ asset('frontend/img/icons/career-svgrepo-com.svg')}}" alt="">
@@ -32,7 +32,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-4 col-md-6" data-aos="zoom-in-up" data-aos-duration="700">
+                    <div class="col-lg-4 col-md-6 mt-4" data-aos="zoom-in-up" data-aos-duration="700">
                         <div class="mission-box">
                             <div class="icon">
                                 <img class="service-icon-img" src="{{ asset('frontend/img/icons/business-bag-svgrepo-com.svg')}}" alt="">
@@ -47,7 +47,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-4 col-md-6" data-aos="zoom-in-up" data-aos-duration="700">
+                    <div class="col-lg-4 col-md-6 mt-4" data-aos="zoom-in-up" data-aos-duration="700">
                         <div class="mission-box">
                             <div class="icon">
                                 <img class="service-icon-img" src="{{ asset('frontend/img/icons/users-relation-svgrepo-com.svg')}}" alt="">

@@ -17,7 +17,7 @@
 
            <div class="space30"></div>
            <div class="row">
-               <div class="col-lg-3 col-md-6" data-aos="zoom-in-up" data-aos-duration="700">
+               <div class="col-lg-3 col-md-6 mt-4" data-aos="zoom-in-up" data-aos-duration="700">
                    <div class="benefits-box">
                        <div class="icon">
                            <img class="benefits-icon" src="{{ asset('frontend/img/icons/settings-svgrepo-com.svg')}}" alt="">
@@ -33,7 +33,7 @@
                    </div>
                </div>
 
-               <div class="col-lg-3 col-md-6" data-aos="zoom-in-up" data-aos-duration="900">
+               <div class="col-lg-3 col-md-6 mt-4" data-aos="zoom-in-up" data-aos-duration="900">
                    <div class="benefits-box">
                        <div class="icon">
                            <img class="benefits-icon" src="{{ asset('frontend/img/icons/water-conservancy-industry-unit-svgrepo-com.svg')}}" alt="">
@@ -48,7 +48,7 @@
                    </div>
                </div>
 
-               <div class="col-lg-3 col-md-6" data-aos="zoom-in-up" data-aos-duration="1100">
+               <div class="col-lg-3 col-md-6 mt-4" data-aos="zoom-in-up" data-aos-duration="1100">
                    <div class="benefits-box">
                        <div class="icon">
                            <img class="benefits-icon" src="{{ asset('frontend/img/icons/time-fast-svgrepo-com.svg')}}" alt="">
@@ -63,7 +63,7 @@
                    </div>
                </div>
 
-               <div class="col-lg-3 col-md-6" data-aos="zoom-in-up" data-aos-duration="800">
+               <div class="col-lg-3 col-md-6 mt-4" data-aos="zoom-in-up" data-aos-duration="800">
                    <div class="benefits-box">
                        <div class="icon">
                            <img class="benefits-icon" src="{{ asset('frontend/img/icons/support-svgrepo-com.svg')}}" alt="">

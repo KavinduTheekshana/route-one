@@ -17,10 +17,8 @@
                                   <p>We specialize in matching professionals with the right job opportunities for lasting success.</p>
                                 </div>
                                 <ul class="social-icon">
-                                     <li><a href="#"><i class="fa-brands fa-linkedin-in"></i></a></li>
-                                     <li><a href="#"><i class="fa-brands fa-x-twitter"></i></a></li>
-                                     <li><a href="#"><i class="fa-brands fa-youtube"></i></a></li>
-                                     <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+                                     <li><a href="https://www.facebook.com/profile.php?id=61562057005093" target="_blank"><i class="fa-brands fa-facebook"></i></a></li>
+
                                 </ul>
                            </div>
                       </div>
