@@ -1,3 +1,8 @@
+@push('styles')
+<link rel="stylesheet" href="{{ asset('frontend/css/job-card.css') }}">
+@endpush
+
+
 @extends('layouts.frontend')
 
 @section('content')

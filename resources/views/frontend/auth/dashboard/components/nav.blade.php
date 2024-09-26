@@ -5,8 +5,6 @@
         href="{{ route('user.application') }}">Application Form</a>
     <a class="nav-link {{ request()->is('user/documents') ? 'active' : '' }}"
         href="{{ route('user.documents') }}" >Documents</a>
-    <a class="nav-link {{ request()->is('contact') ? 'active' : '' }}"
-        href="#" >Notifications</a>
     <form method="POST" action="{{ route('logout') }}"
         class="py-12 text-15 px-20 hover-bg-danger-50 text-gray-300 hover-text-danger-600 rounded-8 flex-align gap-8 fw-medium text-15">
         @csrf
