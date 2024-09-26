@@ -1,5 +1,5 @@
-<div class="col-12 mt-16">
-    <label for="documentType" class="h5 mb-8 fw-semibold font-heading">Attached Documents</label>
+<div class="col-12">
+    {{-- <label for="documentType" class="h5 mb-8 fw-semibold font-heading">Attached Documents</label> --}}
 
     @if ($documents->isEmpty())
         <p>No documents found for this user.</p>
@@ -7,7 +7,7 @@
         <ul>
             <div class="row">
             @foreach ($documents as $document)
-                <li class="col-6">
+                <li class="col-12">
                     <div class="upload-card-item p-16 rounded-12 bg-primary-100 mb-20">
                         <div class="flex-between gap-8">
                             <div class="flex-align gap-10 flex-wrap">

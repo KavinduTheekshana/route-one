@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use App\Models\Document;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +11,13 @@ use Illuminate\Support\Facades\Storage;
 
 class AccountController extends Controller
 {
+    public function documents()
+    {
+        $userid = auth()->id();
+        $user = User::findOrFail($userid);
+        $documents = Document::where('user_id', $userid)->get();
+        return view('frontend.auth.dashboard.documents', compact('user', 'documents'));
+    }
     public function profile_details(Request $request)
     {
         // Validate the incoming request data

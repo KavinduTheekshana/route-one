@@ -26,6 +26,7 @@ Route::middleware([
     Route::post('/user/profile/update/image', [AccountController::class, 'profile_image'])->name('user.profile.update.image');
     Route::post('/user/profile/update/details', [AccountController::class, 'profile_details'])->name('user.profile.update.details');
     Route::get('/user/application', [AccountController::class, 'application'])->name('user.application');
+    Route::get('/user/documents', [AccountController::class, 'documents'])->name('user.documents');
     Route::post('/user/application/store', [AccountController::class, 'store'])->name('user.application.store');
 
     Route::middleware(['auth', 'status'])->group(function () {

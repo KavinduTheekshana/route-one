@@ -75,6 +75,9 @@
                   </div>
 
                   <div class="row">
+                    <div class="mt-16">
+                    <label for="documentType" class="h5 mb-8 fw-semibold font-heading">Attached Documents</label>
+                </div>
                       @include('backend.user.settings.form.attachments')
                   </div>
 

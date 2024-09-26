@@ -3,8 +3,8 @@
         href="{{ route('dashboard') }}">Profile</a>
     <a class="nav-link {{ request()->is('user/application') ? 'active' : '' }}"
         href="{{ route('user.application') }}">Application Form</a>
-    <a class="nav-link {{ request()->is('contact') ? 'active' : '' }}"
-        href="#" >Security</a>
+    <a class="nav-link {{ request()->is('user/documents') ? 'active' : '' }}"
+        href="{{ route('user.documents') }}" >Documents</a>
     <a class="nav-link {{ request()->is('contact') ? 'active' : '' }}"
         href="#" >Notifications</a>
     <form method="POST" action="{{ route('logout') }}"
