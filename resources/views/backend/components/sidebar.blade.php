@@ -47,6 +47,26 @@
                         </ul>
                         <!-- Submenu End -->
                     </li>
+
+                    <li class="sidebar-menu__item has-dropdown">
+                        <a href="javascript:void(0)" class="sidebar-menu__link {{ request()->segment(2) === 'vacancies' ? 'activePage' : '' }}">
+                            <span class="icon"><i class="ph ph-briefcase"></i></span>
+                            <span class="text">Jobs</span>
+                        </a>
+                        <!-- Submenu start -->
+                        <ul class="sidebar-submenu">
+                            <li class="sidebar-submenu__item">
+                                <li class="sidebar-submenu__item">
+                                    <a href="{{ route('admin.vacancies.list') }}" class="sidebar-submenu__link {{ request()->is('admin/vacancies/list') ? 'active-sub-menu' : '' }}"> Jobs List </a>
+                                </li>    </li>
+                            <li class="sidebar-submenu__item">
+                                <a href="{{ route('admin.vacancies.create') }}" class="sidebar-submenu__link {{ request()->is('admin/vacancies/create') ? 'active-sub-menu' : '' }}"> Create Jobs  </a>
+                            </li>
+                        </ul>
+                        <!-- Submenu End -->
+                    </li>
+
+
                     <li class="sidebar-menu__item">
                         <a href="students.html" class="sidebar-menu__link">
                             <span class="icon"><i class="ph ph-users-three"></i></span>

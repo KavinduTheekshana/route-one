@@ -15,7 +15,6 @@
 
 
 @include('backend.user.create.userDetails')
-@include('backend.user.create.documents')
 
 
 

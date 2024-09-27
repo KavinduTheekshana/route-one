@@ -29,3 +29,16 @@ img.modal-image {
     display: block;
     margin: 0 auto;
 }
+.avatar-preview-vacancies{
+    width: 138px !important;
+    height: 138px !important;
+    position: relative;
+}
+.avatar-upload .avatar-preview-vacancies > div {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    }

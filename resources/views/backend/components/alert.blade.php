@@ -17,7 +17,7 @@
 @endif
 
 @push('scripts')
-<script>
+{{-- <script>
     // Hide success alert after 15 seconds (15000 milliseconds)
     setTimeout(function() {
         let successAlert = document.getElementById('success-alert');
@@ -37,5 +37,5 @@
             setTimeout(() => errorAlert.remove(), 500); // Remove after fade-out
         }
     }, 30000);
-</script>
+</script> --}}
 @endpush

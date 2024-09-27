@@ -13,7 +13,10 @@ class UserController extends Controller
 {
     public function users()
     {
-        $users = User::where('user_type', '=', 'user')->get();
+        $users = User::where('user_type', '=', 'user')
+            ->orderBy('id', 'desc')  // Ordering by the 'id' column in descending order
+            ->get();
+
         return view('backend.user.manage.manage', compact('users'));
     }
 
