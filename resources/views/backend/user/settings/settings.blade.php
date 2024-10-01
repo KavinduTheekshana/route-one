@@ -22,8 +22,8 @@
             <div class="flex-between">
                 <div class="d-flex align-items-end flex-wrap mb-32 gap-24">
 
-                        <img src="{{ asset('storage/' . $user->profile_image) }}" alt=""
-                            class="w-120 h-120 rounded-circle border border-white">
+                    <img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('backend/images/thumbs/setting-profile-img.webp') }}"
+                        alt="" class="w-120 h-120 rounded-circle border border-white">
 
 
                     <div>
@@ -31,8 +31,7 @@
                         <div class="setting-profile__infos flex-align flex-wrap gap-16">
                             <div class="flex-align gap-6">
                                 <span class="text-gray-600 d-flex text-lg"><i class="ph ph-swatches"></i></span>
-                                <span
-                                    <span class="text-gray-600 d-flex text-15">{{ ucfirst($user->user_type) }}</span>
+                                <span <span class="text-gray-600 d-flex text-15">{{ ucfirst($user->user_type) }}</span>
                             </div>
                             <div class="flex-align gap-6">
                                 <span class="text-gray-600 d-flex text-lg"><i class="ph ph-map-pin"></i></span>
@@ -86,7 +85,6 @@
 
 @push('scripts')
 <script>
-
     // ============================= Avatar Upload js =============================
     function uploadImageFunction(imageId, previewId) {
         $(imageId).on('change', function() {
@@ -104,9 +102,5 @@
     }
     uploadImageFunction('#coverImageUpload', '#coverImagePreview');
     uploadImageFunction('#imageUpload', '#profileImagePreview');
-
-
-
-
 </script>
 @endpush

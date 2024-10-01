@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\JobsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VacanciesController;
 use Illuminate\Support\Facades\Route;
@@ -72,6 +73,16 @@ Route::middleware([
     Route::delete('/vacancies/{vacancies}', [VacanciesController::class, 'vacancies_destroy'])->name('vacancies.destroy')->middleware(['auth', 'superadmin']);
     Route::get('/admin/vacancies/settings/{vacancies}', [VacanciesController::class, 'vacancies_settings'])->name('vacancies.settings')->middleware(['auth', 'superadmin']);
     Route::put('/admin/vacancies/update/{vacancies}', [VacanciesController::class, 'vacancies_update'])->name('admin.vacancies.update')->middleware(['auth', 'superadmin']);
+
+    // Testimonial
+    Route::get('/admin/testimonial/list', [TestimonialController::class, 'list'])->name('admin.testimonial.list')->middleware(['auth', 'superadmin']);
+    Route::get('/admin/testimonial/create', [TestimonialController::class, 'create'])->name('admin.testimonial.create')->middleware(['auth', 'superadmin']);
+    Route::post('/admin/testimonial/store', [TestimonialController::class, 'store'])->name('admin.testimonial.store')->middleware(['auth', 'superadmin']);
+    Route::put('/admin/testimonial/update/{testimonial}', [TestimonialController::class, 'update'])->name('admin.testimonial.update')->middleware(['auth', 'superadmin']);
+    Route::get('/testimonial/block/{testimonial}', [TestimonialController::class, 'block'])->name('testimonial.block')->middleware(['auth', 'superadmin']);
+    Route::get('/testimonial/unblock/{testimonial}', [TestimonialController::class, 'unblock'])->name('testimonial.unblock')->middleware(['auth', 'superadmin']);
+    Route::get('/admin/testimonial/settings/{testimonial}', [TestimonialController::class, 'testimonial_settings'])->name('testimonial.settings')->middleware(['auth', 'superadmin']);
+    Route::delete('/testimonial/{testimonial}', [TestimonialController::class, 'destroy'])->name('testimonial.destroy')->middleware(['auth', 'superadmin']);
 
     Route::resource('documents', DocumentController::class);
 

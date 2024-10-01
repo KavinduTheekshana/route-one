@@ -38,7 +38,7 @@ class UserController extends Controller
         ]);
 
         // Set default profile image if not provided
-        $defaultProfileImage = 'profile_images/setting-profile-img.webp'; // Path to default profile image
+
 
         // Create the user
         User::create([
@@ -48,7 +48,6 @@ class UserController extends Controller
             'country' => $validatedData['country'] ?? null,
             'phone' => $validatedData['phone'] ?? null,
             'password' => Hash::make($validatedData['password']),
-            'profile_image' => $defaultProfileImage, // Assign the default profile image
         ]);
 
         // Redirect back with a success message
@@ -212,7 +211,7 @@ class UserController extends Controller
         ]);
 
         // Set default profile image if not provided
-        $defaultProfileImage = 'profile_images/setting-profile-img.webp'; // Path to default profile image
+        // $defaultProfileImage = 'profile_images/setting-profile-img.webp'; // Path to default profile image
 
         // Create the user
         User::create([
@@ -222,7 +221,7 @@ class UserController extends Controller
             'country' => $validatedData['country'] ?? null,
             'phone' => $validatedData['phone'] ?? null,
             'password' => Hash::make($validatedData['password']),
-            'profile_image' => $defaultProfileImage, // Assign the default profile image
+            // 'profile_image' => $defaultProfileImage, // Assign the default profile image
         ]);
 
         // Redirect back with a success message

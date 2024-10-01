@@ -66,8 +66,25 @@
                         <!-- Submenu End -->
                     </li>
 
+                    <li class="sidebar-menu__item has-dropdown">
+                        <a href="javascript:void(0)" class="sidebar-menu__link {{ request()->segment(2) === 'testimonial' ? 'activePage' : '' }}">
+                            <span class="icon"><i class="ph ph-clipboard-text"></i></span>
+                            <span class="text">Testimonial</span>
+                        </a>
+                        <!-- Submenu start -->
+                        <ul class="sidebar-submenu">
+                            <li class="sidebar-submenu__item">
+                                <li class="sidebar-submenu__item">
+                                    <a href="{{ route('admin.testimonial.list') }}" class="sidebar-submenu__link {{ request()->is('admin/testimonial/list') ? 'active-sub-menu' : '' }}"> Testimonial List </a>
+                                </li>    </li>
+                            <li class="sidebar-submenu__item">
+                                <a href="{{ route('admin.testimonial.create') }}" class="sidebar-submenu__link {{ request()->is('admin/testimonial/create') ? 'active-sub-menu' : '' }}"> Create Testimonial  </a>
+                            </li>
+                        </ul>
+                        <!-- Submenu End -->
+                    </li>
 
-                    <li class="sidebar-menu__item">
+                    {{-- <li class="sidebar-menu__item">
                         <a href="students.html" class="sidebar-menu__link">
                             <span class="icon"><i class="ph ph-users-three"></i></span>
                             <span class="text">Students</span>
@@ -120,7 +137,7 @@
                             <span class="icon"><i class="ph ph-coins"></i></span>
                             <span class="text">Pricing</span>
                         </a>
-                    </li>
+                    </li> --}}
 
                     <li class="sidebar-menu__item">
                         <span
@@ -133,7 +150,7 @@
                         </a>
                     </li>
 
-                    <li class="sidebar-menu__item has-dropdown">
+                    {{-- <li class="sidebar-menu__item has-dropdown">
                         <a href="javascript:void(0)" class="sidebar-menu__link">
                             <span class="icon"><i class="ph ph-shield-check"></i></span>
                             <span class="text">Authetication</span>
@@ -161,7 +178,7 @@
                             </li>
                         </ul>
                         <!-- Submenu End -->
-                    </li>
+                    </li> --}}
 
                 </ul>
             </div>

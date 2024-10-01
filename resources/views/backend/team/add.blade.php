@@ -31,7 +31,7 @@
             value="{{ old('country') }}" placeholder="Enter Country">
 
 
-        <label for="country">Phone Number</label>
+        <label for="phone">Phone Number</label>
         <input type="number" name="phone" class="text-counter placeholder-13 form-control py-11"
             value="{{ old('phone') }}" placeholder="Enter Phone Number">
 

@@ -1,6 +1,5 @@
   <!-- Password Tab Start -->
-  <div class="tab-pane fade" id="pills-documents" role="tabpanel" aria-labelledby="pills-documents-tab"
-      tabindex="0">
+  <div class="tab-pane fade" id="pills-documents" role="tabpanel" aria-labelledby="pills-documents-tab" tabindex="0">
       <div class="card mt-24">
           <div class="card-header border-bottom">
               <h4 class="mb-4">Documents</h4>
@@ -75,9 +74,9 @@
                   </div>
 
                   <div class="row">
-                    <div class="mt-16">
-                    <label for="documentType" class="h5 mb-8 fw-semibold font-heading">Attached Documents</label>
-                </div>
+                      <div class="mt-16">
+                          <label for="documentType" class="h5 mb-8 fw-semibold font-heading">Attached Documents</label>
+                      </div>
                       @include('backend.user.settings.form.attachments')
                   </div>
 

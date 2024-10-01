@@ -11,7 +11,7 @@
 
 
 
-                @include('backend.components.alert')
+                {{-- @include('backend.components.alert') --}}
 
 
                 <form action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
@@ -50,7 +50,7 @@
                                         accept=".png, .jpg, .jpeg">
                                     <div class="avatar-preview">
                                         <div id="profileImagePreview"
-                                            style="background-image: url('{{ asset('storage/' . $user->profile_image) }}');">
+                                            style="background-image: url('{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('backend/images/thumbs/setting-profile-img.webp') }}');">
                                         </div>
                                     </div>
                                 </div>

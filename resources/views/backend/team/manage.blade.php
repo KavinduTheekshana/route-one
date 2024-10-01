@@ -153,7 +153,7 @@
             <tbody>
                 @foreach ($users as $user)
                     <tr>
-                        <td><img src="{{ asset('storage/' . $user->profile_image) }}" alt="Profile Image" width="50px"
+                        <td><img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('backend/images/thumbs/setting-profile-img.webp') }}" alt="Profile Image" width="50px"
                                 class="rounded-circle round-profile" height="50px"></td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
