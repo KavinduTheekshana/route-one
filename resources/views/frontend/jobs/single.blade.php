@@ -33,10 +33,16 @@
                                     <p class="text-light">{{ $vacancy->meta_description }}</p>
                                 </div>
                                 <div class="jbs-roots-y6 py-3">
-                                    <button class="btn btn-primary fw-medium px-lg-5 px-4 me-3" type="button"
-                                        data-bs-toggle="modal" data-bs-target="#applyjob">Apply Job</button>
-
+                                    @if ($hasApplied)
+                                        <button class="btn btn-primary fw-medium px-lg-5 px-4 me-3" type="button"
+                                            disabled>Already Applied</button>
+                                    @else
+                                        <button class="btn btn-primary fw-medium px-lg-5 px-4 me-3 apply-btn" type="button"
+                                            id="applyJobBtn" data-job-id="{{ $vacancy->id }}">Apply Job</button>
+                                    @endif
                                 </div>
+
+
                             </div>
                         </div>
 
@@ -87,7 +93,9 @@
                 <div class="col-lg-8 col-md-12">
 
 
-                    <img class="mobile-job-image" src="{{ $vacancy->file_path ? asset('storage/' . $vacancy->file_path) : asset('backend/images/bg/default.png') }}" alt="" srcset="">
+                    <img class="mobile-job-image"
+                        src="{{ $vacancy->file_path ? asset('storage/' . $vacancy->file_path) : asset('backend/images/bg/default.png') }}"
+                        alt="" srcset="">
                     <div class="jbs-blocs style_03 b-0 mb-md-4 mb-sm-4">
                         <div class="jbs-blocs-body px-4 py-4">
                             <div class="jbs-content mb-4">
@@ -106,8 +114,17 @@
                         <div class="jbs-blocs-body px-4 py-4">
                             <div class="jbs-content">
 
-                                <button class="btn btn-primary p-4 w-100 fw-medium px-lg-5 px-4 me-3" type="button"
-                                data-bs-toggle="modal" data-bs-target="#applyjob">Apply Job</button>
+                                {{-- <a href="{{ auth()->check() ? route('apply', $vacancy->id) : route('user.login') }}"
+                                    class="btn btn-primary p-4 w-100 fw-medium px-lg-5 px-4 me-3" type="button">Apply
+                                    Job</a> --}}
+                                @if ($hasApplied)
+                                    <button disabled class="btn btn-primary p-4 w-100 fw-medium px-lg-5 px-4 me-3"
+                                        type="button">Already Applied</button>
+                                @else
+                                    <button class="btn btn-primary p-4 w-100 fw-medium px-lg-5 px-4 me-3 apply-btn"
+                                        id="applyJobBtn" type="button" data-job-id="{{ $vacancy->id }}">Apply
+                                        Job</button>
+                                @endif
                             </div>
 
                         </div>
@@ -115,7 +132,7 @@
                     </div>
 
 
-                    @foreach ($vacancies as $vacancy)
+                    {{-- @foreach ($vacancies as $vacancy)
                         <div class="jbs-grid-layout border">
                             <div class="right-tags-capt">
                                 @if ($vacancy->featured)
@@ -173,7 +190,8 @@
                                     @endif
                                 </div>
                                 <div class="jbs-grid-posted">
-                                    <span>{{ \Carbon\Carbon::parse($vacancy->created_at)->format('d F Y') }}</span></div>
+                                    <span>{{ \Carbon\Carbon::parse($vacancy->created_at)->format('d F Y') }}</span>
+                                </div>
                             </div>
                             <div class="jbs-grid-job-apply-btns mt-2">
                                 <div class="jbs-btn-groups">
@@ -183,10 +201,78 @@
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                    @endforeach --}}
                 </div>
 
             </div>
         </div>
+
     </section>
 @endsection
+
+@push('scripts')
+    <script>
+        document.querySelectorAll('.apply-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const jobId = this.getAttribute(
+                    'data-job-id'); // Get the job ID from the button's data attribute
+
+                // Show SweetAlert confirmation before applying
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Do you want to apply for this job?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, apply!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Make the AJAX request to apply for the job
+                        fetch('{{ route('user.jobs.apply') }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({
+                                    job_id: jobId
+                                })
+                            })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Success',
+                                        text: data.message,
+                                    }).then(() => {
+                                        window.location
+                                            .reload(); // Reload the page after successful application
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: data.message,
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Something went wrong! Please try again later.',
+                                });
+                            });
+                    }
+                });
+            });
+        });
+    </script>
+@endpush

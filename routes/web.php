@@ -5,6 +5,7 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\JobsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -32,7 +33,10 @@ Route::middleware([
     Route::post('/user/profile/update/details', [AccountController::class, 'profile_details'])->name('user.profile.update.details');
     Route::get('/user/application', [ApplicationController::class, 'application'])->name('user.application');
     Route::get('/user/documents', [ApplicationController::class, 'documents'])->name('user.documents');
+    Route::get('/user/applied/positions', [JobApplicationController::class, 'positions'])->name('user.applied.positions');
+    Route::delete('/user/application/destroy/{id}', [JobApplicationController::class, 'destroy'])->name('user.application.destroy');
     Route::post('/user/application/store', [ApplicationController::class, 'store'])->name('user.application.store');
+    Route::post('/user/jobs/apply', [JobApplicationController::class, 'store'])->name('user.jobs.apply');
 
     Route::middleware(['auth', 'status'])->group(function () {
 

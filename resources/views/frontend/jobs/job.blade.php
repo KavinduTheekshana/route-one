@@ -48,23 +48,35 @@
                         </div>
                         <div class="jbs-grid-job-edrs">
                             <div class="jbs-grid-job-edrs-group">
-                                @foreach(explode(',', $vacancy->tags) as $tag)
-                                <span>{{ trim($tag) }}</span>
-                            @endforeach
+                                @foreach (explode(',', $vacancy->tags) as $tag)
+                                    <span>{{ trim($tag) }}</span>
+                                @endforeach
                             </div>
                         </div>
                         <div class="jbs-grid-job-package-info">
                             <div class="jbs-grid-package-title">
-                                @if(!empty($vacancy->salary))
-                                <h5>£{{ number_format($vacancy->salary, ) }}<span>\Year</span></h5>
+                                @if (!empty($vacancy->salary))
+                                    <h5>£{{ number_format($vacancy->salary) }}<span>\Year</span></h5>
                                 @endif
                             </div>
-                            <div class="jbs-grid-posted"><span>{{ \Carbon\Carbon::parse($vacancy->created_at)->format('d F Y') }}</span></div>
+                            <div class="jbs-grid-posted">
+                                <span>{{ \Carbon\Carbon::parse($vacancy->created_at)->format('d F Y') }}</span>
+                            </div>
                         </div>
                         <div class="jbs-grid-job-apply-btns mt-2">
                             <div class="jbs-btn-groups">
-                                <a href="{{ route('vacancies.show', $vacancy->id) }}" class="btn-md btn-light-primary px-4">View Detail</a>
-                                <a href="{{ auth()->check() ? route('/', $vacancy->id) : route('user.login') }}" class="btn-md btn-primary px-4">Quick Apply</a>
+                                <a href="{{ route('vacancies.show', $vacancy->id) }}"
+                                    class="btn-md btn-light-primary px-4">View Detail</a>
+
+                                @if (in_array($vacancy->id, $appliedJobIds))
+                                    <button class="btn-md btn-primary   px-4" disabled>Applied</button>
+                                @else
+                                    <button class="btn-md btn-primary px-4 apply-btn"
+                                        data-job-id="{{ $vacancy->id }}">Quick Apply</button>
+                                @endif
+
+
+
                             </div>
                         </div>
                     </div>
