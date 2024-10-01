@@ -20,8 +20,9 @@
                         @csrf
                         <input type="file" id="imageUpload" name="profile_image" accept="image/*"
                             style="display: none;">
-                        <img id="imagePreview" alt="Profile Image" class="img-account-profile rounded-circle mb-2"
-                            src="{{ asset('storage/' . auth()->user()->profile_image) }}">
+                            <img id="imagePreview" alt="Profile Image" class="img-account-profile rounded-circle mb-2"
+                            src="{{ auth()->user()->profile_image ? asset('storage/' . auth()->user()->profile_image) : asset('frontend/img/hero/765-default-avatar.png') }}">
+
 
                         <div class="small font-italic text-muted mb-4">SVG, PNG, JPEG OR GIF (max 1080px1200px)</div>
 
@@ -65,7 +66,7 @@
 
                         <div class="mb-3">
                             <label class="small mb-1" for="inputEmailAddress">Email address</label>
-                            <input class="form-control" name="email" type="email"
+                            <input readonly class="form-control" name="email" type="email"
                                 placeholder="Enter your email address" value="{{ auth()->user()->email }}">
                         </div>
 

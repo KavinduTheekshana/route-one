@@ -33,7 +33,7 @@ class HomeController extends Controller
         $vacancies = Vacancies::where('status', 1)
             ->where('id', '!=', $id) // Exclude the current vacancy by its ID
             ->orderBy('created_at', 'desc')
-            ->take(3) // Limit to 3 vacancies
+            ->take(2) // Limit to 3 vacancies
             ->get();
         $vacancy = Vacancies::findOrFail($id); // Fetch the vacancy by ID
         return view('frontend.jobs.single', compact('vacancy', 'vacancies')); // Pass the vacancy data to the view
@@ -46,5 +46,9 @@ class HomeController extends Controller
     public function login()
     {
         return view('frontend.auth.login');
+    }
+    public function register()
+    {
+        return view('frontend.auth.register');
     }
 }

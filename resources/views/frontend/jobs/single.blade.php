@@ -101,6 +101,20 @@
 
                 </div>
                 <div class="col-lg-4 col-md-12">
+
+                    <div class="jbs-blocs style_03 b-0 mb-md-4 mb-sm-4">
+                        <div class="jbs-blocs-body px-4 py-4">
+                            <div class="jbs-content">
+
+                                <button class="btn btn-primary p-4 w-100 fw-medium px-lg-5 px-4 me-3" type="button"
+                                data-bs-toggle="modal" data-bs-target="#applyjob">Apply Job</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
                     @foreach ($vacancies as $vacancy)
                         <div class="jbs-grid-layout border">
                             <div class="right-tags-capt">
