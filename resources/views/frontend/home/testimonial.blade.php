@@ -32,43 +32,27 @@
 
                 <div class="space40"></div>
                 <div class="tes2-slider owl-carousel">
+
+                    @foreach ($testimonials as $testimonial)
                     <div class="tes2-signle-slider">
                         <div class="icon">
                             <img src="{{ asset('frontend/img/icons/tes2-icon.png') }}" alt="">
                         </div>
                         <div class="heading">
-                            <p>“Hear directly from our satisfied clients about their experiences working with us. Our
-                                dedication to finding the right talent, streamlining the hiring process, and fostering”
+                            <p>“{{$testimonial->review}}”
                             </p>
                         </div>
                         <div class="bottom-area">
-                            <div class="image-bottom">
-                                <img src="{{ asset('frontend/img/testimonial/tes2-img.png')}}" alt="">
+                            <div class="image-bottom testimonial">
+                                <img src="{{ $testimonial->file_path ? asset('storage/' . $testimonial->file_path) : asset('backend/images/bg/default.png') }}" alt="">
                             </div>
                             <div class="heading-bottom">
-                                <h5>Matthew C. Lansberry <span>/ CEO & Founder</span></h5>
+                                <h5>{{$testimonial->name}} <span>/ {{$testimonial->title}}</span></h5>
                             </div>
                         </div>
                     </div>
 
-                    <div class="tes2-signle-slider">
-                        <div class="icon">
-                            <img src="{{ asset('frontend/img/icons/tes2-icon.png')}}" alt="">
-                        </div>
-                        <div class="heading">
-                            <p>“Hear directly from our satisfied clients about their experiences working with us. Our
-                                dedication to finding the right talent, streamlining the hiring process, and fostering”
-                            </p>
-                        </div>
-                        <div class="bottom-area">
-                            <div class="image-bottom">
-                                <img src="{{ asset('frontend/img/testimonial/tes2-img.png')}}" alt="">
-                            </div>
-                            <div class="heading-bottom">
-                                <h5>Matthew C. Lansberry <span>/ CEO & Founder</span></h5>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
 
 
 

@@ -75,7 +75,7 @@
                 <tr>
                     <td>
 
-                        <img src="{{ $testimonial->file_path ? asset('storage/' . $testimonial->file_path) : asset('backend/images/bg/default.png') }}" alt="Profile Image" width="50px"
+                        <img src="{{ $testimonial->file_path ? asset('storage/' . $testimonial->file_path) : asset('backend/images/bg/default.png') }}" alt="Testimonial Image" width="50px"
                             class="rounded-circle round-profile" height="50px">
 
                         </td>
@@ -155,8 +155,18 @@
 <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.1.6/js/dataTables.uikit.js"></script>
 <script>
-    new DataTable('#example');
+    $(document).ready(function() {
+        $('#example').DataTable({
+            columnDefs: [
+                { targets: 2, width: "10%" }, // 3rd column (index 2) width set to 40%
+                { targets: 0, width: "10%" }, // Example: 1st column width to 10%
+                { targets: 1, width: "10%" }, // Example: 2nd column width to 10%
+                { targets: 3, width: "40%" }, // Example: 2nd column width to 10%
+            ]
+        });
+    });
 </script>
+
 
 
 

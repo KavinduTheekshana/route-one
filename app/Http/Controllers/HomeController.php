@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\JobApplication;
+use App\Models\Testimonial;
 use App\Models\Vacancies;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,11 +12,18 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return view('frontend.home.index');
+        $testimonials = Testimonial::where('status', 1)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('frontend.home.index', compact('testimonials'));
     }
     public function about()
     {
-        return view('frontend.about.index');
+        $testimonials = Testimonial::where('status', 1)
+        ->orderBy('created_at', 'desc')
+        ->get();
+        return view('frontend.about.index', compact('testimonials'));
     }
     public function contact()
     {
@@ -33,7 +41,7 @@ class HomeController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('frontend.jobs.index', compact('vacancies','appliedJobIds'));
+        return view('frontend.jobs.index', compact('vacancies', 'appliedJobIds'));
     }
     public function vacancy($id)
     {
