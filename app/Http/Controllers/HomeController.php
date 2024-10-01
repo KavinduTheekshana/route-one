@@ -21,8 +21,8 @@ class HomeController extends Controller
     public function about()
     {
         $testimonials = Testimonial::where('status', 1)
-        ->orderBy('created_at', 'desc')
-        ->get();
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('frontend.about.index', compact('testimonials'));
     }
     public function contact()
@@ -31,27 +31,47 @@ class HomeController extends Controller
     }
     public function jobs()
     {
+        // Get the currently authenticated user
         $user = auth()->user();
 
-        // Create an array to store applied job IDs
-        $appliedJobIds = JobApplication::where('user_id', $user->id)
-            ->pluck('vacancies_id')
-            ->toArray();
+        // Create an array to store applied job IDs if the user is authenticated
+        $appliedJobIds = [];
+        if ($user) {
+            $appliedJobIds = JobApplication::where('user_id', $user->id)
+                ->pluck('vacancies_id')
+                ->toArray();
+        }
+
+        // Get all vacancies with status 1
         $vacancies = Vacancies::where('status', 1)
             ->orderBy('created_at', 'desc')
             ->get();
 
+        // Return the jobs index view with vacancies and applied job IDs
         return view('frontend.jobs.index', compact('vacancies', 'appliedJobIds'));
     }
     public function vacancy($id)
     {
-        $vacancy = Vacancies::findOrFail($id); // Fetch the vacancy by ID
+        // Fetch the vacancy by ID
+        $vacancy = Vacancies::findOrFail($id);
+
+        // Get the currently authenticated user
         $user = auth()->user();
-        $hasApplied = JobApplication::where('vacancies_id', $vacancy->id)
-            ->where('user_id', $user->id)
-            ->exists();
-        return view('frontend.jobs.single', compact('vacancy', 'hasApplied')); // Pass the vacancy data to the view
+
+        // Initialize $hasApplied to false by default
+        $hasApplied = false;
+
+        // Check if the user is authenticated and has applied for the vacancy
+        if ($user) {
+            $hasApplied = JobApplication::where('vacancies_id', $vacancy->id)
+                ->where('user_id', $user->id)
+                ->exists();
+        }
+
+        // Pass the vacancy data and application status to the view
+        return view('frontend.jobs.single', compact('vacancy', 'hasApplied'));
     }
+
 
     public function services()
     {
