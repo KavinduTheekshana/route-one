@@ -42,3 +42,9 @@ img.modal-image {
     background-repeat: no-repeat;
     background-position: center;
     }
+  .text-red {
+    color: red !important;
+  }
+  .text-gray{
+    color: gray !important;;
+  }

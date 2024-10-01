@@ -97,9 +97,10 @@
                         <div class="col-sm-4">
                             <label for="courseTitle" class="h5 mb-8 fw-semibold font-heading">Salary</label>
                             <div class="position-relative">
-                                <input type="text" name="salary"
+                                <input type="number" name="salary"
                                     class="text-counter placeholder-13 form-control py-11 pe-76" placeholder="Salary"
                                     value="{{ isset($vacancy) ? $vacancy->salary : old('salary') }}">
+                                    <span class="text-11 text-gray fw-medium">Please Enter Yearly Salary</span>
                             </div>
                         </div>
                         <div class="col-12">
@@ -135,6 +136,7 @@
                                 <input type="text" name="tags"
                                     class="text-counter placeholder-13 form-control py-11 pe-76" placeholder="Tags"
                                     value="{{ isset($vacancy) ? $vacancy->tags : old('tags') }}">
+                                    <span class="text-11 text-gray fw-medium">Kindly enter tags separated by commas.</span>
                             </div>
                         </div>
 
@@ -145,6 +147,8 @@
                                 <select name="experience" class="form-select py-9 placeholder-13 text-15 mb-10">
                                     <option value="" disabled {{ !isset($vacancy) ? 'selected' : '' }}>Select
                                         Experience</option>
+                                    <option value="No"
+                                        {{ isset($vacancy) && $vacancy->experience == 'No' ? 'selected' : '' }}>No Experience Needed</option>
                                     <option value="1+"
                                         {{ isset($vacancy) && $vacancy->experience == '1+' ? 'selected' : '' }}>1+
                                         Years Of Experience</option>
