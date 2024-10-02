@@ -15,7 +15,7 @@
 
     <div class="breadcrumb-with-buttons mb-24 flex-between flex-wrap gap-8">
         {{-- Breadcrumb  --}}
-    @section('page_name', 'Enquiry Management')
+    @section('page_name', 'User Application Management')
     @include('backend.components.breadcrumb')
 
 </div>
@@ -24,7 +24,7 @@
 @include('backend.components.alert')
 
 <div class="card overflow-hidden p-16">
-    <h4 class="mb-0 ml-4"><b>Routeone Enquiry Management</b></h4>
+    <h4 class="mb-0 ml-4"><b>Routeone User Application Management</b></h4>
     <div class="card-body p-16">
 
 
@@ -40,7 +40,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($contacts as $contact)
+                @foreach ($applications as $contact)
                     <tr>
                         <td>{{ $contact->first_name }}</td>
                         <td>{{ $contact->last_name }}</td>
@@ -66,15 +66,12 @@
 
 
                             @if ($contact->status == 1)
-                                <a href="{{ route('contact.unread', $contact->id) }}" class="btn btn-danger btn-sm"><i
-                                        class="ph ph-envelope-simple"></i></a>
+                                <a href="{{ route('contact.unread', $contact->id) }}" class="btn btn-danger btn-sm"><i class="ph ph-envelope-simple"></i></a>
                             @else
-                                <a href="{{ route('contact.read', $contact->id) }}" class="btn btn-success btn-sm"><i
-                                        class="ph ph-envelope-open"></i></a>
+                                <a href="{{ route('contact.read', $contact->id) }}" class="btn btn-success btn-sm"><i class="ph ph-envelope-open"></i></a>
                             @endif
 
-                            <a href="javascript:void(0)" class="btn btn-warning btn-sm view-enquiry"
-                                data-id="{{ $contact->id }}"><i class="ph ph-eye"></i></a>
+                            <a href="javascript:void(0)" class="btn btn-warning btn-sm view-enquiry" data-id="{{ $contact->id }}"><i class="ph ph-eye"></i></a>
 
                             <!-- Delete Button -->
                             <button class="btn btn-dark btn-sm" onclick="confirmDelete({{ $contact->id }})">
@@ -119,6 +116,7 @@
 @endsection
 
 @push('scripts')
+
 {{-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit.min.js"></script>
 <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js"></script>
@@ -129,18 +127,19 @@
 
 
 <script>
-    $(document).on('click', '.view-enquiry', function() {
+    $(document).on('click', '.view-enquiry', function () {
         var enquiryId = $(this).data('id');
 
         // Send AJAX request to fetch enquiry data
         $.ajax({
             url: "/enquiries/" + enquiryId,
             method: "GET",
-            success: function(response) {
+            success: function (response) {
                 // Trigger SweetAlert with the enquiry details
                 Swal.fire({
                     title: 'Enquiry Details',
-                    html: `<p><strong>First Name:</strong> ${response.first_name}</p>` +
+                    html:
+                        `<p><strong>First Name:</strong> ${response.first_name}</p>` +
                         `<p><strong>Last Name:</strong> ${response.last_name}</p>` +
                         `<p><strong>Email:</strong> ${response.email}</p>` +
                         `<p><strong>Phone:</strong> ${response.phone}</p>` +
@@ -151,7 +150,7 @@
                     confirmButtonText: 'Close'
                 });
             },
-            error: function() {
+            error: function () {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',

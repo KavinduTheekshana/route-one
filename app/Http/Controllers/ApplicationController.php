@@ -54,35 +54,11 @@ class ApplicationController extends Controller
         return redirect()->route('user.application')->with('success', 'Application saved successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Application $application)
+    public function applications()
     {
-        //
-    }
+        $applications = Application::orderBy('created_at', 'desc')
+            ->get();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Application $application)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Application $application)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Application $application)
-    {
-        //
+        return view('backend.applications.index', compact('applications'));
     }
 }

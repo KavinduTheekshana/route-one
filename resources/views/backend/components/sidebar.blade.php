@@ -87,6 +87,14 @@
 
 
                     <li class="sidebar-menu__item">
+                        <a href="{{ route('admin.applications') }}" class="sidebar-menu__link {{ request()->segment(2) === 'applications' ? 'activePage' : '' }}">
+                            <span class="icon"><i class="ph ph-article"></i></span>
+                            <span class="text">Applications</span>
+                        </a>
+                    </li>
+
+
+                    <li class="sidebar-menu__item">
                         <a href="{{ route('admin.contact') }}" class="sidebar-menu__link {{ request()->segment(2) === 'contact' ? 'activePage' : '' }}">
                             <span class="icon"><i class="ph ph-chats-teardrop"></i></span>
                             <span class="text">Contact</span>

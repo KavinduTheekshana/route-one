@@ -96,6 +96,9 @@ Route::middleware([
     Route::delete('/contact/{enquiry}', [EnquiryController::class, 'destroy'])->name('contact.destroy')->middleware(['auth', 'superadmin']);
     Route::get('/enquiries/{id}', [EnquiryController::class, 'show'])->middleware(['auth', 'superadmin']);
 
+     // Application
+     Route::get('/admin/applications', [ApplicationController::class, 'applications'])->name('admin.applications')->middleware(['auth', 'superadmin']);
+
 
 
     });
