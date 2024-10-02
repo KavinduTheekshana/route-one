@@ -28,8 +28,24 @@ class EnquiryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate form input
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name'  => 'required|string|max:255',
+            'email'      => 'required|email|max:255',
+            'phone'      => 'required|string|max:15',
+            'subject'    => 'required|string|max:255',
+            'country'    => 'required|string|max:255',
+            'message'    => 'required|string',
+        ]);
+
+        // Save data into the database
+        Enquiry::create($request->all());
+
+        // Return a JSON response for success
+        return response()->json(['success' => 'Your message has been submitted successfully!']);
     }
+
 
     /**
      * Display the specified resource.

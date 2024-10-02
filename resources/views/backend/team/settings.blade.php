@@ -22,7 +22,7 @@
             <div class="flex-between">
                 <div class="d-flex align-items-end flex-wrap mb-32 gap-24">
 
-                        <img src="{{ asset('storage/' . $user->profile_image) }}" alt=""
+                        <img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('backend/images/thumbs/setting-profile-img.webp') }}" alt=""
                             class="w-120 h-120 rounded-circle border border-white">
 
 
@@ -128,7 +128,7 @@
                                         accept=".png, .jpg, .jpeg">
                                     <div class="avatar-preview">
                                         <div id="profileImagePreview"
-                                            style="background-image: url('{{ asset('storage/' . $user->profile_image) }}');">
+                                            style="background-image: url('{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('backend/images/thumbs/setting-profile-img.webp') }}');">
                                         </div>
                                     </div>
                                 </div>

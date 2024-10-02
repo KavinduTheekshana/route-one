@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('vacancies', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('company')->nullable();
+            $table->string('company')->default('-');
             $table->string('title');
             $table->string('location');
             $table->string('job_type');

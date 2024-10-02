@@ -223,8 +223,8 @@
                 // If not authenticated, show a login message
                 Swal.fire({
                     icon: 'warning',
-                    title: 'Login Required',
-                    text: 'You need to be logged in to apply for a job. Please log in to continue.',
+                    title: 'Signin Required',
+                    text: 'You need to be signed in to apply for a job. Please sign in to continue.',
                     showCancelButton: false,
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'OK'

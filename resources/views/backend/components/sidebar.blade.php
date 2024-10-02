@@ -7,7 +7,7 @@
                 class="ph ph-x"></i></button>
         <!-- sidebar close btn -->
 
-        <a href="index.html"
+        <a href="{{ route('dashboard') }}"
             class="sidebar__logo text-center p-20 position-sticky inset-block-start-0 bg-white w-100 z-1 pb-10">
             <img src="{{ asset('backend/images/logo/routeone_logo.svg')}}" alt="Logo">
         </a>
