@@ -89,6 +89,15 @@ Route::middleware([
     Route::resource('documents', DocumentController::class);
 
 
+    // Contact Messagers
+    Route::get('/admin/contact', [EnquiryController::class, 'contact'])->name('admin.contact')->middleware(['auth', 'superadmin']);
+    Route::get('/contact/unread/{enquiry}', [EnquiryController::class, 'unread'])->name('contact.unread')->middleware(['auth', 'superadmin']);
+    Route::get('/contact/read/{enquiry}', [EnquiryController::class, 'read'])->name('contact.read')->middleware(['auth', 'superadmin']);
+    Route::delete('/contact/{enquiry}', [EnquiryController::class, 'destroy'])->name('contact.destroy')->middleware(['auth', 'superadmin']);
+    Route::get('/enquiries/{id}', [EnquiryController::class, 'show'])->middleware(['auth', 'superadmin']);
+
+
+
     });
 });
 

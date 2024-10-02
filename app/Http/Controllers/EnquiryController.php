@@ -10,14 +10,28 @@ class EnquiryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function contact()
     {
-        //
+        $contacts = Enquiry::orderBy('created_at', 'desc')
+            ->get();
+
+        return view('backend.contact.index', compact('contacts'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function unread(Enquiry $enquiry)
+    {
+        $enquiry->status = 0;
+        $enquiry->save();
+        return redirect()->back()->with('success', 'Enquiry has been mark as unread successfully.');
+    }
+
+    public function read(Enquiry $enquiry)
+    {
+        $enquiry->status = 1;
+        $enquiry->save();
+        return redirect()->back()->with('success', 'Enquiry has been mark as read successfully.');
+    }
+
     public function create()
     {
         //
@@ -47,12 +61,11 @@ class EnquiryController extends Controller
     }
 
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Enquiry $enquiry)
+    public function show($id)
     {
-        //
+        $enquiry = Enquiry::findOrFail($id);
+
+        return response()->json($enquiry);
     }
 
     /**
@@ -76,6 +89,7 @@ class EnquiryController extends Controller
      */
     public function destroy(Enquiry $enquiry)
     {
-        //
+        $enquiry->delete();
+        return redirect()->back()->with('success', 'Enquiry deleted successfully!');
     }
 }

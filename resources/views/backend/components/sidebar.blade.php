@@ -84,6 +84,16 @@
                         <!-- Submenu End -->
                     </li>
 
+
+
+                    <li class="sidebar-menu__item">
+                        <a href="{{ route('admin.contact') }}" class="sidebar-menu__link {{ request()->segment(2) === 'contact' ? 'activePage' : '' }}">
+                            <span class="icon"><i class="ph ph-chats-teardrop"></i></span>
+                            <span class="text">Contact</span>
+                        </a>
+                    </li>
+
+
                     {{-- <li class="sidebar-menu__item">
                         <a href="students.html" class="sidebar-menu__link">
                             <span class="icon"><i class="ph ph-users-three"></i></span>
