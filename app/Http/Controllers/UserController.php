@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Application;
 use App\Models\Document;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -78,7 +79,9 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $documents = Document::where('user_id', $id)->get();
-        return view('backend.user.settings.settings', compact('user', 'documents'));
+        $application = Application::where('user_id', $id)->first();
+        $agents = User::where('user_type', 'agent')->get();
+        return view('backend.user.settings.settings', compact('user', 'documents','application', 'agents'));
     }
 
     public function user_update(Request $request, $id)

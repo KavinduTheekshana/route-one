@@ -98,6 +98,10 @@ Route::middleware([
 
      // Application
      Route::get('/admin/applications', [ApplicationController::class, 'applications'])->name('admin.applications')->middleware(['auth', 'superadmin']);
+     Route::post('/user/application/update', [ApplicationController::class, 'update'])->name('user.application.update')->middleware(['auth', 'superadmin']);
+     Route::get('/application/approve/{id}', [ApplicationController::class, 'approve'])->name('application.approve')->middleware(['auth', 'superadmin']);
+     Route::get('/application/reject/{id}', [ApplicationController::class, 'reject'])->name('application.reject')->middleware(['auth', 'superadmin']);
+
 
 
 

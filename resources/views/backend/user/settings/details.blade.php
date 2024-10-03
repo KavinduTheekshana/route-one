@@ -1,5 +1,5 @@
     <!-- My Details Tab start -->
-    <div class="tab-pane fade show active" id="pills-details" role="tabpanel" aria-labelledby="pills-details-tab"
+    <div class="tab-pane fade {{ session('showApplicationTab') ? '' : 'show active' }}" id="pills-details" role="tabpanel" aria-labelledby="pills-details-tab"
         tabindex="0">
         <div class="card mt-24">
 

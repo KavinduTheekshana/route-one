@@ -48,22 +48,51 @@
             </div>
             <ul class="nav common-tab style-two nav-pills mb-0" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="pills-details-tab" data-bs-toggle="pill"
-                        data-bs-target="#pills-details" type="button" role="tab" aria-controls="pills-details"
-                        aria-selected="true">User Details</button>
+                    <button class="nav-link {{ session('showApplicationTab') ? '' : 'active' }}"
+                            id="pills-details-tab"
+                            data-bs-toggle="pill"
+                            data-bs-target="#pills-details"
+                            type="button"
+                            role="tab"
+                            aria-controls="pills-details"
+                            aria-selected="{{ session('showApplicationTab') ? 'false' : 'true' }}">
+                        User Details
+                    </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-password-tab" data-bs-toggle="pill"
-                        data-bs-target="#pills-password" type="button" role="tab" aria-controls="pills-password"
-                        aria-selected="false">Password</button>
+                    <button class="nav-link" id="pills-password-tab"
+                            data-bs-toggle="pill"
+                            data-bs-target="#pills-password"
+                            type="button"
+                            role="tab"
+                            aria-controls="pills-password"
+                            aria-selected="false">
+                        Password
+                    </button>
                 </li>
-
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-documents-tab" data-bs-toggle="pill"
-                        data-bs-target="#pills-documents" type="button" role="tab" aria-controls="pills-documents"
-                        aria-selected="false">Documents</button>
+                    <button class="nav-link" id="pills-documents-tab"
+                            data-bs-toggle="pill"
+                            data-bs-target="#pills-documents"
+                            type="button"
+                            role="tab"
+                            aria-controls="pills-documents"
+                            aria-selected="false">
+                        Documents
+                    </button>
                 </li>
-
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link {{ session('showApplicationTab') ? 'active' : '' }}"
+                            id="pills-application-tab"
+                            data-bs-toggle="pill"
+                            data-bs-target="#pills-application"
+                            type="button"
+                            role="tab"
+                            aria-controls="pills-application"
+                            aria-selected="{{ session('showApplicationTab') ? 'true' : 'false' }}">
+                        Application
+                    </button>
+                </li>
             </ul>
         </div>
 
@@ -76,7 +105,9 @@
 
     @include('backend.user.settings.details')
     @include('backend.user.settings.password')
+    @include('backend.user.settings.application')
     @include('backend.user.settings.documents')
+
 
 
 

@@ -54,6 +54,70 @@ class ApplicationController extends Controller
         return redirect()->route('user.application')->with('success', 'Application saved successfully.');
     }
 
+    public function update(Request $request)
+    {
+        // Get user_id from the form
+        $userId = $request->user_id;
+
+        // Find the current application based on the user_id from the form
+        $application = Application::where('user_id', $userId)->firstOrFail();
+
+        // Validate the request
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'country' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:15',
+            'email' => [
+                'required',
+                'email',
+                'unique:applications,email,' . $application->id, // Ignore the current application's email
+            ],
+            'address' => 'nullable|string|max:255',
+            'dob' => 'nullable|date',
+            'passport' => 'nullable|string|max:50',
+            'agent' => 'nullable|exists:users,id',
+        ]);
+
+        // Update the application with the validated data
+        $application->update($request->all());
+
+        return redirect()->back()->with([
+            'success' => 'Application updated successfully.',
+            'showApplicationTab' => true // Pass data to trigger the application tab
+        ]);
+    }
+
+    public function approve($id)
+    {
+        // Find the application by its ID
+        $application = Application::findOrFail($id);
+
+        // Update the status to 1 (approved)
+        $application->update(['status' => 1]);
+
+        // Redirect back with a success message
+        return redirect()->back()->with([
+            'success' => 'Application approved successfully.',
+            'showApplicationTab' => true // Pass data to trigger the application tab
+        ]);
+    }
+
+    public function reject($id)
+    {
+        // Find the application by its ID
+        $application = Application::findOrFail($id);
+
+        // Update the status to 2 (or any value representing rejected)
+        $application->update(['status' => 0]);
+
+        // Redirect back with a success message
+        return redirect()->back()->with([
+            'success' => 'Application rejected successfully.',
+            'showApplicationTab' => true // Pass data to trigger the application tab
+        ]);
+    }
+
+
     public function applications()
     {
         $applications = Application::orderBy('created_at', 'desc')
