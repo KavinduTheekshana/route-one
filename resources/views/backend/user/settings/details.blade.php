@@ -35,7 +35,7 @@
                         </div>
                         <div class="col-sm-6 col-xs-6">
                             <label for="phone" class="form-label mb-8 h6">Phone Number</label>
-                            <input type="number" class="form-control py-11" name="phone"
+                            <input type="text" class="form-control py-11" name="phone"
                                 placeholder="Enter Phone Number" value="{{ $user->phone }}">
                         </div>
 
