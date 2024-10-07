@@ -22,7 +22,7 @@
                         <div class="jbs-grid-job-caption">
                             <div class="jbs-job-employer-wrap"><span>{{ $vacancy->company }}</span></div>
                             <div class="jbs-job-title-wrap">
-                                <h4><a href="job-detail.html" class="jbs-job-title">{{ $vacancy->title }}</a></h4>
+                                <h4><a href="{{ route('vacancies.show', $vacancy->id) }}" class="jbs-job-title">{{ $vacancy->title }}</a></h4>
                             </div>
                         </div>
                         <div class="jbs-grid-job-info-wrap">
