@@ -107,6 +107,9 @@ Route::middleware([
      Route::get('/issue/certificate/{user}', [CertificateController::class, 'issueCertificate'])->name('certificate.issue')->middleware(['auth', 'superadmin']);
      Route::post('/certificate/store', [CertificateController::class, 'store'])->name('certificates.store')->middleware(['auth', 'superadmin']);
      Route::put('/certificates/update/{id}', [CertificateController::class, 'update'])->name('certificates.update');
+     Route::Post('/certificates/send-email', [CertificateController::class, 'sendCertificateEmail'])->name('certificates.sendEmail');
+
+
 
 
 

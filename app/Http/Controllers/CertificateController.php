@@ -9,12 +9,48 @@ use App\Models\User;
 use App\Models\Vacancies;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Mail\CertificateMail;
+use Illuminate\Support\Facades\Mail;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CertificateController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+
+    public function sendCertificateEmail(Request $request)
+    {
+        // Find the certificate using the $id
+        $id = $request->input('certificate_id');
+        $certificate = Certificate::findOrFail($id);
+
+        // Fetch the email from the form input
+        $email = $request->input('email');
+
+        // Generate the PDF using DomPDF
+        $pdf = Pdf::loadView('certificates.certificate', compact('certificate'));
+
+        // Send the PDF as an email attachment
+        // Mail::send([], [], function ($message) use ($email, $pdf, $certificate) {
+        //     $message->to($email)
+        //         ->subject('Route One | English Language Proficiency Interview result')
+        //         ->attachData($pdf->output(), "certificate.pdf", [
+        //             'mime' => 'application/pdf',
+        //         ]);
+        // });
+        Mail::send('emails.certificate', ['certificate' => $certificate], function ($message) use ($email, $pdf, $certificate) {
+            $message->to($email)
+                ->subject('Route One | English Language Proficiency Interview Result')
+                ->attachData($pdf->output(), "Certificate($certificate->confirmation_code).pdf", [
+                    'mime' => 'application/pdf',
+                ]);
+        });
+
+
+        // Redirect back or return a success message
+        return back()->with('success', 'Certificate emailed successfully.');
+    }
+
+
     public function issueCertificate($id)
     {
         // Find the application by ID
@@ -28,7 +64,12 @@ class CertificateController extends Controller
             ->with('job') // Assuming you have a relationship defined for Job in JobApplication model
             ->get();
 
-        $vacancies = Vacancies::where('id', $application->user_id)->get();
+        $vacancies = null;
+        if ($certificate) {
+            $vacancies = Vacancies::where('id', $certificate->job_id)->first();
+        }
+
+        // dd($vacancies);
 
         // dd($vacancies);
         // Get the current date

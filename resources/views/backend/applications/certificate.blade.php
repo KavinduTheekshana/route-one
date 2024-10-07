@@ -58,10 +58,9 @@
                 <p>Applicant Name: <span class="light-text"
                         id="applicant-name">{{ $certificate->applicant_name ?? '' }}</span></p>
                 <p>Date of Birth: <span class="light-text" id="dob-output">{{ $certificate->dob ?? '' }}</span></p>
-                <p>Job Applied For: <span class="light-text"
-                        id="applied-job">{{ $vacancies->title ?? '' }}</span></p>
+                <p>Job Applied For: <span class="light-text" id="applied-job">{{ $vacancies->title ?? '' }}</span></p>
                 <p>Assessment Date: <span class="light-text"
-                        id="assessment-date">{{ $certificate->assessment_date ?? '' }}</span></p>
+                        id="assesment-date">{{ $certificate->assessment_date ?? '' }}</span></p>
                 <br>
                 <p>Dear <span class="light-text"
                         id="applicant-name-output">{{ $certificate->applicant_name ?? '' }}</span>,</p>
@@ -240,18 +239,22 @@
 
             <hr>
 
+            <form action="{{ route('certificates.sendEmail') }}" method="POST">
+                @csrf
+                <div class="form-group col-md-12 mt-4">
+                    <label>Email Address</label>
+                    <input type="email" class="form-control" id="email" name="email"
+                        value="{{ $application->email }}" placeholder="Email Address" required>
 
-            <div class="form-group col-md-12 mt-4">
-                <label>Email Address</label>
-                <input type="text" class="form-control" name="email" value="{{ $application->email }}"
-                    placeholder="Email Address" required>
-            </div>
+                    <input type="hidden" name="certificate_id"
+                        value="{{ isset($certificate) ? $certificate->id : '' }}">
+                </div>
 
-            <button type="submit" class="btn btn-danger w-100 mt-2">
-                Email Certificate
-            </button>
-
-
+                <button type="submit" class="btn btn-danger w-100 mt-2"
+                    {{ isset($certificate) && $certificate->id ? '' : 'disabled' }}>
+                    Email Certificate
+                </button>
+            </form>
         </div>
     </div>
 
@@ -281,6 +284,7 @@
 
         const assessmentDate = document.getElementById('assessmentDate').value;
         const confirmationCode = document.getElementById('confirmationCode').value;
+
         const result = document.getElementById('result-select').value;
 
         // Validate that all fields are filled
