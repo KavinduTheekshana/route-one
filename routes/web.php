@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EnquiryController;
@@ -101,7 +102,11 @@ Route::middleware([
      Route::post('/user/application/update', [ApplicationController::class, 'update'])->name('user.application.update')->middleware(['auth', 'superadmin']);
      Route::get('/application/approve/{id}', [ApplicationController::class, 'approve'])->name('application.approve')->middleware(['auth', 'superadmin']);
      Route::get('/application/reject/{id}', [ApplicationController::class, 'reject'])->name('application.reject')->middleware(['auth', 'superadmin']);
-
+     Route::get('/applications/{id}', [ApplicationController::class, 'show'])->name('applications.show')->middleware(['auth', 'superadmin']);
+     Route::get('/user/settings/application/{user}', [ApplicationController::class, 'user_settings_application'])->name('user.settings.application')->middleware(['auth', 'superadmin']);
+     Route::get('/issue/certificate/{user}', [CertificateController::class, 'issueCertificate'])->name('certificate.issue')->middleware(['auth', 'superadmin']);
+     Route::post('/certificate/store', [CertificateController::class, 'store'])->name('certificates.store')->middleware(['auth', 'superadmin']);
+     Route::put('/certificates/update/{id}', [CertificateController::class, 'update'])->name('certificates.update');
 
 
 

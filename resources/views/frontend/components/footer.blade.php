@@ -103,7 +103,7 @@
                 <div class="row align-items-center">
                   <div class="col-md-12">
                        <div class="coppyright">
-                         <p>© Copyright {{ date('Y') }} - Route One Recruitement. All Right Reserved | Developed by <a href="http://codexer.co.uk" target="_blank" rel="Codexer">Codexer</a></p>
+                         <p>© Copyright {{ date('Y') }} - Route One Recruitement. All Right Reserved | Developed by <a href="https://codexer.co.uk" target="_blank" rel="Codexer">Codexer</a></p>
                        </div>
                   </div>
              </div>

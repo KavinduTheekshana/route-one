@@ -98,6 +98,10 @@
                       <a href="{{ route('application.reject', $application->id) }}" class="btn btn-danger">
                           Reject Application
                       </a>
+
+                      <a href="{{ route('certificate.issue', $application->id) }}" class="btn btn-warning">
+                        Issue English Certificate
+                    </a>
                   @else
                       <!-- Application is not approved -->
                       <a href="{{ route('application.approve', $application->id) }}" class="btn btn-success">

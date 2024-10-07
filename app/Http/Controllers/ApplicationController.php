@@ -116,6 +116,14 @@ class ApplicationController extends Controller
             'showApplicationTab' => true // Pass data to trigger the application tab
         ]);
     }
+    public function show($id)
+    {
+        // Find the application by its ID
+        $application = Application::findOrFail($id);
+
+        // Return the application details as JSON
+        return response()->json($application);
+    }
 
 
     public function applications()
@@ -125,4 +133,18 @@ class ApplicationController extends Controller
 
         return view('backend.applications.index', compact('applications'));
     }
+    public function user_settings_application($id)
+{
+    $user = User::findOrFail($id);
+    $documents = Document::where('user_id', $id)->get();
+    $application = Application::where('user_id', $id)->first();
+    $agents = User::where('user_type', 'agent')->get();
+
+    // Flash the session variable to indicate the application tab should be shown
+    session()->flash('showApplicationTab', true);
+
+    return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents'));
+}
+
+
 }
