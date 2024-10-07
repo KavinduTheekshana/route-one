@@ -91,23 +91,26 @@
                           Update Application
                       </button>
 
-                      @if ($application->status == 1)
+                      @if ($application)
+                          @if ($application->status == 1)
+                              <!-- Reject button for approved applications -->
+                              <a href="{{ route('application.reject', $application->id) }}" class="btn btn-danger">
+                                  Reject Application
+                              </a>
 
+                              <a href="{{ route('certificate.issue', $application->id) }}" class="btn btn-warning">
+                                  Issue English Certificate
+                              </a>
+                          @else
+                              <!-- Application is not approved -->
+                              <a href="{{ route('application.approve', $application->id) }}" class="btn btn-success">
+                                  Approve Application
+                              </a>
+                          @endif
+                      @else
+                          <p>No application available.</p>
+                      @endif
 
-                      <!-- Reject button for approved applications -->
-                      <a href="{{ route('application.reject', $application->id) }}" class="btn btn-danger">
-                          Reject Application
-                      </a>
-
-                      <a href="{{ route('certificate.issue', $application->id) }}" class="btn btn-warning">
-                        Issue English Certificate
-                    </a>
-                  @else
-                      <!-- Application is not approved -->
-                      <a href="{{ route('application.approve', $application->id) }}" class="btn btn-success">
-                          Approve Application
-                      </a>
-                  @endif
 
                   </form>
                   {{-- <form method="POST" action="{{ route('user.application.update') }}" enctype="multipart/form-data">
