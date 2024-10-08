@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\Document;
+use App\Models\JobApplication;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Vacancies;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -81,7 +83,14 @@ class UserController extends Controller
         $documents = Document::where('user_id', $id)->get();
         $application = Application::where('user_id', $id)->first();
         $agents = User::where('user_type', 'agent')->get();
-        return view('backend.user.settings.settings', compact('user', 'documents','application', 'agents'));
+
+        // Fetch the jobs that the user has applied for
+        $vacancies = JobApplication::where('user_id', $user->id)
+            ->with('job') // Assuming you have a relationship defined
+            ->get();
+
+        $jobs = Vacancies::get();
+        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs'));
     }
 
     public function user_update(Request $request, $id)

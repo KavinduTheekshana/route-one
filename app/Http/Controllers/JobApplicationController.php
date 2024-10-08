@@ -7,6 +7,24 @@ use Illuminate\Http\Request;
 
 class JobApplicationController extends Controller
 {
+
+    public function assignPosition(Request $request)
+    {
+        $request->validate([
+            'vacancy_id' => 'required|exists:vacancies,id',
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        JobApplication::create([
+            'vacancies_id' => $request->vacancy_id,
+            'user_id' => $request->user_id,
+        ]);
+
+        return response()->json(['success' => true]);
+    }
+
+
+
     public function positions()
     {
         $user = auth()->user();

@@ -35,12 +35,10 @@
     <link rel="stylesheet" href="{{ asset('backend/css/custom.css') }}">
 
     @stack('styles')
-
-    {{-- @vite(['', 'resources/js/app.js']) --}}
+    @vite(['', 'resources/js/app.js'])
 </head>
 
 <body>
-
     {{-- Preloader Start  --}}
     <div class="preloader">
         <div class="loader"></div>
@@ -97,14 +95,10 @@
     <script src="{{ asset('backend/js/jquery-jvectormap-2.0.5.min.js') }}"></script>
     <!-- jvectormap world Js -->
     <script src="{{ asset('backend/js/jquery-jvectormap-world-mill-en.js') }}"></script>
-
     <!-- main js -->
     <script src="{{ asset('backend/js/main.js') }}"></script>
-
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
     @stack('scripts')
 
 

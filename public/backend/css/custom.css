@@ -48,3 +48,9 @@ img.modal-image {
   .text-gray{
     color: gray !important;;
   }
+  .job-image{
+    width: 50px !important;
+    height: 50px !important;
+    object-fit: cover;
+    border-radius: 50%;
+  }

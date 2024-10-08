@@ -82,6 +82,17 @@
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-jobs-tab"
+                            data-bs-toggle="pill"
+                            data-bs-target="#pills-jobs"
+                            type="button"
+                            role="tab"
+                            aria-controls="pills-jobs"
+                            aria-selected="false">
+                            Applied Positions
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
                     <button class="nav-link {{ session('showApplicationTab') ? 'active' : '' }}"
                             id="pills-application-tab"
                             data-bs-toggle="pill"
@@ -108,6 +119,7 @@
     @include('backend.user.settings.details')
     @include('backend.user.settings.password')
     @include('backend.user.settings.application')
+    @include('backend.user.settings.jobs')
     @include('backend.user.settings.documents')
 
 
