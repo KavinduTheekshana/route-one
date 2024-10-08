@@ -33,10 +33,7 @@
                                             <div class="max-h-200 overflow-y-auto scroll-sm pe-8">
                                                 <ul>
                                                     <li class="mb-0">
-                                                        <button type="button"
-                                                            class="delete-item-btn py-6 text-15 px-8 hover-bg-gray-50 text-gray-300 w-100 rounded-8 fw-normal text-xs d-block text-start">
-                                                            <span class="text">Delete</span>
-                                                        </button>
+
                                                         <a href="{{ route('vacancies.show', $vacancy->job->id) }}"
                                                             type="button" target="_blank"
                                                             class="view-item-btn py-6 text-15 px-8 hover-bg-gray-50 text-gray-300 w-100 rounded-8 fw-normal text-xs d-block text-start">

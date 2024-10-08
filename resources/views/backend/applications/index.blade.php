@@ -6,6 +6,11 @@
         a:hover {
             text-decoration: none !important;
         }
+
+        ol,
+        ul {
+            padding-left: 0 !important;
+        }
     </style>
 @endpush
 
@@ -67,15 +72,19 @@
 
 
                             @if ($application->status == 1)
-                                <a href="{{ route('application.reject', $application->id) }}" class="btn btn-danger btn-sm"><i class="ph ph-x"></i></a>
+                                <a href="{{ route('application.reject', $application->id) }}"
+                                    class="btn btn-danger btn-sm"><i class="ph ph-x"></i></a>
                             @else
-                                <a href="{{ route('application.approve', $application->id) }}" class="btn btn-success btn-sm"><i class="ph ph-check"></i></a>
+                                <a href="{{ route('application.approve', $application->id) }}"
+                                    class="btn btn-success btn-sm"><i class="ph ph-check"></i></a>
                             @endif
 
-                            <a href="javascript:void(0)" class="btn btn-warning btn-sm view-enquiry" data-id="{{ $application->id }}">
+                            <a href="javascript:void(0)" class="btn btn-warning btn-sm view-enquiry"
+                                data-id="{{ $application->id }}">
                                 <i class="ph ph-eye"></i>
                             </a>
-                            <a href=" {{ route('user.settings.application', $application->user_id) }}" class="btn btn-info btn-sm">
+                            <a href=" {{ route('user.settings.application', $application->user_id) }}"
+                                class="btn btn-info btn-sm">
                                 <i class="ph ph-arrow-right"></i>
                             </a>
 
@@ -114,7 +123,6 @@
 @endsection
 
 @push('scripts')
-
 {{-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit.min.js"></script>
 <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js"></script>
@@ -164,8 +172,4 @@
         });
     });
 </script>
-
-
-
-
 @endpush
