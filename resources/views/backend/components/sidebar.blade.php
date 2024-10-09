@@ -93,12 +93,12 @@
                         </a>
                     </li>
 
-                    {{-- <li class="sidebar-menu__item">
-                        <a href="{{ route('admin.calander') }}" class="sidebar-menu__link {{ request()->segment(2) === 'applications' ? 'activePage' : '' }}">
+                    <li class="sidebar-menu__item">
+                        <a href="{{ route('admin.calander') }}" class="sidebar-menu__link {{ request()->segment(2) === 'calander' ? 'activePage' : '' }}">
                             <span class="icon"><i class="ph ph-calendar-dots"></i></span>
                             <span class="text">Calander</span>
                         </a>
-                    </li> --}}
+                    </li>
 
 
 
