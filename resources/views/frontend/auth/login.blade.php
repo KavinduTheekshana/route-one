@@ -47,7 +47,7 @@
                                 </div>
                             </div>
                             <div class="col d-flex">
-                                <a href="" class="right-link">Forgotten your password?</a>
+                                <a href="{{ route('user.forgot') }}" class="right-link">Forgotten your password?</a>
                             </div>
                         </div>
                         <div class="space20"></div>

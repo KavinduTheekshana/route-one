@@ -35,7 +35,7 @@
     <link rel="stylesheet" href="{{ asset('backend/css/custom.css') }}">
 
     @stack('styles')
-    {{-- @vite(['', 'resources/js/app.js']) --}}
+    @vite(['', 'resources/js/app.js'])
 </head>
 
 <body>

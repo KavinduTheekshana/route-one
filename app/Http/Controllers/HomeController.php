@@ -85,4 +85,8 @@ class HomeController extends Controller
     {
         return view('frontend.auth.register');
     }
+    public function forgot()
+    {
+        return view('frontend.auth.forgot');
+    }
 }

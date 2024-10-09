@@ -100,7 +100,7 @@
                                 id="remember">
                             <label class="form-check-label text-15 flex-grow-1" for="remember">Remember Me </label>
                         </div>
-                        <a href="#"
+                        <a href="{{ route('password.request') }}"
                             class="text-main-600 hover-text-decoration-underline text-15 fw-medium">Forgot Password?</a>
                     </div>
                     <button type="submit" class="btn btn-main rounded-pill w-100">Sign In</button>

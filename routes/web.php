@@ -26,6 +26,7 @@ Route::get('/vacancies/{id}', [HomeController::class, 'vacancy'])->name('vacanci
 Route::get('services', [HomeController::class, 'services'])->name('services');
 Route::get('user/login', [HomeController::class, 'login'])->name('user.login');
 Route::get('user/register', [HomeController::class, 'register'])->name('user.register');
+Route::get('user/forgot', [HomeController::class, 'forgot'])->name('user.forgot');
 
 Route::middleware([
     'auth:sanctum',
