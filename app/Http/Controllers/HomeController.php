@@ -9,22 +9,23 @@ use App\Models\Vacancies;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Password;
 
 class HomeController extends Controller
 {
 
-    public function showResetForm($token, Request $request)
+    public function reset(Request $request)
     {
-        return view('frontend.auth.reset')->with(
-            ['token' => $token, 'email' => $request->email]
-        );
-    }
-
-
-    public function sendResetLink(Request $request)
-    {
-        $request->validate(['email' => 'required|email']);
+        // Validate the request
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:6',
+            'token' => 'required', // Validate that the token is also present
+        ]);
 
         // Find the user by email
         $user = User::where('email', $request->email)->first();
@@ -33,32 +34,93 @@ class HomeController extends Controller
             return back()->withErrors(['email' => 'We can\'t find a user with that email address.']);
         }
 
-        // Generate a verification code
-        $verificationCode = Str::random(30); // You can use a more complex logic here
+        // Check if the token matches the remember_token in the database
+        if ($user->remember_token !== $request->token) {
+            return back()->withErrors(['token' => 'Invalid or expired password reset token.']);
+        }
 
-        // Store the verification code in the database (or session, etc.)
-        $user->update(['verification_code' => $verificationCode]);
+        $tokenExpiry = now()->subMinutes(15);
+        if ($user->updated_at < $tokenExpiry) {
+            return back()->withErrors(['email' => 'This password reset link has expired.']);
+        }
+
+        // Update the password and clear the token
+        $user->password = Hash::make($request->password);
+        $user->remember_token = null; // Clear the token after resetting the password
+        $user->save();
+
+        return redirect()->route('user.login')->with('status', 'Password reset successfully!');
+    }
+
+    public function showResetForm($token)
+    {
+        // Find the user by the token in the remember_token column
+        $user = User::where('remember_token', $token)->first();
+
+        if (!$user) {
+            // If the token is invalid, redirect back with an error
+            return redirect()->route('user.forgot')->withErrors(['token' => 'Invalid or expired password reset token.']);
+        }
+
+        // Pass the token and email to the view
+        return view('frontend.auth.reset')->with([
+            'token' => $token,
+            'email' => $user->email,
+        ]);
+    }
+
+
+    public function sendResetLink(Request $request)
+    {
+        // Validate the request
+        $request->validate(['email' => 'required|email']);
+
+        // Throttle the reset requests
+        $this->checkRateLimit($request);
+
+        // Find the user by email
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return back()->withErrors(['email' => 'We can\'t find a user with that email address.']);
+        }
+
+        // Generate the token manually
+        $token = Str::random(60);
+        $user->remember_token = $token;
+        $user->updated_at = now();
+        $user->save();
 
         // Send the password reset link
-        $response = Password::sendResetLink(
-            $request->only('email'),
-            function ($user, $token) use ($verificationCode) {
-                // Here you can customize the email sent
-                \Mail::send('frontend.auth.emails.password_reset', [
-                    'user' => $user,
-                    'token' => $token,
-                    'verification_code' => $verificationCode,
-                ], function ($message) use ($user) {
-                    $message->to($user->email);
-                    $message->subject('Password Reset Link');
-                });
-            }
-        );
+        Mail::send('frontend.auth.emails.password_reset', [
+            'user' => $user,
+            'token' => $token,
+        ], function ($message) use ($user) {
+            $message->to($user->email);
+            $message->subject('Password Reset Link');
+        });
 
-        return $response == Password::RESET_LINK_SENT
-            ? back()->with('status', trans($response))
-            : back()->withErrors(['email' => trans($response)]);
+        return back()->with('status', 'Password reset link sent to your email!');
     }
+
+    protected function checkRateLimit(Request $request)
+    {
+        $email = $request->input('email');
+        $throttleKey = 'reset-password|' . $email;
+
+        // Set the rate limit (5 attempts per 15 minutes)
+        if (RateLimiter::tooManyAttempts($throttleKey, 3)) {
+            $seconds = RateLimiter::availableIn($throttleKey);
+            throw ValidationException::withMessages([
+                'email' => "Too many requests. Please try again in " . ceil($seconds / 60) . " minute(s).",
+            ]);
+        }
+
+        // Record the attempt
+        RateLimiter::hit($throttleKey, 900); // 900 seconds (15 minutes)
+    }
+
+
 
 
     public function index()

@@ -29,6 +29,7 @@ Route::get('user/register', [HomeController::class, 'register'])->name('user.reg
 Route::get('user/forgot', [HomeController::class, 'forgot'])->name('user.forgot');
 Route::post('user/password/email', [HomeController::class, 'sendResetLink'])->name('user.password.email');
 Route::get('password/reset/{token}', [HomeController::class, 'showResetForm'])->name('password.reset');
+Route::post('user/password/update/token', [HomeController::class, 'reset'])->name('user.password.update.token');
 
 
 Route::middleware([

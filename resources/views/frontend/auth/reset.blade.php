@@ -19,50 +19,48 @@
 
                     <div class="space30"></div>
                     @session('status')
-                        <div class="mb-4 font-medium text-sm text-green-600">
+                        <div class="mb-4 font-medium text-sm text-green-600 text-success">
                             {{ $value }}
                         </div>
                     @endsession
+
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     @if (session('error'))
                         <div style="color: red; background-color: #f8d7da; padding: 10px; border-radius: 5px;">
                             {{ session('error') }}
                         </div>
                     @endif
-                    <form method="POST" action="{{ route('user.password.update') }}">
+
+                    <form method="POST" action="{{ route('user.password.update.token') }}">
                         @csrf
                         <input type="hidden" name="token" value="{{ $token }}">
                         <input type="hidden" name="email" value="{{ $email }}">
 
 
                         <input type="password" name="password" required autocomplete="current-password"
-                        class="form-control login-input" placeholder="Password">
+                            class="form-control login-input" placeholder="Password">
                         <div class="space20"></div>
 
-                        <input type="password" name="password" required autocomplete="current-password"
-                            class="form-control login-input" placeholder="Password">
+                        <input type="password" name="password_confirmation" required class="form-control login-input"
+                            placeholder="Confirm Password">
 
                         <div class="space10"></div>
-                        <div class="row link-row">
-                            <div class="col d-flex">
-                                <div class="form-group">
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="remember" type="checkbox" id="gridCheck">
-                                        <label class="form-check-label" for="gridCheck">
-                                            Check me out
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col d-flex">
-                                <a href="{{ route('user.forgot') }}" class="right-link">Forgotten your password?</a>
-                            </div>
-                        </div>
+
                         <div class="space20"></div>
-                        <button type="submit" class="btn btn-dark login-button">Sign In</button>
+                        <button type="submit" class="btn btn-dark login-button">Reset Password</button>
 
                     </form>
                     <div class="space20"></div>
-                    <span>Don't have an account? <a href="{{ route('user.register') }}">Create an Account</a></span>
+                    {{-- <span>Don't have an account? <a href="{{ route('user.register') }}">Create an Account</a></span> --}}
                 </div>
             </div>
 

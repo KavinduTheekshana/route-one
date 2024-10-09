@@ -18,7 +18,7 @@
                         explore opportunities. Enter your credentials below to get started.</p>
                     <div class="space30"></div>
                     @session('status')
-                        <div class="mb-4 font-medium text-sm text-green-600">
+                        <div class="mb-4 font-medium text-sm text-green-600 text-success">
                             {{ $value }}
                         </div>
                     @endsession
