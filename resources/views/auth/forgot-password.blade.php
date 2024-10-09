@@ -65,6 +65,26 @@
                     </div>
                 @endsession
 
+                {{-- @include('backend.components.alert') --}}
+
+                @if ($errors->any())
+                <div class="mb-4 font-medium text-sm text-red-600 text-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+
+
+                @session('status')
+                    {{-- <div class="mb-4 font-medium text-sm text-green-600">
+                        {{ $value }}
+                    </div> --}}
+                @endsession
+
 
 
 

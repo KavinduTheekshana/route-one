@@ -4,12 +4,63 @@ namespace App\Http\Controllers;
 
 use App\Models\JobApplication;
 use App\Models\Testimonial;
+use App\Models\User;
 use App\Models\Vacancies;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
 
 class HomeController extends Controller
 {
+
+    public function showResetForm($token, Request $request)
+    {
+        return view('frontend.auth.reset')->with(
+            ['token' => $token, 'email' => $request->email]
+        );
+    }
+
+
+    public function sendResetLink(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        // Find the user by email
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return back()->withErrors(['email' => 'We can\'t find a user with that email address.']);
+        }
+
+        // Generate a verification code
+        $verificationCode = Str::random(30); // You can use a more complex logic here
+
+        // Store the verification code in the database (or session, etc.)
+        $user->update(['verification_code' => $verificationCode]);
+
+        // Send the password reset link
+        $response = Password::sendResetLink(
+            $request->only('email'),
+            function ($user, $token) use ($verificationCode) {
+                // Here you can customize the email sent
+                \Mail::send('frontend.auth.emails.password_reset', [
+                    'user' => $user,
+                    'token' => $token,
+                    'verification_code' => $verificationCode,
+                ], function ($message) use ($user) {
+                    $message->to($user->email);
+                    $message->subject('Password Reset Link');
+                });
+            }
+        );
+
+        return $response == Password::RESET_LINK_SENT
+            ? back()->with('status', trans($response))
+            : back()->withErrors(['email' => trans($response)]);
+    }
+
+
     public function index()
     {
         $testimonials = Testimonial::where('status', 1)

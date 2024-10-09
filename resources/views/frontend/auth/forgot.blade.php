@@ -18,17 +18,40 @@
                         link and regain access to your account.</p>
 
                     <div class="space30"></div>
+
+
+                    {{-- @include('backend.components.alert') --}}
+
+
+                    @if ($errors->any())
+                        <div class="mb-4 font-medium text-sm text-red-600 text-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     @session('status')
-                        <div class="mb-4 font-medium text-sm text-green-600">
+                        <div class="mb-4 font-medium text-sm text-green-600 text-success">
                             {{ $value }}
                         </div>
                     @endsession
+
+                    @session('status')
+                        {{-- <div class="mb-4 font-medium text-sm text-green-600 text-success">
+                            {{ $value }}
+                        </div> --}}
+                    @endsession
+
+
                     @if (session('error'))
                         <div style="color: red; background-color: #f8d7da; padding: 10px; border-radius: 5px;">
                             {{ session('error') }}
                         </div>
                     @endif
-                    <form method="POST" action="{{ route('password.email') }}">
+                    <form method="POST" action="{{ route('user.password.email') }}">
                         @csrf
                         <input type="email" class="form-control login-input" name="email" required autofocus
                             autocomplete="username" value="{{ old('email') }}" placeholder="Enter email">
