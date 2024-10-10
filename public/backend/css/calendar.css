@@ -24,12 +24,12 @@
     border-color: var(--main-600);
     color: #fff;
 }
-  
+
 .header-display {
     display: flex;
     align-items: center;
 }
-  
+
 .days, .week {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -72,4 +72,3 @@
     background-color: var(--main-800) !important;
     color: #fff !important;
 }
-  

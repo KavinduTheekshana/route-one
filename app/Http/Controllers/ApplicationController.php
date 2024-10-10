@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\Document;
+use App\Models\JobApplication;
 use App\Models\User;
+use App\Models\Vacancies;
 use Illuminate\Http\Request;
 
 class ApplicationController extends Controller
@@ -134,17 +136,21 @@ class ApplicationController extends Controller
         return view('backend.applications.index', compact('applications'));
     }
     public function user_settings_application($id)
-{
-    $user = User::findOrFail($id);
-    $documents = Document::where('user_id', $id)->get();
-    $application = Application::where('user_id', $id)->first();
-    $agents = User::where('user_type', 'agent')->get();
+    {
+        $user = User::findOrFail($id);
+        $documents = Document::where('user_id', $id)->get();
+        $application = Application::where('user_id', $id)->first();
+        $agents = User::where('user_type', 'agent')->get();
 
-    // Flash the session variable to indicate the application tab should be shown
-    session()->flash('showApplicationTab', true);
+        $vacancies = JobApplication::where('user_id', $user->id)
+            ->with('job') // Assuming you have a relationship defined
+            ->get();
 
-    return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents'));
-}
+        $jobs = Vacancies::get();
 
+        // Flash the session variable to indicate the application tab should be shown
+        session()->flash('showApplicationTab', true);
 
+        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents','vacancies','jobs'));
+    }
 }
