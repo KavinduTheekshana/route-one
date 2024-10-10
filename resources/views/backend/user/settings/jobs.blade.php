@@ -96,7 +96,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <input type="text" name="user_id" value="{{ $user->id }}">
+                    <input type="hidden" name="user_id" value="{{ $user->id }}">
                 </form>
             </div>
             <div class="modal-footer">

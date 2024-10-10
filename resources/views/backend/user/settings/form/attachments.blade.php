@@ -104,7 +104,7 @@
                 <h5 class="modal-title" id="documentModalLabel">Document Viewer</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body modal-body-full">
                 <iframe id="documentFrame" src="" width="100%" height="500px" frameborder="0"></iframe>
             </div>
         </div>
@@ -134,7 +134,7 @@
 
         function viewDocument(fileUrl, fileType) {
             const documentFrame = document.getElementById('documentFrame');
-            const modalBody = document.querySelector('.modal-body');
+            const modalBody = document.querySelector('.modal-body-full');
 
             // Clear the modal content first
             modalBody.innerHTML = '';
