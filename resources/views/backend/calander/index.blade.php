@@ -59,53 +59,62 @@
                                     class="position-absolute end-0 top-50 translate-middle-y me-12 line-height-1"></span>
                             </div>
                         </div>
-                        <div class="col-md-6 mb-20">
-                            <label for="endDate" class="form-label fw-semibold text-primary-light text-sm mb-8">End
-                                Date </label>
+                        <div class="col-md-3 mb-20">
+                            <label for="startTime" class="form-label fw-semibold text-primary-light text-sm mb-8">Start
+                                Time </label>
                             <div class=" position-relative">
-                                <input class="form-control radius-8 bg-base" id="endDate" type="date">
+                                <input class="form-control radius-8 bg-base" id="startTime" type="time">
+                                <span
+                                    class="position-absolute end-0 top-50 translate-middle-y me-12 line-height-1"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-20">
+                            <label for="endTime" class="form-label fw-semibold text-primary-light text-sm mb-8">End
+                                Time </label>
+                            <div class=" position-relative">
+                                <input class="form-control radius-8 bg-base" id="endTime" type="time">
                                 <span
                                     class="position-absolute end-0 top-50 translate-middle-y me-12 line-height-1"></span>
                             </div>
                         </div>
                         <div class="col-12 mb-20">
-                            <label for="endDate" class="form-label fw-semibold text-primary-light text-sm mb-8">Label
+                            <label for="endDate" class="form-label fw-semibold text-primary-light text-sm mb-8">Color
                             </label>
                             <div class="d-flex align-items-center flex-wrap gap-28">
                                 <div class="form-check form-radio d-flex align-items-center gap-2 mb-0">
                                     <input class="form-check-input" type="radio" name="label" id="Personal">
                                     <label
-                                        class="form-check-label min-width-max-content line-height-1 fw-medium text-secondary-light text-sm d-flex align-items-center gap-1 ps-4"
+                                        class="form-check-label min-width-max-content line-height-1 fw-medium text-primary text-sm d-flex align-items-center gap-1 ps-4"
                                         for="Personal">
                                         <span class="w-8-px h-8-px bg-success-600 rounded-circle"></span>
-                                        Personal
+                                        Primary
                                     </label>
                                 </div>
                                 <div class="form-check form-radio d-flex align-items-center gap-2 mb-0">
                                     <input class="form-check-input" type="radio" name="label" id="Business">
                                     <label
-                                        class="form-check-label min-width-max-content line-height-1 fw-medium text-secondary-light text-sm d-flex align-items-center gap-1 ps-4"
+                                        class="form-check-label min-width-max-content line-height-1 fw-medium text-secondary text-sm d-flex align-items-center gap-1 ps-4"
                                         for="Business">
                                         <span class="w-8-px h-8-px bg-primary-600 rounded-circle"></span>
-                                        Business
+                                        Secondary
                                     </label>
                                 </div>
                                 <div class="form-check form-radio d-flex align-items-center gap-2 mb-0">
                                     <input class="form-check-input" type="radio" name="label" id="Family">
                                     <label
-                                        class="form-check-label min-width-max-content line-height-1 fw-medium text-secondary-light text-sm d-flex align-items-center gap-1 ps-4"
+                                        class="form-check-label min-width-max-content line-height-1 fw-medium text-success text-sm d-flex align-items-center gap-1 ps-4"
                                         for="Family">
                                         <span class="w-8-px h-8-px bg-warning-600 rounded-circle"></span>
-                                        Family
+                                        Success
                                     </label>
                                 </div>
                                 <div class="form-check form-radio d-flex align-items-center gap-2 mb-0">
                                     <input class="form-check-input" type="radio" name="label" id="Important">
                                     <label
-                                        class="form-check-label min-width-max-content line-height-1 fw-medium text-secondary-light text-sm d-flex align-items-center gap-1 ps-4"
+                                        class="form-check-label min-width-max-content line-height-1 fw-medium text-danger text-sm d-flex align-items-center gap-1 ps-4"
                                         for="Important">
                                         <span class="w-8-px h-8-px bg-lilac-600 rounded-circle"></span>
-                                        Important
+                                        Danger
                                     </label>
                                 </div>
                                 <div class="form-check form-radio d-flex align-items-center gap-2 mb-0">
@@ -114,7 +123,7 @@
                                         class="form-check-label min-width-max-content line-height-1 fw-medium text-secondary-light text-sm d-flex align-items-center gap-1 ps-4"
                                         for="Holiday">
                                         <span class="w-8-px h-8-px bg-danger-600 rounded-circle"></span>
-                                        Holiday
+                                        Dark
                                     </label>
                                 </div>
                             </div>

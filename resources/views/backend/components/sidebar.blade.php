@@ -48,6 +48,15 @@
                         <!-- Submenu End -->
                     </li>
 
+                    <li class="sidebar-menu__item">
+                        <a href="{{ route('admin.message') }}" class="sidebar-menu__link {{ request()->segment(2) === 'message' ? 'activePage' : '' }}">
+                            <span class="icon"><i class="ph ph-chat-dots"></i></span>
+                            <span class="text">Messages</span>
+                        </a>
+                    </li>
+
+
+
                     <li class="sidebar-menu__item has-dropdown">
                         <a href="javascript:void(0)" class="sidebar-menu__link {{ request()->segment(2) === 'vacancies' ? 'activePage' : '' }}">
                             <span class="icon"><i class="ph ph-briefcase"></i></span>

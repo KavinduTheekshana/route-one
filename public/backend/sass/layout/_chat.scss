@@ -4,7 +4,7 @@
         &:not(:last-child) {
             margin-bottom: 24px;
         }
-    
+
     }
 }
 
@@ -18,7 +18,7 @@
     }
 }
 .chat-box-item-wrapper {
-    max-height: 740px;
+    max-height: 630px;
     &.style-email {
         max-height: calc(100vh - 374px);
     }
@@ -56,7 +56,7 @@
             display: inline-block;
         }
     }
-}   
+}
 
 .chat-box-bottom {
     @include sm-screen {

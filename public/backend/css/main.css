@@ -9457,7 +9457,7 @@ button:focus {
 }
 
 .chat-box-item-wrapper {
-    max-height: 740px;
+    max-height: 640px;
 }
 
 .chat-box-item-wrapper.style-email {
