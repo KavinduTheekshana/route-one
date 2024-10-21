@@ -48,7 +48,6 @@ Route::middleware([
     Route::delete('/user/application/destroy/{id}', [JobApplicationController::class, 'destroy'])->name('user.application.destroy');
     Route::post('/user/application/store', [ApplicationController::class, 'store'])->name('user.application.store');
     Route::post('/user/jobs/apply', [JobApplicationController::class, 'store'])->name('user.jobs.apply');
-
     Route::middleware(['auth', 'status'])->group(function () {
 
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

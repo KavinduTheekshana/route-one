@@ -14,7 +14,7 @@ class ApplicationController extends Controller
     public function application()
     {
         $application = Application::where('user_id', auth()->id())->first();
-        $agents = User::where('user_type', 'agent')->get();
+        $agents = User::where('user_type', 'agent')->where('status', 1)->get();
         return view('frontend.auth.dashboard.application', compact('agents', 'application'));
     }
 
