@@ -38,20 +38,36 @@ class MessageController extends Controller
         return response()->json(['users' => $users]);
     }
 
-   public function getMessages($userId)
-{
-    // Retrieve messages where the selected user is the receiver and eager load the sender and receiver details
-    $messages = Message::where('receiver_id', $userId)
-        ->orWhere('sender_id', $userId) // Include messages where the user is the sender
-        ->with([
-            'sender:id,name,profile_image',    // Load sender details (name, profile image)
-            'receiver:id,name,profile_image'   // Load receiver details (name, profile image)
-        ])
-        ->orderBy('created_at', 'asc') // Order messages by creation date
-        ->get();
+    public function getUser($userId)
+    {
+        // Retrieve messages where the selected user is the receiver and eager load the sender and receiver details
+        $messages = Message::where('receiver_id', $userId)
+            ->orWhere('sender_id', $userId) // Include messages where the user is the sender
+            ->with([
+                'sender:id,name,profile_image',    // Load sender details (name, profile image)
+                'receiver:id,name,profile_image'   // Load receiver details (name, profile image)
+            ])
+            ->orderBy('created_at', 'asc') // Order messages by creation date
+            ->get();
 
-    return response()->json($messages); // Return messages with sender and receiver details as JSON
-}
+        return response()->json($messages); // Return messages with sender and receiver details as JSON
+    }
+
+
+    public function getMessages($userId)
+    {
+        // Retrieve messages where the selected user is the receiver and eager load the sender and receiver details
+        $messages = Message::where('receiver_id', $userId)
+            ->orWhere('sender_id', $userId) // Include messages where the user is the sender
+            ->with([
+                'sender:id,name,profile_image',    // Load sender details (name, profile image)
+                'receiver:id,name,profile_image'   // Load receiver details (name, profile image)
+            ])
+            ->orderBy('created_at', 'asc') // Order messages by creation date
+            ->get();
+
+        return response()->json($messages); // Return messages with sender and receiver details as JSON
+    }
 
     public function sendMessage(Request $request)
     {

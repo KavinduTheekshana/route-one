@@ -54,3 +54,6 @@ img.modal-image {
     object-fit: cover;
     border-radius: 50%;
   }
+  .activation-badge-dot::before{
+    background-color: #ffc107 !important;
+  }

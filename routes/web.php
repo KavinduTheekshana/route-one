@@ -124,7 +124,8 @@ Route::middleware([
          Route::get('/admin/message', [MessageController::class, 'index'])->name('admin.message')->middleware(['auth', 'superadmin']);
          Route::get('/search-users', [MessageController::class, 'searchUsers'])->name('search.users');
          Route::get('/messages/{userId}', [MessageController::class, 'getMessages']);
-         Route::post('/messages/store', [MessageController::class, 'sendMessage'])->name('messages.store');;
+         Route::post('/messages/store', [MessageController::class, 'sendMessage'])->name('messages.store');
+         Route::get('/userdata/{userId}', [MessageController::class, 'getUser']);
 
 
 

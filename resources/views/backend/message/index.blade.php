@@ -55,14 +55,15 @@
             <div class="chat-list__item flex-between gap-8 cursor-pointer">
                 <div class="d-flex align-items-start gap-16">
                     <div class="position-relative flex-shrink-0">
-                        <img src="assets/images/thumbs/avatar-img1.png" alt=""
-                            class="w-40 h-40 rounded-circle object-fit-cover flex-shrink-0">
+                        <img src="{{ asset('backend/images/thumbs/setting-profile-img.webp') }}" alt=""
+                            id="selected-user-image" class="w-40 h-40 rounded-circle object-fit-cover flex-shrink-0">
                         <span
-                            class="activation-badge w-12 h-12 border-2 position-absolute inset-block-end-0 inset-inline-end-0"></span>
+                            class="activation-badge activation-badge-dot w-12 h-12 border-2 position-absolute inset-block-end-0 inset-inline-end-0"></span>
                     </div>
                     <div class="d-flex flex-column">
-                        <h6 class="text-line-1 text-15 text-gray-400 fw-bold mb-0">Kate Morrison</h6>
-                        <span class="text-line-1 text-13 text-gray-200">Online</span>
+                        <h6 class="text-line-1 text-15 text-gray-400 fw-bold mb-0" id="selected-user-name">User Name
+                        </h6>
+                        <span class="text-line-1 text-13 text-gray-200" id="selected-user-country">Country</span>
                     </div>
                 </div>
             </div>
@@ -172,19 +173,22 @@
                 <div class="chat-list__item flex-between gap-8 cursor-pointer" data-user-id="${user.id}" onclick="handleUserClick(this)">
                     <div class="d-flex align-items-start gap-16">
                         <div class="position-relative flex-shrink-0">
-                            <img src="${profileImage}" alt="Profile Image" class="w-44 h-44 rounded-circle object-fit-cover flex-shrink-0">
-                            <span class="activation-badge w-12 h-12 border-2 position-absolute inset-block-end-0 inset-inline-end-0"></span>
+                            <img src="${profileImage}" alt="Profile Image" class="selected-user-image w-44 h-44 rounded-circle object-fit-cover flex-shrink-0">
+                            <span class="activation-badge activation-badge-dot w-12 h-12 border-2 position-absolute inset-block-end-0 inset-inline-end-0"></span>
                         </div>
                         <div class="d-flex flex-column w-100">
                             <h6 class="user-name text-line-1 text-15 text-gray-400 fw-bold mb-0">${user.name}</h6>
                             <span class="text-line-1 text-13 text-gray-200">${user.email}</span>
-                            <span class="text-line-1 text-13 text-gray-200">${user.country ? user.country : 'N/A'}</span>
+                            <span class="user-country text-line-1 text-13 text-gray-200">${user.country ? user.country : 'N/A'}</span>
                         </div>
                     </div>
                 </div>
                 `;
                 chatList.insertAdjacentHTML('beforeend', userItem);
             });
+
+            // Scroll to the bottom of the chat box to show the latest message
+            chatBox.scrollTop = chatBox.scrollHeight;
         } else {
             chatList.innerHTML = '<p>No users found</p>';
         }
@@ -212,15 +216,35 @@
     });
 
     function handleUserClick(element) {
+
         const userId = element.getAttribute('data-user-id'); // Get the user ID from the data attribute
-        console.log('User ID:', userId);
+        // console.log('User ID:', userId);
         selectedUserId = userId; // Set the selected user ID
-        console.log('Selected user ID:', selectedUserId);
+        // console.log('Selected user ID:', selectedUserId);
         document.getElementById('selectedUserId').value = selectedUserId;
 
         // You can now fetch messages or perform any other action with the userId
         fetchMessages(userId);
+        // Get the user's name and country from the clicked element
+        const userName = element.querySelector('.user-name').textContent;
+        const userCountry = element.querySelector('.user-country').textContent;
+        const profileImage = element.querySelector('.selected-user-image').getAttribute('src') ||
+            '/backend/images/thumbs/setting-profile-img.webp';
+
+        // console.log('User Country:', userCountry);
+        // console.log('User Name:', userName);
+        // console.log('Profile Image:', profileImage);
+
+        // Update the displayed user name and country using their IDs
+        document.getElementById('selected-user-name').textContent = userName;
+        document.getElementById('selected-user-country').textContent = userCountry;
+        document.getElementById('selected-user-image').setAttribute('src', profileImage);
+
+        // Clear the message input field
+        document.getElementById('messageInput').value = '';
+
     }
+
 
     function fetchMessages(userId) {
         console.log('Fetching messages for user:', userId);
