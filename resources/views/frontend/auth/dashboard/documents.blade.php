@@ -155,6 +155,11 @@
                                     <option value="drivers_license">Driver's License</option>
                                 </optgroup>
 
+                                <!-- Curriculum vitae -->
+                                <optgroup label="Curriculum vitae">
+                                    <option value="curriculum_vitae">Curriculum vitae (CV)</option>
+                                </optgroup>
+
                                 <!-- Proof of Address -->
                                 <optgroup label="Proof of Address">
                                     <option value="proof_of_address">Proof Of Address</option>
@@ -181,6 +186,11 @@
                                     <option value="medical_certificate">Medical Certificate</option>
                                 </optgroup>
 
+                                <!-- Other Documents -->
+                                <optgroup label="Other Documents">
+                                    <option value="other_documents">Other Documents</option>
+                                </optgroup>
+
 
 
 
@@ -198,6 +208,8 @@
                     @include('backend.user.settings.form.employement')
                     @include('backend.user.settings.form.police')
                     @include('backend.user.settings.form.medical')
+                    @include('backend.user.settings.form.cv')
+                    @include('backend.user.settings.form.other')
                 </div>
             </div>
         </div>
@@ -237,8 +249,12 @@
             document.getElementById('passportFields').style.display = 'block';
         } else if (documentType === 'national_id_card') {
             document.getElementById('nationalIdCardFields').style.display = 'block';
+        } else if (documentType === 'other_documents') {
+            document.getElementById('otherFields').style.display = 'block';
         } else if (documentType === 'drivers_license') {
             document.getElementById('licenseFields').style.display = 'block';
+        } else if (documentType === 'curriculum_vitae') {
+            document.getElementById('cvFields').style.display = 'block';
         } else if (documentType === 'proof_of_address') {
             document.getElementById('proofOfAddressFields').style.display = 'block';
         } else if (documentType === 'educational_certificates') {

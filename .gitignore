@@ -20,3 +20,4 @@ yarn-error.log
 /.vscode
 /.zed
 /resources/views/layouts
+resources/views/layouts/backend.blade.php
