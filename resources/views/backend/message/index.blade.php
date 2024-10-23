@@ -30,16 +30,9 @@
         <div class="card-body p-0">
             <div class="chat-list-wrapper p-24 overflow-y-auto scroll-sm">
 
-
                 <div id="chatList">
                     <!-- This will be dynamically populated by JavaScript after filtering -->
                 </div>
-
-
-
-
-
-
 
             </div>
         </div>
@@ -96,6 +89,7 @@
                         Send Message <span class="d-flex text-md d-sm-flex d-none"><i
                                 class="ph-fill ph-paper-plane-tilt"></i></span>
                     </button>
+
                 </form>
 
 
@@ -216,7 +210,6 @@
     });
 
     function handleUserClick(element) {
-
         const userId = element.getAttribute('data-user-id'); // Get the user ID from the data attribute
         // console.log('User ID:', userId);
         selectedUserId = userId; // Set the selected user ID
@@ -239,10 +232,8 @@
         document.getElementById('selected-user-name').textContent = userName;
         document.getElementById('selected-user-country').textContent = userCountry;
         document.getElementById('selected-user-image').setAttribute('src', profileImage);
-
         // Clear the message input field
         document.getElementById('messageInput').value = '';
-
     }
 
 
@@ -285,7 +276,6 @@
                     <p class="chat-box-item__text py-16 px-16 px-lg-4">${msg.message}</p>
                     <span class="text-gray-200 text-13 mt-2 d-block">${new Date(msg.created_at).toLocaleString()}</span>
                 </div>
-
             </div>
         `;
             chatBox.insertAdjacentHTML('beforeend', messageItem);

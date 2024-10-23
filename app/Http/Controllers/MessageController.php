@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewMessageNotification;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class MessageController extends Controller
 {
@@ -53,17 +56,25 @@ class MessageController extends Controller
         return response()->json($messages); // Return messages with sender and receiver details as JSON
     }
 
-
     public function getMessages($userId)
     {
-        // Retrieve messages where the selected user is the receiver and eager load the sender and receiver details
-        $messages = Message::where('receiver_id', $userId)
-            ->orWhere('sender_id', $userId) // Include messages where the user is the sender
+        // Get the authenticated user's ID
+        $authUserId = Auth::id();
+
+        // Retrieve messages where the authenticated user is either the sender or receiver
+        $messages = Message::where(function ($query) use ($authUserId, $userId) {
+            $query->where('sender_id', $authUserId)
+                ->where('receiver_id', $userId);
+        })
+            ->orWhere(function ($query) use ($authUserId, $userId) {
+                $query->where('sender_id', $userId)
+                    ->where('receiver_id', $authUserId);
+            })
             ->with([
                 'sender:id,name,profile_image',    // Load sender details (name, profile image)
                 'receiver:id,name,profile_image'   // Load receiver details (name, profile image)
             ])
-            ->orderBy('created_at', 'asc') // Order messages by creation date
+            ->orderBy('created_at', 'asc') // Order messages by creation date (ascending or descending based on preference)
             ->get();
 
         return response()->json($messages); // Return messages with sender and receiver details as JSON
@@ -73,7 +84,7 @@ class MessageController extends Controller
     {
         // Validate the input
         $request->validate([
-            'message' => 'required|string|max:255',
+            'message' => 'required|string',
             'receiver_id' => 'required|integer',
         ]);
 
@@ -83,6 +94,14 @@ class MessageController extends Controller
         $message->receiver_id = $request->receiver_id;
         $message->message = $request->message;
         $message->save();
+
+        // Get the receiver's email
+        $receiver = User::find($request->receiver_id);
+
+        // Send email notification to the receiver
+        if ($receiver) {
+            Mail::to($receiver->email)->send(new NewMessageNotification($request->message, auth()->user()));
+        }
 
         // Return a JSON response for AJAX
         return response()->json(['success' => true]);
