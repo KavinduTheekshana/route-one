@@ -8,10 +8,12 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EnquiryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\JobsController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VacanciesController;
@@ -120,16 +122,19 @@ Route::middleware([
         //  Calander application
         Route::get('/admin/calander', [CalanderController::class, 'index'])->name('admin.calander')->middleware(['auth', 'superadmin']);
 
-         //  Message management
-         Route::get('/admin/message', [MessageController::class, 'index'])->name('admin.message')->middleware(['auth', 'superadmin']);
-         Route::get('/search-users', [MessageController::class, 'searchUsers'])->name('search.users');
-         Route::get('/messages/{userId}', [MessageController::class, 'getMessages']);
-         Route::post('/messages/store', [MessageController::class, 'sendMessage'])->name('messages.store');
-         Route::get('/userdata/{userId}', [MessageController::class, 'getUser']);
+        //  Message management
+        Route::get('/admin/message', [MessageController::class, 'index'])->name('admin.message')->middleware(['auth', 'superadmin']);
+        Route::get('/search-users', [MessageController::class, 'searchUsers'])->name('search.users');
+        Route::get('/messages/{userId}', [MessageController::class, 'getMessages']);
+        Route::post('/messages/store', [MessageController::class, 'sendMessage'])->name('messages.store');
+        Route::get('/userdata/{userId}', [MessageController::class, 'getUser']);
 
 
+        Route::resource('invoice', InvoiceController::class);
+        Route::get('/search-users-invoice', [InvoiceController::class, 'search'])->name('users.search.invoice');
 
 
+        Route::resource('admin/services', ServicesController::class)->names('admin.services');
 
     });
 });

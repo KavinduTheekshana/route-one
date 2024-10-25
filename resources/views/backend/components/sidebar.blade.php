@@ -55,6 +55,14 @@
                         </a>
                     </li>
 
+                    <li class="sidebar-menu__item">
+                        <a href="{{ route('invoice.index') }}" class="sidebar-menu__link {{ request()->segment(1) === 'invoice' ? 'activePage' : '' }}">
+                            <span class="icon"><i class="ph ph-invoice"></i></span>
+                            <span class="text">Invoice</span>
+                        </a>
+                    </li>
+
+
 
 
                     <li class="sidebar-menu__item has-dropdown">
@@ -80,7 +88,7 @@
                             <span class="icon"><i class="ph ph-clipboard-text"></i></span>
                             <span class="text">Testimonial</span>
                         </a>
-                        <!-- Submenu start -->
+                       <!-- Submenu start -->
                         <ul class="sidebar-submenu">
                             <li class="sidebar-submenu__item">
                                 <li class="sidebar-submenu__item">
@@ -178,6 +186,28 @@
                         <span
                             class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase">Settings</span>
                     </li>
+
+                    <li class="sidebar-menu__item has-dropdown">
+                        <a href="javascript:void(0)" class="sidebar-menu__link {{ request()->segment(2) === 'services' ? 'activePage' : '' }}">
+                            <span class="icon"><i class="ph ph-sliders"></i></span>
+                            <span class="text">Settings</span>
+                        </a>
+                       <!-- Submenu start -->
+                        <ul class="sidebar-submenu">
+                            <li class="sidebar-submenu__item">
+                                <li class="sidebar-submenu__item">
+                                    <a href="{{ route('admin.services.index') }}" class="sidebar-submenu__link {{ request()->is('admin/services') ? 'active-sub-menu' : '' }}">Services</a>
+                                </li>    </li>
+                            <li class="sidebar-submenu__item">
+                                <a href="{{ route('admin.testimonial.create') }}" class="sidebar-submenu__link {{ request()->is('admin/testimonial/create') ? 'active-sub-menu' : '' }}">Products</a>
+                            </li>
+                        </ul>
+                        <!-- Submenu End -->
+                    </li>
+
+
+
+
                     <li class="sidebar-menu__item {{ request()->is('auth/account') ? 'activePage' : '' }}">
                         <a href="{{ route('auth.account') }}" class="sidebar-menu__link">
                             <span class="icon"><i class="ph ph-gear"></i></span>

@@ -35,29 +35,100 @@
 
     <div class="breadcrumb-with-buttons mb-24 flex-between flex-wrap gap-8">
         {{-- Breadcrumb  --}}
-    @section('page_name', 'Testimonial Management')
+    @section('page_name', 'Services Management')
     @include('backend.components.breadcrumb')
-<!-- Breadcrumb Right Start -->
-<div class="flex-align gap-8 flex-wrap">
 
-    <div
-        class="flex-align text-gray-500 text-13 border border-gray-100 rounded-4 ps-20 focus-border-main-600 bg-white">
-        <span class="text-lg"><i class="ph ph-plus"></i></span>
-        <a href="{{ route('admin.testimonial.create') }}"
-            class="form-control ps-8 pe-20 py-16 border-0 text-inherit rounded-4 text-center">CREATE TESTIMONIAL</a>
-    </div>
-</div>
-<!-- Breadcrumb Right End -->
 
 </div>
 
 
 @include('backend.components.alert')
 
-
-
 <div class="card overflow-hidden p-16">
-    <h4 class="mb-0 ml-4"><b>Routeone Testimonial Management</b></h4>
+    <h4 class="mb-0 ml-4"><b>Create Service</b></h4>
+    <div class="card-body p-16">
+        <form
+            action="{{ route('admin.services.store') }}"
+            method="POST" enctype="multipart/form-data" class="form-content pt-4">
+            @csrf
+
+            <div class="row gy-20">
+
+                <div class="col-xxl-12 col-md-12 col-sm-12">
+                    <div class="row g-20">
+
+                        <div class="col-sm-8">
+                            <label for="name" class="h6 mb-8 fw-semibold font-heading">Service Name <span
+                                class="text-13 text-red fw-medium">*</span></label>
+                            <div class="position-relative">
+                                <input type="text" name="service_name"
+                                    class="text-counter placeholder-13 form-control py-11 pe-76" placeholder="Service Name"
+                                    value="">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <label for="name" class="h6 mb-8 fw-semibold font-heading">Price</label>
+                            <div class="position-relative">
+                                <input type="text" name="price"
+                                    class="text-counter placeholder-13 form-control py-11 pe-76" placeholder="Price"
+                                    value="">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <label for="name" class="h6 mb-8 fw-semibold font-heading">Currency</label>
+                            <div class="position-relative">
+                                <select name="currency" class="form-select py-9 placeholder-13 text-15">
+                                    <option value="GBP">GBP</option>
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="AUD">AUD</option>
+                                    <option value="JPY">JPY</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        {{-- Meta Description --}}
+                        <div class="col-12">
+                            <div class="editor">
+                                <label for="name" class="h6 mb-8 fw-semibold font-heading">Service Description : <span
+                                    class="text-13 text-gray fw-medium">( Optional )</span></label>
+                                <textarea placeholder="Service Description" name="review" class="form-control" rows="3">{{ isset($testimonial) ? $testimonial->review : old('review') }}</textarea>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="flex-align justify-content-end gap-8">
+                    <button type="reset"
+                        class="btn btn-outline-main bg-main-100 border-main-100 text-main-600 rounded-pill py-9">Cancel</button>
+                    <button type="submit"
+                        class="btn btn-main rounded-pill py-9">{{ isset($testimonial) ? 'Update Testimonial' : 'Create Service' }}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+
+<div class="card overflow-hidden p-16 mt-30">
+    <h4 class="mb-0 ml-4"><b>Routeone Jobs Management</b></h4>
     <div class="card-body p-16">
 
 
@@ -73,7 +144,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($testimonials as $testimonial)
+                {{-- @foreach ($testimonials as $testimonial)
                 <tr>
                     <td>
 
@@ -127,7 +198,7 @@
 
                     </td>
                 </tr>
-            @endforeach
+            @endforeach --}}
 
 
             </tbody>
@@ -159,11 +230,22 @@
 <script>
     $(document).ready(function() {
         $('#example').DataTable({
-            columnDefs: [
-                { targets: 2, width: "10%" }, // 3rd column (index 2) width set to 40%
-                { targets: 0, width: "10%" }, // Example: 1st column width to 10%
-                { targets: 1, width: "10%" }, // Example: 2nd column width to 10%
-                { targets: 3, width: "40%" }, // Example: 2nd column width to 10%
+            columnDefs: [{
+                    targets: 2,
+                    width: "10%"
+                }, // 3rd column (index 2) width set to 40%
+                {
+                    targets: 0,
+                    width: "10%"
+                }, // Example: 1st column width to 10%
+                {
+                    targets: 1,
+                    width: "10%"
+                }, // Example: 2nd column width to 10%
+                {
+                    targets: 3,
+                    width: "40%"
+                }, // Example: 2nd column width to 10%
             ]
         });
     });
