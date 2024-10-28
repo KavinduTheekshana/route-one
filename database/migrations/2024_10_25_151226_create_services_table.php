@@ -18,7 +18,7 @@ return new class extends Migration
             $table->decimal('price', 8, 2)->nullable();
             $table->string('currency', 3);
             $table->text('description')->nullable();
-            $table->boolean('status')->default(0);
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }

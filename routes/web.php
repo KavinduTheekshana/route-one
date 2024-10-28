@@ -135,7 +135,9 @@ Route::middleware([
 
 
         Route::resource('admin/services', ServicesController::class)->names('admin.services');
+        Route::patch('admin/services/{service}/toggle-status', [ServicesController::class, 'toggleStatus'])->name('admin.services.toggleStatus');
 
+        // Route::patch('admin/services/{service}/status', [ServicesController::class, 'changeStatus'])->name('admin.services.changeStatus');
     });
 });
 

@@ -13,7 +13,9 @@ class ServicesController extends Controller
      */
     public function index()
     {
-        return view('backend.services.index');
+        $services = Services::orderBy('created_at', 'desc')
+            ->get();
+        return view('backend.services.index', compact('services'));
     }
 
     /**
@@ -21,7 +23,7 @@ class ServicesController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.services.create');
     }
 
     /**
@@ -34,7 +36,7 @@ class ServicesController extends Controller
             'service_name' => 'required|string|max:255',
             'price' => 'nullable|numeric',
             'currency' => 'required|string|max:3',
-            'review' => 'nullable|string'
+            'description' => 'nullable|string'
         ]);
 
         // Create a new Service record
@@ -43,7 +45,7 @@ class ServicesController extends Controller
             'service_name' => $validatedData['service_name'],
             'price' => $validatedData['price'],
             'currency' => $validatedData['currency'],
-            'description' => $validatedData['review']
+            'description' => $validatedData['description']
         ]);
 
         // Redirect back or to another route with a success message
@@ -53,9 +55,10 @@ class ServicesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Services $services)
+    public function show($id)
     {
-        //
+        $service = Services::findOrFail($id);
+        return view('backend.services.create', compact('service')); // Adjust view name as needed
     }
 
     /**
@@ -69,16 +72,36 @@ class ServicesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Services $services)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'service_name' => 'required|string|max:255',
+            'price' => 'nullable|numeric',
+            'currency' => 'nullable|string',
+            'description' => 'nullable|string',
+        ]);
+
+        $service = Services::findOrFail($id);
+        $service->update($request->all());
+
+        return redirect()->route('admin.services.index')->with('success', 'Service updated successfully!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Services $services)
+
+
+    public function toggleStatus(Services $service)
     {
-        //
+        $service->status = !$service->status; // Toggles between 1 and 0
+        $service->save();
+
+        return redirect()->back()->with('success', 'Service status updated.');
+    }
+
+
+
+    public function destroy(Services $service)
+    {
+        $service->delete();
+        return redirect()->back()->with('success', 'Service deleted successfully!');
     }
 }
