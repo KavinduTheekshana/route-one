@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\Invoice;
+use App\Models\Services;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,8 @@ class InvoiceController extends Controller
 
     public function index()
     {
-        return view('backend.invoice.index');
+        $services = Services::where('status', 1)->get();
+        return view('backend.invoice.index',compact('services'));
     }
 
 

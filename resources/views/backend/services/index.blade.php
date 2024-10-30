@@ -180,7 +180,12 @@
 <script>
     $(document).ready(function() {
         $('#example').DataTable({
-
+columnDefs: [
+                { targets: 0, width: "15%" }, // 3rd column (index 2) width set to 40%
+                { targets: 1, width: "10%" }, // Example: 1st column width to 10%
+                { targets: 2, width: "8%" }, // Example: 2nd column width to 10%
+                { targets: 3, width: "35%" }, // Example: 2nd column width to 10%
+            ]
         });
     });
 </script>

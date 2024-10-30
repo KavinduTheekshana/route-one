@@ -16,6 +16,50 @@
             border-right-color: rgb(208, 208, 208);
             border-top-color: rgb(208, 208, 208);
         }
+
+        .ts-dropdown {
+            position: relative;
+        }
+
+        .service-row {
+            transition: background-color 0.3s ease;
+            /* Smooth transition for background color */
+        }
+
+        .service-row:hover {
+            background-color: #f0f0f0;
+            /* Highlight the row on hover */
+        }
+
+        .service-row:hover .total {
+            display: none !important;
+            /* Hide the total amount on hover */
+        }
+
+        .service-row:hover .edit-icon,
+        .service-row:hover .delete-icon {
+            display: inline !important;
+            /* Show icons on hover */
+        }
+
+        .icon {
+            margin-right: 10px;
+            /* Space between icons */
+            cursor: pointer;
+            /* Change cursor to pointer for better UX */
+            color: #333;
+            font-size: 24px;
+            /* Default icon color */
+            transition: color 0.3s ease;
+            /* Smooth transition for color change */
+        }
+
+        /* Change color of icons on hover */
+        .edit-icon:hover,
+        .delete-icon:hover {
+            color: #007bff;
+            /* Change to blue (or any color you prefer) */
+        }
     </style>
 @endpush
 
@@ -65,7 +109,7 @@
                     <div class="cs-invoice_right cs-text_right">
                         <b class="cs-primary_color">Pay To:</b>
                         <p>
-                            Route One Recruitment, <br>
+                            Route One Recruitment Services Ltd, <br>
                             24 Colston Rise, Ampthill, <br>
                             Bedford, MK45 2GN <br> United Kingdom
                         </p>
@@ -74,50 +118,48 @@
                 <div class="cs-table cs-style1">
                     <div class="cs-round_border">
                         <div class="cs-table_responsive">
-                            <table>
+                            <table id="servicesTable">
                                 <thead>
                                     <tr>
 
-                                        <th class="cs-width_4 cs-semi_bold cs-primary_color cs-focus_bg">Description
+                                        <th class="cs-width_6 cs-semi_bold cs-primary_color cs-focus_bg">Description
                                         </th>
                                         <th class="cs-width_2 cs-semi_bold cs-primary_color cs-focus_bg">Qty</th>
-                                        <th class="cs-width_1 cs-semi_bold cs-primary_color cs-focus_bg">Price</th>
+                                        <th class="cs-width_1 price-display cs-semi_bold cs-primary_color cs-focus_bg">Price</th>
                                         <th class="cs-width_2 cs-semi_bold cs-primary_color cs-focus_bg cs-text_right">
                                             Total
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
 
-                                        <td class="cs-width_4">Mobile & Ios Application Development</td>
-                                        <td class="cs-width_2">2</td>
-                                        <td class="cs-width_1">$460</td>
-                                        <td class="cs-width_2 cs-text_right">$920</td>
-                                    </tr>
-                                    <tr>
-
-                                        <td class="cs-width_4">Mobile & Ios Mobile App Design, Product Design</td>
-                                        <td class="cs-width_2">1</td>
-                                        <td class="cs-width_1">$220</td>
-                                        <td class="cs-width_2 cs-text_right">$220</td>
-                                    </tr>
-                                    <tr>
-
-                                        <td class="cs-width_4">Web Design & Development</td>
-                                        <td class="cs-width_2">2</td>
-                                        <td class="cs-width_1">$120</td>
-                                        <td class="cs-width_2 cs-text_right">#240</td>
-                                    </tr>
                                 </tbody>
+                                <tr>
+                                    <td colspan="4">
+                                        <select id="serviceSelect" style="width: 100%;">
+                                            @foreach ($services as $service)
+                                                <option value="{{ $service->id }}"
+                                                    data-icon="ph ph-apple-podcasts-logo"
+                                                    data-description="{{ $service->description }}"
+                                                    data-price="{{ $service->price }}">
+                                                    {{ $service->service_name }} - {{ $service->price }}
+                                                    {{ $service->currency }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                         <div class="cs-invoice_footer cs-border_top">
                             <div class="cs-left_footer cs-mobile_hide">
                                 <p class="cs-mb0"><b class="cs-primary_color">Additional Information:</b></p>
-                                <p class="cs-m0">At check in you may need to present the credit <br>card used for
-                                    payment
-                                    of this ticket.</p>
+                                <p class="cs-m0">
+                                <ul>
+                                    <li>Email: info@routeonerecruitment.com</li>
+                                    <li>Phone: 020 31378313</li>
+                                </ul>
+                                </p>
                             </div>
                             <div class="cs-right_footer">
                                 <table>
@@ -125,21 +167,32 @@
                                         <tr class="cs-border_left">
                                             <td class="cs-width_3 cs-semi_bold cs-primary_color cs-focus_bg"
                                                 style="padding-top: 13px; padding-bottom: 13px;">Subtoal</td>
-                                            <td
+                                            <td id="subtotal"
                                                 class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">
-                                                $1140</td>
+                                                £ 0.00</td>
                                         </tr>
                                         <tr class="cs-border_left">
-                                            <td class="cs-width_3 cs-semi_bold cs-primary_color cs-focus_bg">Tax</td>
-                                            <td
+                                            <td class="cs-width_3 cs-semi_bold cs-primary_color cs-focus_bg">Tax <select
+                                                    class="tax-percentage-dropdown">
+                                                    <option value="0">0%</option>
+                                                    <option value="5">5%</option>
+                                                    <option value="10">10%</option>
+                                                    <option value="15">15%</option>
+                                                    <option value="20">20%</option>
+                                                </select></td>
+                                            <td id="tax"
                                                 class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">
-                                                -$20</td>
+                                                £ 0.00</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
+
+
+
+
                     <div class="cs-invoice_footer">
                         <div class="cs-left_footer cs-mobile_hide" style="color: #777777 !important">
                             <p class="cs-mb0"><b>Bank Details:</b> (International)</p>
@@ -159,9 +212,9 @@
                                         <td class="cs-width_3 cs-border_top_0 cs-bold cs-f16 cs-primary_color">Total
                                             Amount
                                         </td>
-                                        <td
+                                        <td id="total"
                                             class="cs-width_3 cs-border_top_0 cs-bold cs-f16 cs-primary_color cs-text_right">
-                                            $1160</td>
+                                            £ 0.00</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -282,40 +335,228 @@
 
 
 
+<!-- Modal -->
+<!-- Modal -->
+<div id="editModal"
+    style="display: none; position: fixed; z-index: 1000; background-color: rgba(0,0,0,0.5); width: 100%; height: 100%; top: 0; left: 0; justify-content: center; align-items: center;">
+    <div style="background: white; padding: 20px; border-radius: 8px; width: 300px;">
+        <h3>Edit Service</h3>
+        <label for="serviceName">Service Name:</label>
+        <input type="text" id="serviceName" style="width: 100%; margin-bottom: 10px;">
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" value="1" style="width: 100%; margin-bottom: 10px;">
+
+        <label for="price">Price:</label>
+        <input type="text" id="price" style="width: 100%; margin-bottom: 10px;">
+
+        <label for="description">Description:</label>
+        <input type="text" id="description" style="width: 100%; margin-bottom: 10px;">
+
+        <button id="saveButton">Save</button>
+        <button id="closeButton">Close</button>
+    </div>
+</div>
+
+
 
 
 @endsection
 
 @push('scripts')
 <script>
-  new TomSelect('#user-search', {
-      valueField: 'id',
-      labelField: 'name',
-      searchField: 'name',
-      placeholder: 'Search for a user...',
-      load: function(query, callback) {
-          if (!query.length) return callback();
+    document.addEventListener("DOMContentLoaded", function() {
+        const serviceSelect = new TomSelect("#serviceSelect", {
+            placeholder: "Select a service...",
+            render: {
+                option: function(data, escape) {
+                    return `<div style="display: flex; align-items: flex-start; flex-direction: column; font-size: 1.1em;">
+                            <div style="display: flex; align-items: center;">
+                                <i class="${escape(data.icon)}" style="margin-right: 8px; font-size: 1.5em;"></i>
+                                <span style="font-weight: bold;">${escape(data.text)}</span>
+                            </div>
+                            <div style="font-size: 0.9em; color: #666; padding-left: 28px;">
+                                ${escape(data.description)}
+                            </div>
+                        </div>`;
+                }
+            }
+        });
 
-          // Fetch user data with AJAX
-          fetch(`/search-users-invoice?q=${encodeURIComponent(query)}`)
-              .then(response => response.json())
-              .then(data => callback(data))
-              .catch(() => callback());
-      },
-      render: {
-          option: function(item, escape) {
-              return `
+        let currentRow; // Variable to keep track of the row being edited
+        let subtotal = 0; // Initialize subtotal
+
+        function calculateTotal(price, quantity) {
+            return (price * quantity).toFixed(2); // Calculate total and format to 2 decimal places
+        }
+
+        function updateSubtotal() {
+            // Update subtotal displayed in the table
+            document.getElementById('subtotal').innerText = `£ ${subtotal.toFixed(2)}`;
+            updateTaxAndTotal(); // Update tax and total after subtotal changes
+        }
+
+        function updateTaxAndTotal() {
+            const taxPercentage = parseFloat(document.querySelector('.tax-percentage-dropdown').value);
+            const tax = (subtotal * taxPercentage / 100).toFixed(2); // Calculate tax
+            const total = (subtotal + parseFloat(tax)).toFixed(2); // Calculate total
+
+            document.getElementById('tax').innerText = `£ ${tax}`; // Update tax display
+            document.getElementById('total').innerText = `£ ${total}`; // Update total display
+        }
+
+        serviceSelect.on('change', function(value) {
+            const selectedOption = this.options[value];
+            const serviceName = selectedOption.text;
+            const description = selectedOption.description;
+            const quantity = 1; // Default quantity
+            const price = parseFloat(selectedOption.price);
+
+            // Create a new row in the table
+            const newRow = document.createElement('tr');
+            newRow.className = "service-row";
+            newRow.innerHTML = `
+            <td class="cs-width_6">
+                ${serviceName}<br>
+                <span style="font-size: 0.8em; line-height: 1.5; color: #666;">${description}</span>
+            </td>
+            <td class="cs-width_2 quantity">${quantity}</td>
+            <td class="cs-width_2 price-display price">£ ${price.toFixed(2)}</td>
+            <td class="cs-width_2 cs-text_right actions">
+                <span class="icon edit-icon" title="Edit">
+                    <i class="ph ph-pencil"></i>
+                </span>
+                <span class="icon delete-icon" title="Delete">
+                    <i class="ph ph-trash"></i>
+                </span>
+                <span class="total" style="display: block;">£ ${calculateTotal(price, quantity)}</span> <!-- Set initial total -->
+            </td>
+        `;
+
+            // Append the new row to the table
+            document.querySelector('#servicesTable tbody').appendChild(newRow);
+
+            // Add event listener to the delete icon
+            newRow.querySelector('.delete-icon').addEventListener('click', function() {
+                // Remove the row and update the subtotal
+                const rowPrice = parseFloat(newRow.querySelector('.price').innerText.replace(
+                    '£ ', ''));
+                const rowQuantity = parseInt(newRow.querySelector('.quantity').innerText);
+                subtotal -= rowPrice; // Subtract row price from subtotal
+                newRow.remove(); // Remove the row from the table
+                updateSubtotal(); // Update subtotal display
+            });
+
+            // Add event listener to the edit icon
+            newRow.querySelector('.edit-icon').addEventListener('click', function() {
+                // Populate modal with current row data directly from the row
+                const serviceName = newRow.querySelector('.cs-width_6').childNodes[0].nodeValue
+                    .trim();
+                const descriptionElement = newRow.querySelector('.cs-width_6 span');
+                const description = descriptionElement.innerText.trim();
+                const quantity = newRow.querySelector('.cs-width_2').innerText.trim();
+                const price = newRow.querySelector('.price-display').innerText.trim().replace('£ ',
+                    '');
+
+                // Set the values in the modal
+                document.getElementById('serviceName').value = serviceName;
+                document.getElementById('quantity').value = quantity;
+                document.getElementById('price').value = price;
+                document.getElementById('description').value = description;
+
+                // Open the modal
+                document.getElementById('editModal').style.display = 'flex';
+                currentRow = newRow; // Set the current row to be edited
+            });
+
+            // Update subtotal with the price of the new service
+            subtotal += price; // Add new service price to subtotal
+            updateSubtotal(); // Update subtotal display
+
+            // Clear the select box
+            serviceSelect.clear();
+        });
+
+        // Save button functionality
+        // Save button functionality
+        document.getElementById('saveButton').addEventListener('click', function() {
+            // Update the row with new data from the modal
+            if (currentRow) {
+                const newServiceName = document.getElementById('serviceName').value;
+                const newQuantity = parseInt(document.getElementById('quantity').value);
+                const newPrice = parseFloat(document.getElementById('price').value);
+                const newDescription = document.getElementById('description')
+                .value; // Get the new description from the modal
+
+                // Get old values for subtotal calculation
+                const oldQuantity = parseInt(currentRow.querySelector('.quantity').innerText);
+                const oldPrice = parseFloat(currentRow.querySelector('.price').innerText.replace('£ ',
+                    ''));
+
+                // Update the row
+                currentRow.querySelector('.cs-width_6').innerHTML = `
+            ${newServiceName}<br>
+            <span style="font-size: 0.9em; color: #666;">${newDescription}</span> <!-- Update the description -->
+        `;
+                currentRow.querySelector('.cs-width_2').innerText = newQuantity;
+                currentRow.querySelector('.price-display').innerText = `£ ${newPrice.toFixed(2)}`;
+
+                // Calculate new total for this row
+                const newTotal = calculateTotal(newPrice, newQuantity);
+                currentRow.querySelector('.total').innerText = `£ ${newTotal}`; // Update the total
+
+                // Update subtotal based on the old and new values
+                subtotal = subtotal - (oldPrice * oldQuantity) + (newPrice *
+                newQuantity); // Update subtotal
+                updateSubtotal(); // Update subtotal display
+
+                // Close the modal
+                document.getElementById('editModal').style.display = 'none';
+            }
+        });
+
+
+        // Tax dropdown change event
+        document.querySelector('.tax-percentage-dropdown').addEventListener('change', updateTaxAndTotal);
+
+        // Close button functionality
+        document.getElementById('closeButton').addEventListener('click', function() {
+            document.getElementById('editModal').style.display = 'none'; // Close the modal
+        });
+    });
+</script>
+
+
+
+<script>
+    new TomSelect('#user-search', {
+        valueField: 'id',
+        labelField: 'name',
+        searchField: 'name',
+        placeholder: 'Search for a user...',
+        load: function(query, callback) {
+            if (!query.length) return callback();
+
+            // Fetch user data with AJAX
+            fetch(`/search-users-invoice?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => callback(data))
+                .catch(() => callback());
+        },
+        render: {
+            option: function(item, escape) {
+                return `
                   <div>
                       <strong>${escape(item.name)}</strong><br>
                       <small style="color: gray;">${escape(item.address)}</small>
                   </div>
               `;
-          },
-          item: function(item, escape) {
-              // Show both name and address in the selected item
-              return `<div>${escape(item.name)}<br><small style="color: gray;">${escape(item.address)}</small></div>`;
-          }
-      }
-  });
-  </script>
+            },
+            item: function(item, escape) {
+                // Show both name and address in the selected item
+                return `<div>${escape(item.name)}<br><small style="color: gray;">${escape(item.address)}</small></div>`;
+            }
+        }
+    });
+</script>
 @endpush
