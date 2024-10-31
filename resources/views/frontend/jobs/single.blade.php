@@ -38,7 +38,7 @@
                                             disabled>Already Applied</button>
                                     @else
                                         <button class="btn btn-primary fw-medium px-lg-5 px-4 me-3 apply-btn" type="button"
-                                            id="applyJobBtn" data-job-id="{{ $vacancy->id }}">Apply Job</button>
+                                            id="applyJobBtn" data-job-id="{{ $vacancy->id }}">Apply Now</button>
                                     @endif
                                 </div>
 
@@ -123,7 +123,7 @@
                                 @else
                                     <button class="btn btn-primary p-4 w-100 fw-medium px-lg-5 px-4 me-3 apply-btn"
                                         id="applyJobBtn" type="button" data-job-id="{{ $vacancy->id }}">Apply
-                                        Job</button>
+                                        Now</button>
                                 @endif
                             </div>
 

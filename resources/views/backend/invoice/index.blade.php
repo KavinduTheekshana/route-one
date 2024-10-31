@@ -142,8 +142,8 @@
                                                     data-icon="ph ph-apple-podcasts-logo"
                                                     data-description="{{ $service->description }}"
                                                     data-price="{{ $service->price }}">
-                                                    {{ $service->service_name }} - {{ $service->price }}
-                                                    {{ $service->currency }}
+                                                    {{ $service->service_name }}
+
                                                 </option>
                                             @endforeach
                                         </select>
@@ -232,11 +232,10 @@
                                 stroke-width="32" />
                         </svg>
                     </div>
-                    <div class="cs-note_right">
+                    <div class="cs-note_right w-100">
                         <p class="cs-mb0"><b class="cs-primary_color cs-bold">Note:</b></p>
-                        <p class="cs-m0">Here we can write a additional notes for the client to get a better
-                            understanding
-                            of this invoice.</p>
+                        <textarea name="note" id="note" class="w-100" rows="2"></textarea>
+
                     </div>
                 </div><!-- .cs-note -->
             </div>
@@ -417,16 +416,16 @@
             newRow.className = "service-row";
             newRow.innerHTML = `
             <td class="cs-width_6">
-                ${serviceName}<br>
+               <b> ${serviceName}</b><br>
                 <span style="font-size: 0.8em; line-height: 1.5; color: #666;">${description}</span>
             </td>
             <td class="cs-width_2 quantity">${quantity}</td>
             <td class="cs-width_2 price-display price">£ ${price.toFixed(2)}</td>
             <td class="cs-width_2 cs-text_right actions">
-                <span class="icon edit-icon" title="Edit">
+                <span class="icon edit-icon d-none" title="Edit">
                     <i class="ph ph-pencil"></i>
                 </span>
-                <span class="icon delete-icon" title="Delete">
+                <span class="icon delete-icon d-none" title="Delete">
                     <i class="ph ph-trash"></i>
                 </span>
                 <span class="total" style="display: block;">£ ${calculateTotal(price, quantity)}</span> <!-- Set initial total -->
