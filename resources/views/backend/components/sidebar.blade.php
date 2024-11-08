@@ -56,7 +56,7 @@
                     </li>
 
                     <li class="sidebar-menu__item">
-                        <a href="{{ route('invoice.index') }}" class="sidebar-menu__link {{ request()->segment(1) === 'invoice' ? 'activePage' : '' }}">
+                        <a href="{{ route('admin.invoice.index') }}" class="sidebar-menu__link {{ request()->segment(1) === 'invoice' ? 'activePage' : '' }}">
                             <span class="icon"><i class="ph ph-invoice"></i></span>
                             <span class="text">Invoice</span>
                         </a>

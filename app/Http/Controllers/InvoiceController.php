@@ -14,7 +14,16 @@ class InvoiceController extends Controller
     public function index()
     {
         $services = Services::where('status', 1)->get();
-        return view('backend.invoice.index',compact('services'));
+        // Get the last invoice record
+        $lastInvoice = Invoice::latest('id')->first();
+
+        // Generate the next invoice number
+        $nextInvoiceNumber = $lastInvoice ? $lastInvoice->invoice_number + 1 : 1;
+
+        // Pad the invoice number to 5 digits
+        $formattedInvoiceNumber = str_pad($nextInvoiceNumber, 5, '0', STR_PAD_LEFT);
+
+        return view('backend.invoice.index', compact('services', 'formattedInvoiceNumber'));
     }
 
 
@@ -48,7 +57,15 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'invoice_number' => 'nullable|string|max:255',
+            'date' => 'nullable|string|max:255',
+            'customer_id' => 'nullable|string|max:255',
+            'note' => 'nullable|string|max:255',
+            'service_name' => 'nullable|string|max:255',
+        ]);
+
+        dd($request->input('service_name'));
     }
 
     /**

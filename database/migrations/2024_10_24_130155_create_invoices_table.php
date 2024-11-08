@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
+            $table->string('invoice_number');
+            $table->string('date');
+            $table->string('customer_id');
+            $table->string('user_id');
+            $table->string('subtoal');
+            $table->string('tax');
+            $table->string('total_fee');
+            $table->longText('note')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

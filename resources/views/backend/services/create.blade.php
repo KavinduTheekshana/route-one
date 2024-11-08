@@ -54,10 +54,10 @@
                     <div class="position-relative">
                         <select name="currency" class="form-select py-9 placeholder-13 text-15">
                             <option value="GBP" {{ (isset($service) && $service->currency == 'GBP') ? 'selected' : '' }}>GBP</option>
-                            <option value="USD" {{ (isset($service) && $service->currency == 'USD') ? 'selected' : '' }}>USD</option>
+                            {{-- <option value="USD" {{ (isset($service) && $service->currency == 'USD') ? 'selected' : '' }}>USD</option>
                             <option value="EUR" {{ (isset($service) && $service->currency == 'EUR') ? 'selected' : '' }}>EUR</option>
                             <option value="AUD" {{ (isset($service) && $service->currency == 'AUD') ? 'selected' : '' }}>AUD</option>
-                            <option value="JPY" {{ (isset($service) && $service->currency == 'JPY') ? 'selected' : '' }}>JPY</option>
+                            <option value="JPY" {{ (isset($service) && $service->currency == 'JPY') ? 'selected' : '' }}>JPY</option> --}}
                         </select>
                     </div>
                 </div>

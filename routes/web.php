@@ -130,7 +130,9 @@ Route::middleware([
         Route::get('/userdata/{userId}', [MessageController::class, 'getUser']);
 
 
-        Route::resource('invoice', InvoiceController::class);
+        Route::resource('invoice', InvoiceController::class)
+        ->names('admin.invoice')
+        ->middleware(['auth', 'superadmin']);
         Route::get('/search-users-invoice', [InvoiceController::class, 'search'])->name('users.search.invoice');
 
 

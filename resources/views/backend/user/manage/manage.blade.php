@@ -151,7 +151,21 @@
 <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.1.6/js/dataTables.uikit.js"></script>
 <script>
-    new DataTable('#example');
+    $(document).ready(function() {
+        $('#example').DataTable({
+            columnDefs: [
+                { width: "7%", targets: 0 }, // Sets the width for the first column
+                { width: "20%", targets: 1 }, // Second column
+                { width: "15%", targets: 2 }, // Third column
+                { width: "10%", targets: 3 }, // Fourth column
+                { width: "10%", targets: 4 }, // Fifth column
+                { width: "8%", targets: 5 },  // Sixth column
+                { width: "10%", targets: 6 },  // Sixth column
+                { width: "20%", targets: 7 },  // Sixth column
+            ],
+            autoWidth: false // Disable automatic column width calculation
+        });
+    });
 </script>
 
 

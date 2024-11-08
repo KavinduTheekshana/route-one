@@ -17,6 +17,10 @@
             border-top-color: rgb(208, 208, 208);
         }
 
+        .input-custom div {
+            text-align: left !important;
+        }
+
         .ts-dropdown {
             position: relative;
         }
@@ -47,7 +51,7 @@
             /* Space between icons */
             cursor: pointer;
             /* Change cursor to pointer for better UX */
-            color: #333;
+            /* color: #333; */
             font-size: 24px;
             /* Default icon color */
             transition: color 0.3s ease;
@@ -59,6 +63,17 @@
         .delete-icon:hover {
             color: #007bff;
             /* Change to blue (or any color you prefer) */
+        }
+
+        div[contenteditable="plaintext-only"] {
+            text-align: left;
+            /* Align text to the left */
+            padding: 0;
+            /* Remove any padding */
+            margin: 0;
+            /* Remove any margin */
+            box-shadow: none;
+            /* Remove any shadow */
         }
     </style>
 @endpush
@@ -80,165 +95,188 @@
 <div class="row">
     <div class="cs-container col-md-8" style="margin: 0; z-index: 0; max-width: 100%;">
         <div class="cs-invoice cs-style1">
-            <div class="cs-invoice_in" id="download_section">
-                <div class="cs-invoice_head cs-type1 cs-mb25">
-                    <div class="cs-invoice_left">
-                        <p class="cs-invoice_number cs-primary_color cs-mb5 cs-f16"><b class="cs-primary_color">Invoice
-                                No:</b>
-                            <input type="text" name="invoice_number" required readonly
-                                class="text-counter placeholder-13 form-control py-11 pe-76 input-custom">
-                        </p>
-                        <p class="cs-invoice_date cs-primary_color cs-m0"><b class="cs-primary_color">Date:
-                            </b>
-                            <input type="date" name="date" required
-                                class="text-counter placeholder-13 form-control py-11 pe-76 input-custom">
-                            {{-- <span id="current-date">05.01.2022</span> --}}
-                        </p>
-                    </div>
-                    <div class="cs-invoice_right cs-text_right">
-                        <div class="cs-logo cs-mb5"><img src="{{ asset('backend/images/logo/routeone_logo.svg') }}"
-                                style="width: 300px;" alt="Logo"></div>
-                    </div>
-                </div>
-                <div class="cs-invoice_head cs-mb10">
-                    <div class="cs-invoice_left w-100">
-                        <b class="cs-primary_color">Invoice To:</b>
-                        <select id="user-search" placeholder="Search for a user..." style="width: 100%;"></select>
-
-                    </div>
-                    <div class="cs-invoice_right cs-text_right">
-                        <b class="cs-primary_color">Pay To:</b>
-                        <p>
-                            Route One Recruitment Services Ltd, <br>
-                            24 Colston Rise, Ampthill, <br>
-                            Bedford, MK45 2GN <br> United Kingdom
-                        </p>
-                    </div>
-                </div>
-                <div class="cs-table cs-style1">
-                    <div class="cs-round_border">
-                        <div class="cs-table_responsive">
-                            <table id="servicesTable">
-                                <thead>
-                                    <tr>
-
-                                        <th class="cs-width_6 cs-semi_bold cs-primary_color cs-focus_bg">Description
-                                        </th>
-                                        <th class="cs-width_2 cs-semi_bold cs-primary_color cs-focus_bg">Qty</th>
-                                        <th class="cs-width_1 price-display cs-semi_bold cs-primary_color cs-focus_bg">Price</th>
-                                        <th class="cs-width_2 cs-semi_bold cs-primary_color cs-focus_bg cs-text_right">
-                                            Total
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                                <tr>
-                                    <td colspan="4">
-                                        <select id="serviceSelect" style="width: 100%;">
-                                            @foreach ($services as $service)
-                                                <option value="{{ $service->id }}"
-                                                    data-icon="ph ph-apple-podcasts-logo"
-                                                    data-description="{{ $service->description }}"
-                                                    data-price="{{ $service->price }}">
-                                                    {{ $service->service_name }}
-
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                </tr>
-                            </table>
+            <form action="{{ route('admin.invoice.store') }}" method="POST">
+                @csrf
+                <div class="cs-invoice_in" id="download_section">
+                    <div class="cs-invoice_head cs-type1 cs-mb25">
+                        <div class="cs-invoice_left">
+                            <p class="cs-invoice_number cs-primary_color cs-mb5 cs-f16"><b
+                                    class="cs-primary_color">Invoice
+                                    No:</b>
+                                <input type="text" name="invoice_number" required readonly
+                                    value="{{ $formattedInvoiceNumber }}"
+                                    class="text-counter placeholder-13 form-control py-11 pe-76 input-custom">
+                            </p>
+                            <p class="cs-invoice_date cs-primary_color cs-m0"><b class="cs-primary_color">Date:
+                                </b>
+                                <input type="date" name="date"
+                                    class="text-counter placeholder-13 form-control py-11 pe-76 input-custom">
+                                {{-- <span id="current-date">05.01.2022</span> --}}
+                            </p>
                         </div>
-                        <div class="cs-invoice_footer cs-border_top">
-                            <div class="cs-left_footer cs-mobile_hide">
-                                <p class="cs-mb0"><b class="cs-primary_color">Additional Information:</b></p>
-                                <p class="cs-m0">
-                                <ul>
-                                    <li>Email: info@routeonerecruitment.com</li>
-                                    <li>Phone: 020 31378313</li>
-                                </ul>
-                                </p>
+                        <div class="cs-invoice_right cs-text_right">
+                            <div class="cs-logo cs-mb5"><img src="{{ asset('backend/images/logo/routeone_logo.svg') }}"
+                                    style="width: 300px;" alt="Logo"></div>
+                        </div>
+                    </div>
+                    <div class="cs-invoice_head cs-mb10">
+                        <div class="cs-invoice_left w-100">
+                            <b class="cs-primary_color">Invoice To:</b>
+                            <select id="user-search" name="customer_id" placeholder="Search for a user..."
+                                style="width: 100%;"></select>
+
+                        </div>
+                        <div class="cs-invoice_right cs-text_right">
+                            <b class="cs-primary_color">Pay To:</b>
+                            <p>
+                                Route One Recruitment Services Ltd, <br>
+                                24 Colston Rise, Ampthill, <br>
+                                Bedford, MK45 2GN <br> United Kingdom
+                            </p>
+                        </div>
+                    </div>
+                    <div class="cs-table cs-style1">
+                        <div class="cs-round_border">
+                            <div class="cs-table_responsive">
+                                <table id="servicesTable">
+                                    <thead>
+                                        <tr>
+
+                                            <th class="cs-width_6 cs-semi_bold cs-primary_color cs-focus_bg">Description
+                                            </th>
+                                            <th class="cs-width_2 cs-semi_bold cs-primary_color cs-focus_bg">Qty</th>
+                                            <th
+                                                class="cs-width_1 price-display cs-semi_bold cs-primary_color cs-focus_bg">
+                                                Price</th>
+                                            <th
+                                                class="cs-width_2 cs-semi_bold cs-primary_color cs-focus_bg cs-text_right">
+                                                Total
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                    <tr>
+                                        <td colspan="4">
+                                            <select id="serviceSelect" style="width: 100%;">
+                                                @foreach ($services as $service)
+                                                    <option value="{{ $service->id }}"
+                                                        data-icon="ph ph-apple-podcasts-logo"
+                                                        data-description="{{ $service->description }}"
+                                                        data-service_name="{{ $service->service_name }}"
+                                                        data-price="{{ $service->price }}">
+                                                        {{ $service->service_name }}
+
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="cs-invoice_footer cs-border_top">
+                                <div class="cs-left_footer cs-mobile_hide">
+                                    <p class="cs-mb0"><b class="cs-primary_color">Additional Information:</b></p>
+                                    <p class="cs-m0">
+                                    <ul>
+                                        <li>Email: info@routeonerecruitment.com</li>
+                                        <li>Phone: 020 31378313</li>
+                                    </ul>
+                                    </p>
+                                </div>
+                                <div class="cs-right_footer">
+                                    <table>
+                                        <tbody>
+                                            <tr class="cs-border_left">
+                                                <td class="cs-width_3 cs-semi_bold cs-primary_color cs-focus_bg"
+                                                    style="padding-top: 13px; padding-bottom: 13px;">Subtoal</td>
+                                                <td
+                                                    class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">
+                                                    <input id="subtotal" name="tax"
+                                                        class="text-counter placeholder-13 form-control py-11 pe-76 input-custom"
+                                                        type="text" value="£ 0.00">
+                                                </td>
+                                            </tr>
+                                            <tr class="cs-border_left">
+                                                <td class="cs-width_3 cs-semi_bold cs-primary_color cs-focus_bg">Tax
+                                                    <select class="tax-percentage-dropdown">
+                                                        <option value="0">0%</option>
+                                                        <option value="5">5%</option>
+                                                        <option value="10">10%</option>
+                                                        <option value="15">15%</option>
+                                                        <option value="20">20%</option>
+                                                    </select>
+                                                </td>
+                                                <td
+                                                    class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">
+                                                    <input id="tax" name="tax"
+                                                        class="text-counter placeholder-13 form-control py-11 pe-76 input-custom"
+                                                        type="text" value="£ 0.00">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="cs-invoice_footer">
+                            <div class="cs-left_footer cs-mobile_hide" style="color: #777777 !important">
+                                <p class="cs-mb0"><b>Bank Details:</b> (International)</p>
+                                <p class="cs-m0">ROUTE ONE RECRUITMENT SERVICES LTD</p>
+                                <p class="cs-m0">IBAN: GB68CLRB04060524161040</p>
+                                <p class="cs-m0">SWIFT code: CLRBGB22</p>
+
+                                <p class="cs-mb0 mt-30"><b>Bank Details:</b> (United Kingdom)</p>
+                                <p class="cs-m0">ROUTE ONE RECRUITMENT SERVICES LTD</p>
+                                <p class="cs-m0">Sort Code: 04-06-05</p>
+                                <p class="cs-m0">Account Number: 24161040</p>
                             </div>
                             <div class="cs-right_footer">
                                 <table>
                                     <tbody>
-                                        <tr class="cs-border_left">
-                                            <td class="cs-width_3 cs-semi_bold cs-primary_color cs-focus_bg"
-                                                style="padding-top: 13px; padding-bottom: 13px;">Subtoal</td>
-                                            <td id="subtotal"
-                                                class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">
-                                                £ 0.00</td>
-                                        </tr>
-                                        <tr class="cs-border_left">
-                                            <td class="cs-width_3 cs-semi_bold cs-primary_color cs-focus_bg">Tax <select
-                                                    class="tax-percentage-dropdown">
-                                                    <option value="0">0%</option>
-                                                    <option value="5">5%</option>
-                                                    <option value="10">10%</option>
-                                                    <option value="15">15%</option>
-                                                    <option value="20">20%</option>
-                                                </select></td>
-                                            <td id="tax"
-                                                class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">
-                                                £ 0.00</td>
+                                        <tr class="cs-border_none">
+                                            <td class="cs-width_3 cs-border_top_0 cs-bold cs-f16 cs-primary_color">Total
+                                                Amount
+                                            </td>
+                                            <td
+                                                class="cs-width_3 cs-border_top_0 cs-bold cs-f16 cs-primary_color cs-text_right">
+                                                <input id="total" name="total_fee" readonly
+                                                    class="text-counter placeholder-13 form-control py-11 pe-76 input-custom"
+                                                    type="text" value="£ 0.00">
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-
-
-
-
-                    <div class="cs-invoice_footer">
-                        <div class="cs-left_footer cs-mobile_hide" style="color: #777777 !important">
-                            <p class="cs-mb0"><b>Bank Details:</b> (International)</p>
-                            <p class="cs-m0">ROUTE ONE RECRUITMENT SERVICES LTD</p>
-                            <p class="cs-m0">IBAN: GB68CLRB04060524161040</p>
-                            <p class="cs-m0">SWIFT code: CLRBGB22</p>
-
-                            <p class="cs-mb0 mt-30"><b>Bank Details:</b> (United Kingdom)</p>
-                            <p class="cs-m0">ROUTE ONE RECRUITMENT SERVICES LTD</p>
-                            <p class="cs-m0">Sort Code: 04-06-05</p>
-                            <p class="cs-m0">Account Number: 24161040</p>
+                    <div class="cs-note">
+                        <div class="cs-note_left">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                                <path
+                                    d="M416 221.25V416a48 48 0 01-48 48H144a48 48 0 01-48-48V96a48 48 0 0148-48h98.75a32 32 0 0122.62 9.37l141.26 141.26a32 32 0 019.37 22.62z"
+                                    fill="none" stroke="currentColor" stroke-linejoin="round"
+                                    stroke-width="32" />
+                                <path d="M256 56v120a32 32 0 0032 32h120M176 288h160M176 368h160" fill="none"
+                                    stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="32" />
+                            </svg>
                         </div>
-                        <div class="cs-right_footer">
-                            <table>
-                                <tbody>
-                                    <tr class="cs-border_none">
-                                        <td class="cs-width_3 cs-border_top_0 cs-bold cs-f16 cs-primary_color">Total
-                                            Amount
-                                        </td>
-                                        <td id="total"
-                                            class="cs-width_3 cs-border_top_0 cs-bold cs-f16 cs-primary_color cs-text_right">
-                                            £ 0.00</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="cs-note_right w-100">
+                            <p class="cs-mb0"><b class="cs-primary_color cs-bold">Note:</b></p>
+                            <textarea name="note" id="note" class="w-100" rows="2"></textarea>
+
                         </div>
-                    </div>
+                    </div><!-- .cs-note -->
                 </div>
-                <div class="cs-note">
-                    <div class="cs-note_left">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-                            <path
-                                d="M416 221.25V416a48 48 0 01-48 48H144a48 48 0 01-48-48V96a48 48 0 0148-48h98.75a32 32 0 0122.62 9.37l141.26 141.26a32 32 0 019.37 22.62z"
-                                fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32" />
-                            <path d="M256 56v120a32 32 0 0032 32h120M176 288h160M176 368h160" fill="none"
-                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="32" />
-                        </svg>
-                    </div>
-                    <div class="cs-note_right w-100">
-                        <p class="cs-mb0"><b class="cs-primary_color cs-bold">Note:</b></p>
-                        <textarea name="note" id="note" class="w-100" rows="2"></textarea>
 
-                    </div>
-                </div><!-- .cs-note -->
-            </div>
+                <button type="submit">adasasd</button>
+            </form>
             <div class="cs-invoice_btns cs-hide_print">
                 <a href="javascript:window.print()" class="cs-invoice_btn cs-color1">
                     <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
@@ -372,7 +410,7 @@
                     return `<div style="display: flex; align-items: flex-start; flex-direction: column; font-size: 1.1em;">
                             <div style="display: flex; align-items: center;">
                                 <i class="${escape(data.icon)}" style="margin-right: 8px; font-size: 1.5em;"></i>
-                                <span style="font-weight: bold;">${escape(data.text)}</span>
+                                <span style="font-weight: bold;">${escape(data.service_name)}</span>
                             </div>
                             <div style="font-size: 0.9em; color: #666; padding-left: 28px;">
                                 ${escape(data.description)}
@@ -391,7 +429,7 @@
 
         function updateSubtotal() {
             // Update subtotal displayed in the table
-            document.getElementById('subtotal').innerText = `£ ${subtotal.toFixed(2)}`;
+            document.getElementById('subtotal').value = `£ ${subtotal.toFixed(2)}`;
             updateTaxAndTotal(); // Update tax and total after subtotal changes
         }
 
@@ -400,27 +438,40 @@
             const tax = (subtotal * taxPercentage / 100).toFixed(2); // Calculate tax
             const total = (subtotal + parseFloat(tax)).toFixed(2); // Calculate total
 
-            document.getElementById('tax').innerText = `£ ${tax}`; // Update tax display
-            document.getElementById('total').innerText = `£ ${total}`; // Update total display
+            document.getElementById('tax').value = `£ ${tax}`; // Update tax display
+            document.getElementById('total').value = `£ ${total}`; // Update total display
         }
 
         serviceSelect.on('change', function(value) {
             const selectedOption = this.options[value];
-            const serviceName = selectedOption.text;
+            const serviceName = selectedOption.service_name;
             const description = selectedOption.description;
             const quantity = 1; // Default quantity
             const price = parseFloat(selectedOption.price);
+
 
             // Create a new row in the table
             const newRow = document.createElement('tr');
             newRow.className = "service-row";
             newRow.innerHTML = `
             <td class="cs-width_6">
-               <b> ${serviceName}</b><br>
-                <span style="font-size: 0.8em; line-height: 1.5; color: #666;">${description}</span>
+                <input readonly name="service_name" class="text-counter form-control py-11 mb-1 input-custom"
+                         type="text" value="${serviceName}">
+
+             <textarea name="description" readonly name="note" id="note" class="w-100"  style="font-size: 0.8em; line-height: 1.5; color: #666; padding: 8px;">
+                ${description}</textarea>
             </td>
-            <td class="cs-width_2 quantity">${quantity}</td>
-            <td class="cs-width_2 price-display price">£ ${price.toFixed(2)}</td>
+
+            <td class="cs-width_2 quantity">
+                <input readonly name="quantity" class="text-counter form-control py-11 mb-1 input-custom"
+                         type="text" value="${quantity}">
+            </td>
+
+            <td class="cs-width_2 price-display price">
+                <input readonly name="price" class="text-counter form-control py-11 mb-1 input-custom"
+                         type="text" value="£ ${price.toFixed(2)}">
+            </td>
+
             <td class="cs-width_2 cs-text_right actions">
                 <span class="icon edit-icon d-none" title="Edit">
                     <i class="ph ph-pencil"></i>
@@ -428,8 +479,10 @@
                 <span class="icon delete-icon d-none" title="Delete">
                     <i class="ph ph-trash"></i>
                 </span>
-                <span class="total" style="display: block;">£ ${calculateTotal(price, quantity)}</span> <!-- Set initial total -->
+                <span class="total" style="display: block;"><input readonly name="total" class="text-counter form-control py-11 mb-1 input-custom"
+                         type="text" value="£ ${calculateTotal(price, quantity)}"></span> <!-- Set initial total -->
             </td>
+            <hr>
         `;
 
             // Append the new row to the table
@@ -454,7 +507,8 @@
                 const descriptionElement = newRow.querySelector('.cs-width_6 span');
                 const description = descriptionElement.innerText.trim();
                 const quantity = newRow.querySelector('.cs-width_2').innerText.trim();
-                const price = newRow.querySelector('.price-display').innerText.trim().replace('£ ',
+                const price = newRow.querySelector('.price-display').innerText.trim().replace(
+                    '£ ',
                     '');
 
                 // Set the values in the modal
@@ -485,7 +539,7 @@
                 const newQuantity = parseInt(document.getElementById('quantity').value);
                 const newPrice = parseFloat(document.getElementById('price').value);
                 const newDescription = document.getElementById('description')
-                .value; // Get the new description from the modal
+                    .value; // Get the new description from the modal
 
                 // Get old values for subtotal calculation
                 const oldQuantity = parseInt(currentRow.querySelector('.quantity').innerText);
@@ -506,7 +560,7 @@
 
                 // Update subtotal based on the old and new values
                 subtotal = subtotal - (oldPrice * oldQuantity) + (newPrice *
-                newQuantity); // Update subtotal
+                    newQuantity); // Update subtotal
                 updateSubtotal(); // Update subtotal display
 
                 // Close the modal
