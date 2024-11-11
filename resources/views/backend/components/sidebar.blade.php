@@ -55,12 +55,24 @@
                         </a>
                     </li>
 
-                    <li class="sidebar-menu__item">
-                        <a href="{{ route('admin.invoice.index') }}" class="sidebar-menu__link {{ request()->segment(1) === 'invoice' ? 'activePage' : '' }}">
+                    <li class="sidebar-menu__item has-dropdown">
+                        <a href="javascript:void(0)" class="sidebar-menu__link {{ request()->segment(1) === 'invoice' ? 'activePage' : '' }}">
                             <span class="icon"><i class="ph ph-invoice"></i></span>
                             <span class="text">Invoice</span>
                         </a>
+                        <!-- Submenu start -->
+                        <ul class="sidebar-submenu">
+                            <li class="sidebar-submenu__item">
+                                <li class="sidebar-submenu__item">
+                                    <a href="{{ route('admin.invoice.index') }}" class="sidebar-submenu__link {{ request()->is('invoice') ? 'active-sub-menu' : '' }}"> Invoice List </a>
+                                </li>    </li>
+                            <li class="sidebar-submenu__item">
+                                <a href="{{ route('admin.invoice.create') }}" class="sidebar-submenu__link {{ request()->is('invoice/create') ? 'active-sub-menu' : '' }}"> Create Invoice  </a>
+                            </li>
+                        </ul>
+                        <!-- Submenu End -->
                     </li>
+
 
 
 

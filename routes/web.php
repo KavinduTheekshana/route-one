@@ -134,6 +134,7 @@ Route::middleware([
         ->names('admin.invoice')
         ->middleware(['auth', 'superadmin']);
         Route::get('/search-users-invoice', [InvoiceController::class, 'search'])->name('users.search.invoice');
+        Route::get('/invoice/view/{invoiceId}', [InvoiceController::class, 'view'])->name('admin.invoice.view');
 
 
         Route::resource('admin/services', ServicesController::class)->names('admin.services');

@@ -16,6 +16,53 @@ class InvoiceController extends Controller
 
     public function index()
     {
+        // Get the authenticated user ID
+        $user_id = Auth::user()->id;
+
+        // Retrieve vacancies for the authenticated user, ordered by created_at in descending order
+        // $invoices = Invoice::where('user_id', $user_id)
+        //     ->orderBy('created_at', 'desc')
+        //     ->get();
+        // $invoices = Invoice::with('customer')->orderBy('created_at', 'desc')->get();
+        $invoices = Invoice::with(['customer', 'services'])->orderBy('created_at', 'desc')->get();
+
+
+        return view('backend.invoice.list', compact('invoices'));
+    }
+
+    public function view($id)
+    {
+        // Retrieve the invoice along with customer and services
+        $invoice = Invoice::with(['customer', 'services'])->findOrFail($id);
+
+        return view('backend.invoice.view', compact('invoice'));
+    }
+
+
+    public function search(Request $request)
+    {
+        $query = $request->input('q');
+        $users = Application::where('name', 'LIKE', "%$query%")
+            ->select('id', 'user_id', 'name', 'email', 'address')
+            ->get();
+
+        $results = $users->map(function ($user) {
+            return [
+                'user_id' => $user->user_id,
+                'id' => $user->id,
+                'name' => $user->name, // This will be the display name
+                'email' => $user->email, // This will be the display name
+                'address' => $user->address, // Add the address here
+            ];
+        });
+
+        return response()->json($results);
+    }
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
         $services = Services::where('status', 1)->get();
         // Get the last invoice record
         $lastInvoice = Invoice::latest('id')->first();
@@ -28,33 +75,6 @@ class InvoiceController extends Controller
         $currentDate = Carbon::now()->format('d/m/Y');
 
         return view('backend.invoice.index', compact('services', 'formattedInvoiceNumber', 'currentDate'));
-    }
-
-
-    public function search(Request $request)
-    {
-        $query = $request->input('q');
-        $users = Application::where('name', 'LIKE', "%$query%")
-            ->select('id', 'user_id', 'name', 'address')
-            ->get();
-
-        $results = $users->map(function ($user) {
-            return [
-                'user_id' => $user->user_id,
-                'id' => $user->id,
-                'name' => $user->name, // This will be the display name
-                'address' => $user->address, // Add the address here
-            ];
-        });
-
-        return response()->json($results);
-    }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -78,10 +98,13 @@ class InvoiceController extends Controller
             'total.*' => 'required|numeric|min:0',
             'total_fee' => 'required',
             'date' => 'nullable|date', // Optional date field
-            'note' => 'nullable', // Optional date field
+            'note' => 'nullable',
+            'tax_rate'=>'required' // Optional date field
         ]);
 
-        $date = $request->date ?? today();
+        $currentDate = Carbon::now()->format('d/m/Y');
+
+        $date = $request->date ?? $currentDate;
 
         // Create the invoice
         $invoice = Invoice::create([
@@ -93,6 +116,7 @@ class InvoiceController extends Controller
             'total_fee' => $request->total_fee,
             'date' => $date, // Use the $date variable
             'note' => $request->note, // Use the $date variable
+            'tax_rate' => $request->tax_rate, // Use the $date variable
         ]);
 
         // Create the associated invoice services

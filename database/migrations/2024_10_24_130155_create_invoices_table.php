@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('customer_id')->constrained()->onDelete('cascade');
             $table->string('user_id');
             $table->decimal('subtotal', 10, 2);
+            $table->string('tax_rate');
             $table->decimal('tax', 10, 2);
             $table->decimal('total_fee', 10, 2);
             $table->longText('note')->nullable();

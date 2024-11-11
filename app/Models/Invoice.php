@@ -17,11 +17,17 @@ class Invoice extends Model
         'subtotal',
         'tax',
         'total_fee',
-        'note', // other fields
+        'note',
+        'tax_rate' // other fields
     ];
 
     public function services()
     {
         return $this->hasMany(InvoiceService::class);
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Application::class, 'customer_id', 'user_id');
     }
 }

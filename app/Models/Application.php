@@ -31,5 +31,10 @@ class Application extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class, 'customer_id', 'user_id');
+    }
+
 
 }
