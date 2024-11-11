@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('invoice_number');
             $table->string('date');
-            $table->string('customer_id');
+            $table->string('customer_id')->constrained()->onDelete('cascade');
             $table->string('user_id');
-            $table->string('subtoal');
-            $table->string('tax');
-            $table->string('total_fee');
+            $table->decimal('subtotal', 10, 2);
+            $table->decimal('tax', 10, 2);
+            $table->decimal('total_fee', 10, 2);
             $table->longText('note')->nullable();
             $table->softDeletes();
             $table->timestamps();

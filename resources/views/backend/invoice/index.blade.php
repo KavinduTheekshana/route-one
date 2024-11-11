@@ -75,6 +75,10 @@
             box-shadow: none;
             /* Remove any shadow */
         }
+        .invoice-icon{
+            font-size: 18px;
+            margin-right: 8px;
+        }
     </style>
 @endpush
 
@@ -109,7 +113,7 @@
                             </p>
                             <p class="cs-invoice_date cs-primary_color cs-m0"><b class="cs-primary_color">Date:
                                 </b>
-                                <input type="date" name="date"
+                                <input type="date" name="date" value="{{$currentDate}}"
                                     class="text-counter placeholder-13 form-control py-11 pe-76 input-custom">
                                 {{-- <span id="current-date">05.01.2022</span> --}}
                             </p>
@@ -193,9 +197,9 @@
                                                     style="padding-top: 13px; padding-bottom: 13px;">Subtoal</td>
                                                 <td
                                                     class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">
-                                                    <input id="subtotal" name="tax"
+                                                    <input id="subtotal" name="subtotal"
                                                         class="text-counter placeholder-13 form-control py-11 pe-76 input-custom"
-                                                        type="text" value="£ 0.00">
+                                                        type="text" value="0.00">
                                                 </td>
                                             </tr>
                                             <tr class="cs-border_left">
@@ -212,7 +216,7 @@
                                                     class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">
                                                     <input id="tax" name="tax"
                                                         class="text-counter placeholder-13 form-control py-11 pe-76 input-custom"
-                                                        type="text" value="£ 0.00">
+                                                        type="text" value="0.00">
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -247,7 +251,7 @@
                                                 class="cs-width_3 cs-border_top_0 cs-bold cs-f16 cs-primary_color cs-text_right">
                                                 <input id="total" name="total_fee" readonly
                                                     class="text-counter placeholder-13 form-control py-11 pe-76 input-custom"
-                                                    type="text" value="£ 0.00">
+                                                    type="text" value="0.00">
                                             </td>
                                         </tr>
                                     </tbody>
@@ -275,35 +279,20 @@
                     </div><!-- .cs-note -->
                 </div>
 
-                <button type="submit">adasasd</button>
-            </form>
+                <input class="w-100" type="email" name="sender" value="kavindutheekshana@gmail.com">
+
+
             <div class="cs-invoice_btns cs-hide_print">
                 <a href="javascript:window.print()" class="cs-invoice_btn cs-color1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-                        <path
-                            d="M384 368h24a40.12 40.12 0 0040-40V168a40.12 40.12 0 00-40-40H104a40.12 40.12 0 00-40 40v160a40.12 40.12 0 0040 40h24"
-                            fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32" />
-                        <rect x="128" y="240" width="256" height="208" rx="24.32" ry="24.32"
-                            fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32" />
-                        <path d="M384 128v-24a40.12 40.12 0 00-40-40H168a40.12 40.12 0 00-40 40v24" fill="none"
-                            stroke="currentColor" stroke-linejoin="round" stroke-width="32" />
-                        <circle cx="392" cy="184" r="24" />
-                    </svg>
-                    <span>Print</span>
+                    <i class="ph ph-paper-plane-tilt invoice-icon"></i>
+                    <span>Email</span>
                 </a>
-                <button id="download_btn" class="cs-invoice_btn cs-color2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-                        <title>Download</title>
-                        <path
-                            d="M336 176h40a40 40 0 0140 40v208a40 40 0 01-40 40H136a40 40 0 01-40-40V216a40 40 0 0140-40h40"
-                            fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="32" />
-                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="32" d="M176 272l80 80 80-80M256 48v288" />
-                    </svg>
-                    <span>Download</span>
+                <button type="submit" id="download_btn" class="cs-invoice_btn cs-color2">
+                    <i class="ph ph-floppy-disk invoice-icon"></i>
+                    <span>Save</span>
                 </button>
             </div>
+        </form>
         </div>
     </div>
 
@@ -403,11 +392,11 @@
 @push('scripts')
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const serviceSelect = new TomSelect("#serviceSelect", {
-            placeholder: "Select a service...",
-            render: {
-                option: function(data, escape) {
-                    return `<div style="display: flex; align-items: flex-start; flex-direction: column; font-size: 1.1em;">
+    const serviceSelect = new TomSelect("#serviceSelect", {
+        placeholder: "Select a service...",
+        render: {
+            option: function(data, escape) {
+                return `<div style="display: flex; align-items: flex-start; flex-direction: column; font-size: 1.1em;">
                             <div style="display: flex; align-items: center;">
                                 <i class="${escape(data.icon)}" style="margin-right: 8px; font-size: 1.5em;"></i>
                                 <span style="font-weight: bold;">${escape(data.service_name)}</span>
@@ -416,62 +405,56 @@
                                 ${escape(data.description)}
                             </div>
                         </div>`;
-                }
             }
-        });
-
-        let currentRow; // Variable to keep track of the row being edited
-        let subtotal = 0; // Initialize subtotal
-
-        function calculateTotal(price, quantity) {
-            return (price * quantity).toFixed(2); // Calculate total and format to 2 decimal places
         }
+    });
 
-        function updateSubtotal() {
-            // Update subtotal displayed in the table
-            document.getElementById('subtotal').value = `£ ${subtotal.toFixed(2)}`;
-            updateTaxAndTotal(); // Update tax and total after subtotal changes
-        }
+    let currentRow; // Variable to keep track of the row being edited
+    let subtotal = 0; // Initialize subtotal
 
-        function updateTaxAndTotal() {
-            const taxPercentage = parseFloat(document.querySelector('.tax-percentage-dropdown').value);
-            const tax = (subtotal * taxPercentage / 100).toFixed(2); // Calculate tax
-            const total = (subtotal + parseFloat(tax)).toFixed(2); // Calculate total
+    function calculateTotal(price, quantity) {
+        return (price * quantity).toFixed(2); // Calculate total and format to 2 decimal places
+    }
 
-            document.getElementById('tax').value = `£ ${tax}`; // Update tax display
-            document.getElementById('total').value = `£ ${total}`; // Update total display
-        }
+    function updateSubtotal() {
+        document.getElementById('subtotal').value = `${subtotal.toFixed(2)}`;
+        updateTaxAndTotal(); // Update tax and total after subtotal changes
+    }
 
-        serviceSelect.on('change', function(value) {
-            const selectedOption = this.options[value];
-            const serviceName = selectedOption.service_name;
-            const description = selectedOption.description;
-            const quantity = 1; // Default quantity
-            const price = parseFloat(selectedOption.price);
+    function updateTaxAndTotal() {
+        const taxPercentage = parseFloat(document.querySelector('.tax-percentage-dropdown').value);
+        const tax = (subtotal * taxPercentage / 100).toFixed(2); // Calculate tax
+        const total = (subtotal + parseFloat(tax)).toFixed(2); // Calculate total
 
+        document.getElementById('tax').value = `${tax}`;
+        document.getElementById('total').value = `${total}`;
+    }
 
-            // Create a new row in the table
-            const newRow = document.createElement('tr');
-            newRow.className = "service-row";
-            newRow.innerHTML = `
+    // Add event listener to the tax percentage dropdown
+    document.querySelector('.tax-percentage-dropdown').addEventListener('change', function() {
+        updateTaxAndTotal(); // Recalculate total and tax when the dropdown value changes
+    });
+
+    serviceSelect.on('change', function(value) {
+        const selectedOption = this.options[value];
+        const serviceName = selectedOption.service_name;
+        const description = selectedOption.description.trim().replace(/\s+/g, ' ');
+        const quantity = 1; // Default quantity
+        const price = parseFloat(selectedOption.price);
+
+        // Create a new row in the table
+        const newRow = document.createElement('tr');
+        newRow.className = "service-row";
+        newRow.innerHTML = `
             <td class="cs-width_6">
-                <input readonly name="service_name" class="text-counter form-control py-11 mb-1 input-custom"
-                         type="text" value="${serviceName}">
-
-             <textarea name="description" readonly name="note" id="note" class="w-100"  style="font-size: 0.8em; line-height: 1.5; color: #666; padding: 8px;">
-                ${description}</textarea>
+                <input readonly name="service_name[]" class="text-counter form-control py-11 mb-1 input-custom"
+                       type="text" value="${serviceName}">
+                <textarea readonly name="description[]" id="note" class="w-100" style="font-size: 0.8em; line-height: 1.5; color: #666; padding: 8px;">${description}</textarea>
             </td>
-
-            <td class="cs-width_2 quantity">
-                <input readonly name="quantity" class="text-counter form-control py-11 mb-1 input-custom"
-                         type="text" value="${quantity}">
-            </td>
-
-            <td class="cs-width_2 price-display price">
-                <input readonly name="price" class="text-counter form-control py-11 mb-1 input-custom"
-                         type="text" value="£ ${price.toFixed(2)}">
-            </td>
-
+            <td class="cs-width_2 quantity"><input readonly name="quantity[]" class="text-counter form-control py-11 mb-1 input-custom"
+                       type="text" value="${quantity}"></td>
+            <td class="cs-width_2 price-display price"><input readonly name="price[]" class="text-counter form-control py-11 mb-1 input-custom"
+                       type="text" value="${price.toFixed(2)}"></td>
             <td class="cs-width_2 cs-text_right actions">
                 <span class="icon edit-icon d-none" title="Edit">
                     <i class="ph ph-pencil"></i>
@@ -479,111 +462,92 @@
                 <span class="icon delete-icon d-none" title="Delete">
                     <i class="ph ph-trash"></i>
                 </span>
-                <span class="total" style="display: block;"><input readonly name="total" class="text-counter form-control py-11 mb-1 input-custom"
-                         type="text" value="£ ${calculateTotal(price, quantity)}"></span> <!-- Set initial total -->
+                <span class="total"><input readonly name="total[]" class="text-counter form-control py-11 mb-1 input-custom"
+                           type="text" value="${calculateTotal(price, quantity)}"></span>
             </td>
-            <hr>
         `;
 
-            // Append the new row to the table
-            document.querySelector('#servicesTable tbody').appendChild(newRow);
+        document.querySelector('#servicesTable tbody').appendChild(newRow);
 
-            // Add event listener to the delete icon
-            newRow.querySelector('.delete-icon').addEventListener('click', function() {
-                // Remove the row and update the subtotal
-                const rowPrice = parseFloat(newRow.querySelector('.price').innerText.replace(
-                    '£ ', ''));
-                const rowQuantity = parseInt(newRow.querySelector('.quantity').innerText);
-                subtotal -= rowPrice; // Subtract row price from subtotal
-                newRow.remove(); // Remove the row from the table
-                updateSubtotal(); // Update subtotal display
-            });
-
-            // Add event listener to the edit icon
-            newRow.querySelector('.edit-icon').addEventListener('click', function() {
-                // Populate modal with current row data directly from the row
-                const serviceName = newRow.querySelector('.cs-width_6').childNodes[0].nodeValue
-                    .trim();
-                const descriptionElement = newRow.querySelector('.cs-width_6 span');
-                const description = descriptionElement.innerText.trim();
-                const quantity = newRow.querySelector('.cs-width_2').innerText.trim();
-                const price = newRow.querySelector('.price-display').innerText.trim().replace(
-                    '£ ',
-                    '');
-
-                // Set the values in the modal
-                document.getElementById('serviceName').value = serviceName;
-                document.getElementById('quantity').value = quantity;
-                document.getElementById('price').value = price;
-                document.getElementById('description').value = description;
-
-                // Open the modal
-                document.getElementById('editModal').style.display = 'flex';
-                currentRow = newRow; // Set the current row to be edited
-            });
-
-            // Update subtotal with the price of the new service
-            subtotal += price; // Add new service price to subtotal
-            updateSubtotal(); // Update subtotal display
-
-            // Clear the select box
-            serviceSelect.clear();
+        // Event listener for delete icon
+        newRow.querySelector('.delete-icon').addEventListener('click', function() {
+            const rowPrice = parseFloat(newRow.querySelector('.price input').value);
+            const rowQuantity = parseInt(newRow.querySelector('.quantity input').value);
+            subtotal -= rowPrice * rowQuantity; // Subtract row total from subtotal
+            newRow.remove();
+            updateSubtotal();
         });
 
-        // Save button functionality
-        // Save button functionality
-        document.getElementById('saveButton').addEventListener('click', function() {
-            // Update the row with new data from the modal
-            if (currentRow) {
-                const newServiceName = document.getElementById('serviceName').value;
-                const newQuantity = parseInt(document.getElementById('quantity').value);
-                const newPrice = parseFloat(document.getElementById('price').value);
-                const newDescription = document.getElementById('description')
-                    .value; // Get the new description from the modal
+        // Event listener for edit icon
+        newRow.querySelector('.edit-icon').addEventListener('click', function() {
+            const serviceName = newRow.querySelector('input[name="service_name[]"]').value.trim();
+            const description = newRow.querySelector('textarea[name="description[]"]').value.trim();
+            const quantity = newRow.querySelector('.quantity input').value.trim();
+            const price = newRow.querySelector('.price-display input').value.trim();
 
-                // Get old values for subtotal calculation
-                const oldQuantity = parseInt(currentRow.querySelector('.quantity').innerText);
-                const oldPrice = parseFloat(currentRow.querySelector('.price').innerText.replace('£ ',
-                    ''));
+            document.getElementById('serviceName').value = serviceName;
+            document.getElementById('quantity').value = quantity;
+            document.getElementById('price').value = price;
+            document.getElementById('description').value = description;
 
-                // Update the row
-                currentRow.querySelector('.cs-width_6').innerHTML = `
-            ${newServiceName}<br>
-            <span style="font-size: 0.9em; color: #666;">${newDescription}</span> <!-- Update the description -->
-        `;
-                currentRow.querySelector('.cs-width_2').innerText = newQuantity;
-                currentRow.querySelector('.price-display').innerText = `£ ${newPrice.toFixed(2)}`;
-
-                // Calculate new total for this row
-                const newTotal = calculateTotal(newPrice, newQuantity);
-                currentRow.querySelector('.total').innerText = `£ ${newTotal}`; // Update the total
-
-                // Update subtotal based on the old and new values
-                subtotal = subtotal - (oldPrice * oldQuantity) + (newPrice *
-                    newQuantity); // Update subtotal
-                updateSubtotal(); // Update subtotal display
-
-                // Close the modal
-                document.getElementById('editModal').style.display = 'none';
-            }
+            document.getElementById('editModal').style.display = 'flex';
+            currentRow = newRow;
         });
 
-
-        // Tax dropdown change event
-        document.querySelector('.tax-percentage-dropdown').addEventListener('change', updateTaxAndTotal);
-
-        // Close button functionality
-        document.getElementById('closeButton').addEventListener('click', function() {
-            document.getElementById('editModal').style.display = 'none'; // Close the modal
-        });
+        subtotal += price * quantity; // Add new service price to subtotal
+        updateSubtotal();
+        serviceSelect.clear();
     });
+
+    // Save button functionality
+    document.getElementById('saveButton').addEventListener('click', function() {
+        if (currentRow) {
+            const newServiceName = document.getElementById('serviceName').value;
+            const newQuantity = parseInt(document.getElementById('quantity').value);
+            const newPrice = parseFloat(document.getElementById('price').value);
+            const newDescription = document.getElementById('description').value;
+
+            const oldQuantity = parseInt(currentRow.querySelector('.quantity input').value);
+            const oldPrice = parseFloat(currentRow.querySelector('.price-display input').value);
+
+            // Update row details
+            currentRow.querySelector('.cs-width_6').innerHTML = `
+                <input readonly name="service_name[]" class="text-counter form-control py-11 mb-1 input-custom"
+                       type="text" value="${newServiceName}">
+                <textarea readonly name="description[]" id="note" class="w-100" style="font-size: 0.8em; line-height: 1.5; color: #666; padding: 8px;">${newDescription}</textarea>`;
+
+            currentRow.querySelector('.cs-width_2.quantity').innerHTML = `
+                <input readonly name="quantity[]" class="text-counter form-control py-11 mb-1 input-custom"
+                       type="text" value="${newQuantity}">`;
+
+            currentRow.querySelector('.cs-width_2.price-display.price').innerHTML = `
+                <input readonly name="price[]" class="text-counter form-control py-11 mb-1 input-custom"
+                       type="text" value="${newPrice.toFixed(2)}">`;
+
+            const newTotal = calculateTotal(newPrice, newQuantity);
+            currentRow.querySelector('.total input').value = `${newTotal}`;
+
+            // Update subtotal based on the old and new values
+            subtotal = subtotal - (oldPrice * oldQuantity) + (newPrice * newQuantity);
+            updateSubtotal();
+
+            document.getElementById('editModal').style.display = 'none';
+        }
+    });
+
+    // Close button functionality
+    document.getElementById('closeButton').addEventListener('click', function() {
+        document.getElementById('editModal').style.display = 'none';
+    });
+});
+
 </script>
 
 
 
 <script>
     new TomSelect('#user-search', {
-        valueField: 'id',
+        valueField: 'user_id',
         labelField: 'name',
         searchField: 'name',
         placeholder: 'Search for a user...',

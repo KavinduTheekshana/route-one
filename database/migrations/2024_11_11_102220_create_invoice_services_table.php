@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('invoice_item', function (Blueprint $table) {
+        Schema::create('invoice_services', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('invoice_id');
+            $table->unsignedBigInteger('invoice_id')->constrained()->onDelete('cascade');
             $table->string('service_name');
             $table->text('description')->nullable();
             $table->string('qty');
@@ -21,8 +21,6 @@ return new class extends Migration
             $table->decimal('total', 8, 2)->nullable();
             $table->softDeletes();
             $table->timestamps();
-
-            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
         });
     }
 
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('invoice_item');
+        Schema::dropIfExists('invoice_services');
     }
 };

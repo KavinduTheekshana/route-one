@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\Invoice;
+use App\Models\InvoiceService;
 use App\Models\Services;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InvoiceController extends Controller
 {
@@ -22,8 +25,9 @@ class InvoiceController extends Controller
 
         // Pad the invoice number to 5 digits
         $formattedInvoiceNumber = str_pad($nextInvoiceNumber, 5, '0', STR_PAD_LEFT);
+        $currentDate = Carbon::now()->format('d/m/Y');
 
-        return view('backend.invoice.index', compact('services', 'formattedInvoiceNumber'));
+        return view('backend.invoice.index', compact('services', 'formattedInvoiceNumber', 'currentDate'));
     }
 
 
@@ -31,11 +35,12 @@ class InvoiceController extends Controller
     {
         $query = $request->input('q');
         $users = Application::where('name', 'LIKE', "%$query%")
-            ->select('id', 'name', 'address')
+            ->select('id', 'user_id', 'name', 'address')
             ->get();
 
         $results = $users->map(function ($user) {
             return [
+                'user_id' => $user->user_id,
                 'id' => $user->id,
                 'name' => $user->name, // This will be the display name
                 'address' => $user->address, // Add the address here
@@ -57,15 +62,52 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate the incoming request
         $request->validate([
-            'invoice_number' => 'nullable|string|max:255',
-            'date' => 'nullable|string|max:255',
-            'customer_id' => 'nullable|string|max:255',
-            'note' => 'nullable|string|max:255',
-            'service_name' => 'nullable|string|max:255',
+            'invoice_number' => 'required|unique:invoices,invoice_number',
+            'customer_id' => 'required|exists:users,id',
+            'service_name' => 'required|array',
+            'service_name.*' => 'required|string',
+            'description' => 'nullable|array',
+            'description.*' => 'nullable|string',
+            'quantity' => 'required|array',
+            'quantity.*' => 'required|integer|min:1',
+            'price' => 'required|array',
+            'price.*' => 'required|numeric|min:0',
+            'total' => 'required|array',
+            'total.*' => 'required|numeric|min:0',
+            'total_fee' => 'required',
+            'date' => 'nullable|date', // Optional date field
+            'note' => 'nullable', // Optional date field
         ]);
 
-        dd($request->input('service_name'));
+        $date = $request->date ?? today();
+
+        // Create the invoice
+        $invoice = Invoice::create([
+            'invoice_number' => $request->invoice_number,
+            'customer_id' => $request->customer_id,
+            'user_id' => Auth::id(),
+            'subtotal' => $request->subtotal,
+            'tax' => $request->tax,
+            'total_fee' => $request->total_fee,
+            'date' => $date, // Use the $date variable
+            'note' => $request->note, // Use the $date variable
+        ]);
+
+        // Create the associated invoice services
+        foreach ($request->service_name as $index => $serviceName) {
+            InvoiceService::create([
+                'invoice_id' => $invoice->id,
+                'service_name' => $serviceName,
+                'description' => $request->description[$index],
+                'qty' => $request->quantity[$index],
+                'price' => $request->price[$index],
+                'total' => $request->total[$index],
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Invoice and services saved successfully.');
     }
 
     /**
