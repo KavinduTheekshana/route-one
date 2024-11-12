@@ -1,81 +1,11 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('backend/css/invoice.css') }}">
 
-    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 
 
     <style>
-        .input-custom {
-            border-radius: 2px;
-            font-size: 13px;
-            padding: 8px;
-            border-bottom-color: rgb(208, 208, 208);
-            border-left-color: rgb(208, 208, 208);
-            border-right-color: rgb(208, 208, 208);
-            border-top-color: rgb(208, 208, 208);
-        }
-
-        .input-custom div {
-            text-align: left !important;
-        }
-
-        .ts-dropdown {
-            position: relative;
-        }
-
-        .service-row {
-            transition: background-color 0.3s ease;
-            /* Smooth transition for background color */
-        }
-
-        .service-row:hover {
-            background-color: #f0f0f0;
-            /* Highlight the row on hover */
-        }
-
-        .service-row:hover .total {
-            display: none !important;
-            /* Hide the total amount on hover */
-        }
-
-        .service-row:hover .edit-icon,
-        .service-row:hover .delete-icon {
-            display: inline !important;
-            /* Show icons on hover */
-        }
-
-        .icon {
-            margin-right: 10px;
-            /* Space between icons */
-            cursor: pointer;
-            /* Change cursor to pointer for better UX */
-            /* color: #333; */
-            font-size: 24px;
-            /* Default icon color */
-            transition: color 0.3s ease;
-            /* Smooth transition for color change */
-        }
-
-        /* Change color of icons on hover */
-        .edit-icon:hover,
-        .delete-icon:hover {
-            color: #007bff;
-            /* Change to blue (or any color you prefer) */
-        }
-
-        div[contenteditable="plaintext-only"] {
-            text-align: left;
-            /* Align text to the left */
-            padding: 0;
-            /* Remove any padding */
-            margin: 0;
-            /* Remove any margin */
-            box-shadow: none;
-            /* Remove any shadow */
-        }
-
         .invoice-icon {
             font-size: 18px;
             margin-right: 8px;
@@ -87,7 +17,8 @@
             max-width: 80%;
             color: gray;
         }
-        .cs-invoice.cs-style1 .cs-invoice_head.cs-type1{
+
+        .cs-invoice.cs-style1 .cs-invoice_head.cs-type1 {
             align-items: center !important;
         }
     </style>
@@ -109,9 +40,10 @@
 
 <div class="row">
     <div class="cs-container col-md-8" style="margin: 0; z-index: 0; max-width: 100%;">
-        <div class="cs-invoice cs-style1">
-            <form action="{{ route('admin.invoice.store') }}" method="POST">
-                @csrf
+        <div id="content-to-print" style="width: 210mm; height: 297mm;">
+            <div class="cs-invoice cs-style1">
+
+                <input type="hidden" name="invoice_id" value="{{ $invoice->id }}">
                 <div class="cs-invoice_in" id="download_section">
                     <div class="cs-invoice_head cs-type1 cs-mb25">
                         <div class="cs-invoice_left">
@@ -125,14 +57,14 @@
                             </p>
                         </div>
                         <div class="cs-invoice_right cs-text_right">
-                            <div class="cs-logo cs-mb5"><img src="{{ asset('backend/images/logo/routeone_logo.svg') }}"
+                            <div class="cs-logo cs-mb5"><img src="{{ asset('backend/images/logo/routeone_logo.png') }}"
                                     style="width: 300px;" alt="Logo"></div>
                         </div>
                     </div>
                     <div class="cs-invoice_head cs-mb10">
                         <div class="cs-invoice_left w-100">
                             <b class="cs-primary_color">Invoice To:</b>
-                            <p class="cs-invoice_date cs-primary_color cs-m0" style="max-width: 230px">
+                            <p class="cs-invoice_date cs-primary_color cs-m0" style="max-width: 280px">
                                 {{ $invoice->customer->name }} <br>
                                 {{ $invoice->customer->address }}
                             </p>
@@ -154,9 +86,11 @@
                                     <thead>
                                         <tr>
 
-                                            <th class="cs-width_6 cs-semi_bold cs-primary_color cs-focus_bg">Description
+                                            <th class="cs-width_6 cs-semi_bold cs-primary_color cs-focus_bg">
+                                                Description
                                             </th>
-                                            <th class="cs-width_1 cs-semi_bold cs-primary_color cs-focus_bg">Qty</th>
+                                            <th class="cs-width_1 cs-semi_bold cs-primary_color cs-focus_bg">Qty
+                                            </th>
                                             <th
                                                 class="cs-width_2 price-display cs-semi_bold cs-primary_color cs-focus_bg">
                                                 Price</th>
@@ -171,7 +105,8 @@
                                         @foreach ($invoice->services as $service)
                                             <tr>
                                                 <td class="cs-width_6"> {{ $service->service_name }} <br> <span
-                                                        class="service-description">{{ $service->description }}</span></td>
+                                                        class="service-description">{{ $service->description }}</span>
+                                                </td>
                                                 <td class="cs-width_1">{{ $service->qty }}</td>
                                                 <td class="cs-width_2">£{{ $service->price }}</td>
                                                 <td class="cs-width_2 text-end">£{{ $service->total }}</td>
@@ -199,14 +134,12 @@
                                                     style="padding-top: 13px; padding-bottom: 13px;">Subtoal</td>
                                                 <td
                                                     class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">
-                                                  <p>£{{ $invoice->subtotal }}</p>
+                                                    <p>£{{ $invoice->subtotal }}</p>
                                                 </td>
                                             </tr>
                                             <tr class="cs-border_left">
                                                 <td class="cs-width_3 cs-semi_bold cs-primary_color cs-focus_bg">Tax
-                                                    <select class="tax-percentage-dropdown" name="tax_rate">
-                                                        <option value="{{ $invoice->tax_rate }}">{{ $invoice->tax_rate }}%</option>
-                                                    </select>
+                                                    ({{ $invoice->tax_rate }}%)
                                                 </td>
                                                 <td
                                                     class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">
@@ -265,36 +198,130 @@
                         </div>
                         <div class="cs-note_right w-100">
                             <p class="cs-mb0"><b class="cs-primary_color cs-bold">Note:</b></p>
-                            <textarea name="note" id="note" class="w-100" rows="2">{{ $invoice->note }}</textarea>
+                            <p class="cs-m0"> {{ $invoice->note ?? 'N/A' }}</p>
 
                         </div>
                     </div><!-- .cs-note -->
                 </div>
 
-                <input type="text" id="user-email-input" placeholder="User Email">
 
 
-                <div class="cs-invoice_btns cs-hide_print">
-                    {{-- <a href="javascript:window.print()" class="cs-invoice_btn cs-color1">
-                        <i class="ph ph-paper-plane-tilt invoice-icon"></i>
-                        <span>Save & Email</span>
-                    </a> --}}
 
-                    <button type="submit" class="cs-invoice_btn cs-color1">
-                        <i class="ph ph-paper-plane-tilt invoice-icon"></i>
-                        <span>Save & Email</span>
-                    </button>
 
-                    <button type="submit" id="download_btn" class="cs-invoice_btn cs-color2">
-                        <i class="ph ph-floppy-disk invoice-icon"></i>
-                        <span>Save</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="cs-container col-md-3" style="margin: 0; z-index: 0; max-width: 100%;">
+        <div class="card overflow-hidden p-16 text-center">
+            <button id="download-pdf" type="button"
+                class="btn btn-main justify-content-center text-sm btn-sm text-center w-100 py-12 d-flex align-items-center gap-2"
+                data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <i class="ph ph-download invoice-icon"></i>
+                <span>Download Invoice</span>
+            </button>
+
+
+            <button type="button" data-bs-toggle="offcanvas" data-bs-target="#sendInvoiceOffcanvas"
+                class="mt-18 btn btn-outline-main justify-content-center text-sm btn-sm text-center w-100 py-12 d-flex align-items-center gap-2"
+                data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <i class="ph ph-paper-plane-tilt invoice-icon"></i>
+                <span>Email Invoice</span>
+            </button>
+
+
+        </div>
+
+        <div id="response-message" class="alert alert-success alert-dismissible mt-12" style="display: none;" role="alert">
+
+
+            <p class="mb-0" id="response-message-text">
+
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+
+        {{-- <div class="cs-invoice_btns cs-hide_print">
+            <button id="download-pdf"
+                class="cs-invoice_btn cs-color1">
+                <i class="ph ph-paper-plane-tilt invoice-icon"></i>
+                <span>Download PDF</span>
+            </button>
+
+            <button id="send-email" class="cs-invoice_btn cs-color2">
+                <i class="ph ph-paper-plane-tilt invoice-icon"></i>
+                <span>Email</span>
+            </button>
+        </div> --}}
+    </div>
+
+
+
+    <!-- Offcanvas -->
+    <!-- Send Invoice Sidebar -->
+    <div style="width: 500px" class="offcanvas offcanvas-end" id="sendInvoiceOffcanvas" aria-hidden="true">
+        <div class="offcanvas-header mb-3">
+            <h5 class="offcanvas-title">Send Invoice</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body flex-grow-1">
+            <form>
+
+
+                <div class="form-floating form-floating-outline mb-12">
+                    <input type="text" class="form-control" value="info@routeonerecruitment.com"
+                        placeholder="info@routeonerecruitment.com" readonly />
+                    <label>From</label>
+                </div>
+
+
+                <div class="form-floating form-floating-outline mb-12">
+                    <input type="text" class="form-control" id="invoice-to"
+                        value="{{ $invoice->customer->email }}" />
+                    <label>To</label>
+                </div>
+
+                <div class="form-floating form-floating-outline mb-12">
+                    <input type="text" class="form-control" id="email-subject"
+                        value="Invoice from Routeone Recruitment" placeholder="Invoice regarding goods" />
+                    <label for="invoice-subject">Subject</label>
+                </div>
+
+
+
+
+                <div class="form-floating form-floating-outline mb-4">
+                    <textarea class="form-control" id="invoice-message" style="height: 190px">Please find the attached PDF invoice.</textarea>
+                    <label>Message</label>
+                </div>
+                <div class="mb-12">
+                    <span
+                        class="text-13 py-2 px-8 bg-green-50 text-green-600 d-inline-flex align-items-center gap-8 rounded-pill">
+                        <i class="ph ph-paperclip"></i> Invoice Attached
+                    </span>
+                    {{-- <span class="badge bg-label-primary rounded-pill">
+                            <i class="mdi mdi-link-variant mdi-14px me-1"></i>
+                            <span class="align-middle"></span>
+                        </span> --}}
+                </div>
+                <div class="mb-3 d-flex flex-wrap">
+                    <button id="send-email" type="button" class="btn btn-primary me-3"
+                        data-bs-dismiss="offcanvas">Email Invoice</button>
+                    <button type="button"
+                        class="btn btn-outline-main bg-main-100 border-main-100 text-main-600  py-9"
+                        data-bs-dismiss="offcanvas">
+                        Cancel
                     </button>
                 </div>
             </form>
         </div>
     </div>
+    <!-- /Send Invoice Sidebar -->
 
 
+    <!-- /Offcanvas -->
 
 
 
@@ -302,28 +329,7 @@
 
 
 
-<!-- Modal -->
-<!-- Modal -->
-<div id="editModal"
-    style="display: none; position: fixed; z-index: 1000; background-color: rgba(0,0,0,0.5); width: 100%; height: 100%; top: 0; left: 0; justify-content: center; align-items: center;">
-    <div style="background: white; padding: 20px; border-radius: 8px; width: 300px;">
-        <h3>Edit Service</h3>
-        <label for="serviceName">Service Name:</label>
-        <input type="text" id="serviceName" style="width: 100%; margin-bottom: 10px;">
 
-        <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" value="1" style="width: 100%; margin-bottom: 10px;">
-
-        <label for="price">Price:</label>
-        <input type="text" id="price" style="width: 100%; margin-bottom: 10px;">
-
-        <label for="description">Description:</label>
-        <input type="text" id="description" style="width: 100%; margin-bottom: 10px;">
-
-        <button id="saveButton">Save</button>
-        <button id="closeButton">Close</button>
-    </div>
-</div>
 
 
 
@@ -332,202 +338,123 @@
 
 @push('scripts')
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const serviceSelect = new TomSelect("#serviceSelect", {
-            placeholder: "Select a service...",
-            render: {
-                option: function(data, escape) {
-                    return `<div style="display: flex; align-items: flex-start; flex-direction: column; font-size: 1.1em;">
-                            <div style="display: flex; align-items: center;">
-                                <i class="${escape(data.icon)}" style="margin-right: 8px; font-size: 1.5em;"></i>
-                                <span style="font-weight: bold;">${escape(data.service_name)}</span>
-                            </div>
-                            <div style="font-size: 0.9em; color: #666; padding-left: 28px;">
-                                ${escape(data.description)}
-                            </div>
-                        </div>`;
-                }
-            }
-        });
+    // ---------- Download Invoice ----------
+    document.getElementById('download-pdf').addEventListener('click', function() {
+        // Options for html2canvas. Increasing scale can improve quality.
+        const canvasOptions = {
+            scale: 3, // Adjust scale factor as needed for quality vs. performance
+            useCORS: true // This is important if you have images that are hosted on other domains
+        };
 
-        let currentRow; // Variable to keep track of the row being edited
-        let subtotal = 0; // Initialize subtotal
-
-        function calculateTotal(price, quantity) {
-            return (price * quantity).toFixed(2); // Calculate total and format to 2 decimal places
-        }
-
-        function updateSubtotal() {
-            document.getElementById('subtotal').value = `${subtotal.toFixed(2)}`;
-            updateTaxAndTotal(); // Update tax and total after subtotal changes
-        }
-
-        function updateTaxAndTotal() {
-            const taxPercentage = parseFloat(document.querySelector('.tax-percentage-dropdown').value);
-            const tax = (subtotal * taxPercentage / 100).toFixed(2); // Calculate tax
-            const total = (subtotal + parseFloat(tax)).toFixed(2); // Calculate total
-
-            document.getElementById('tax').value = `${tax}`;
-            document.getElementById('total').value = `${total}`;
-        }
-
-        // Add event listener to the tax percentage dropdown
-        document.querySelector('.tax-percentage-dropdown').addEventListener('change', function() {
-            updateTaxAndTotal(); // Recalculate total and tax when the dropdown value changes
-        });
-
-        serviceSelect.on('change', function(value) {
-            const selectedOption = this.options[value];
-            const serviceName = selectedOption.service_name;
-            const description = selectedOption.description.trim().replace(/\s+/g, ' ');
-            const quantity = 1; // Default quantity
-            const price = parseFloat(selectedOption.price);
-
-            // Create a new row in the table
-            const newRow = document.createElement('tr');
-            newRow.className = "service-row";
-            newRow.innerHTML = `
-            <td class="cs-width_6">
-                <input readonly name="service_name[]" class="text-counter form-control py-11 mb-1 input-custom"
-                       type="text" value="${serviceName}">
-                <textarea readonly name="description[]" id="note" class="w-100" style="font-size: 0.8em; line-height: 1.5; color: #666; padding: 8px;">${description}</textarea>
-            </td>
-            <td class="cs-width_2 quantity"><input readonly name="quantity[]" class="text-counter form-control py-11 mb-1 input-custom"
-                       type="text" value="${quantity}"></td>
-            <td class="cs-width_2 price-display price"><input readonly name="price[]" class="text-counter form-control py-11 mb-1 input-custom"
-                       type="text" value="${price.toFixed(2)}"></td>
-            <td class="cs-width_2 cs-text_right actions">
-                <span class="icon edit-icon d-none" title="Edit">
-                    <i class="ph ph-pencil"></i>
-                </span>
-                <span class="icon delete-icon d-none" title="Delete">
-                    <i class="ph ph-trash"></i>
-                </span>
-                <span class="total"><input readonly name="total[]" class="text-counter form-control py-11 mb-1 input-custom"
-                           type="text" value="${calculateTotal(price, quantity)}"></span>
-            </td>
-        `;
-
-            document.querySelector('#servicesTable tbody').appendChild(newRow);
-
-            // Event listener for delete icon
-            newRow.querySelector('.delete-icon').addEventListener('click', function() {
-                const rowPrice = parseFloat(newRow.querySelector('.price input').value);
-                const rowQuantity = parseInt(newRow.querySelector('.quantity input').value);
-                subtotal -= rowPrice * rowQuantity; // Subtract row total from subtotal
-                newRow.remove();
-                updateSubtotal();
+        // Convert the div to canvas using html2canvas with the specified options
+        html2canvas(document.getElementById('content-to-print'), canvasOptions).then(canvas => {
+            // Create a new jsPDF instance
+            const {
+                jsPDF
+            } = window.jspdf;
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
             });
 
-            // Event listener for edit icon
-            newRow.querySelector('.edit-icon').addEventListener('click', function() {
-                const serviceName = newRow.querySelector('input[name="service_name[]"]').value
-                    .trim();
-                const description = newRow.querySelector('textarea[name="description[]"]').value
-                    .trim();
-                const quantity = newRow.querySelector('.quantity input').value.trim();
-                const price = newRow.querySelector('.price-display input').value.trim();
+            // Convert the canvas to an image using PNG format for lossless compression
+            const imgData = canvas.toDataURL('image/jpeg', 0.85);
 
-                document.getElementById('serviceName').value = serviceName;
-                document.getElementById('quantity').value = quantity;
-                document.getElementById('price').value = price;
-                document.getElementById('description').value = description;
 
-                document.getElementById('editModal').style.display = 'flex';
-                currentRow = newRow;
-            });
+            // Calculate the number of pages
+            const imgWidth = 210; // A4 width in mm
+            const imgHeight = canvas.height * imgWidth / canvas.width;
+            const pageHeight = 297; // A4 height in mm
+            let heightLeft = imgHeight;
 
-            subtotal += price * quantity; // Add new service price to subtotal
-            updateSubtotal();
-            serviceSelect.clear();
-        });
-
-        // Save button functionality
-        document.getElementById('saveButton').addEventListener('click', function() {
-            if (currentRow) {
-                const newServiceName = document.getElementById('serviceName').value;
-                const newQuantity = parseInt(document.getElementById('quantity').value);
-                const newPrice = parseFloat(document.getElementById('price').value);
-                const newDescription = document.getElementById('description').value;
-
-                const oldQuantity = parseInt(currentRow.querySelector('.quantity input').value);
-                const oldPrice = parseFloat(currentRow.querySelector('.price-display input').value);
-
-                // Update row details
-                currentRow.querySelector('.cs-width_6').innerHTML =
-                    `
-                <input readonly name="service_name[]" class="text-counter form-control py-11 mb-1 input-custom"
-                       type="text" value="${newServiceName}">
-                <textarea readonly name="description[]" id="note" class="w-100" style="font-size: 0.8em; line-height: 1.5; color: #666; padding: 8px;">${newDescription}</textarea>`;
-
-                currentRow.querySelector('.cs-width_2.quantity').innerHTML = `
-                <input readonly name="quantity[]" class="text-counter form-control py-11 mb-1 input-custom"
-                       type="text" value="${newQuantity}">`;
-
-                currentRow.querySelector('.cs-width_2.price-display.price').innerHTML = `
-                <input readonly name="price[]" class="text-counter form-control py-11 mb-1 input-custom"
-                       type="text" value="${newPrice.toFixed(2)}">`;
-
-                const newTotal = calculateTotal(newPrice, newQuantity);
-                currentRow.querySelector('.total input').value = `${newTotal}`;
-
-                // Update subtotal based on the old and new values
-                subtotal = subtotal - (oldPrice * oldQuantity) + (newPrice * newQuantity);
-                updateSubtotal();
-
-                document.getElementById('editModal').style.display = 'none';
+            // Add the image to the PDF, possibly across multiple pages if it's long
+            let position = 0;
+            while (heightLeft >= 0) {
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
             }
+            const now = new Date();
+            const dateStr = now.toISOString().replace(/:/g, '-').replace(/\..+/, '').replace('T', '_');
+            const fileName = `Invoice_${dateStr}.pdf`;
+            // Save the PDF
+            pdf.save(fileName);
         });
 
-        // Close button functionality
-        document.getElementById('closeButton').addEventListener('click', function() {
-            document.getElementById('editModal').style.display = 'none';
-        });
     });
-</script>
 
 
 
-<script>
-    new TomSelect('#user-search', {
-        valueField: 'user_id',
-        labelField: 'name',
-        searchField: 'name',
-        placeholder: 'Search for a user...',
-        load: function(query, callback) {
-            if (!query.length) return callback();
 
-            // Fetch user data with AJAX
-            fetch(`/search-users-invoice?q=${encodeURIComponent(query)}`)
+    // -------------- Mail Invoice ---------------
+    // -------------- Mail Invoice ---------------
+    document.getElementById('send-email').addEventListener('click', function() {
+        const canvasOptions = {
+            scale: 3, // Adjust scale factor as needed for quality vs. performance
+            useCORS: true // This is important if you have images that are hosted on other domains
+        };
+        html2canvas(document.getElementById('content-to-print'), canvasOptions).then(canvas => {
+            const pdf = new window.jspdf.jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+            const imgData = canvas.toDataURL('image/jpeg', 0.85);
+            const imgWidth = 210; // A4 width in mm
+            const pageHeight = 297; // A4 height in mm
+            const imgHeight = canvas.height * imgWidth / canvas.width;
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+
+                pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+
+            // Convert the PDF to a base64 string
+            const pdfBase64String = pdf.output('datauristring');
+            const base64Data = pdfBase64String.split(';base64,')[1];
+
+            const emailSubject = document.getElementById('email-subject').value;
+            const emailReciever = document.getElementById('invoice-to').value;
+            const emailMessage = document.getElementById('invoice-message').value;
+
+
+
+            fetch('/sendpdf', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                            .getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        pdf: base64Data,
+                        subject: emailSubject,
+                        receiver: emailReciever,
+                        message: emailMessage
+                    })
+                })
                 .then(response => response.json())
-                .then(data => callback(data))
-                .catch(() => callback());
-        },
-        render: {
-            option: function(item, escape) {
-                return `
-                  <div>
-                      <strong>${escape(item.name)}</strong><br>
-                      <small style="color: gray;">${escape(item.address)}</small><br>
-                      <small style="color: gray;">${escape(item.email)}</small>
-                  </div>
-              `;
-            },
-            item: function(item, escape) {
-                // Show both name and email in the selected item
-                return `<div>${escape(item.name)}<br><small style="color: gray;">${escape(item.email)}</small></div>`;
-            }
-        },
-        onChange: function(value) {
-            console.log(value); // Log the selected value
-            const selectedItem = this.options[value];
-            console.log(selectedItem); // Log the selected item to inspect its properties
-
-            if (selectedItem) {
-                document.getElementById('user-email-input').value = selectedItem.email;
-            }
-        }
-
+                .then(data => {
+                    displayMessag(data.message);
+                })
+                .catch((error) => {
+                    displayMessag('Error: ' + error.message);
+                });
+        });
     });
+
+    function displayMessag(message) {
+        const messageDiv = document.getElementById('response-message');
+        messageDiv.style.display = 'block';
+        var messageParagraph = document.getElementById('response-message-text');
+        messageParagraph.textContent = message;
+    }
 </script>
 @endpush

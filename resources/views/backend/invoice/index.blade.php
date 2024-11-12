@@ -80,6 +80,11 @@
             font-size: 18px;
             margin-right: 8px;
         }
+        .save-btn{
+            border-radius: 5px !important;
+            width: 250px !important;
+            justify-content: center !important;
+        }
     </style>
 @endpush
 
@@ -198,7 +203,7 @@
                                                     style="padding-top: 13px; padding-bottom: 13px;">Subtoal</td>
                                                 <td
                                                     class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">
-                                                    <input id="subtotal" name="subtotal"
+                                                    <input id="subtotal" name="subtotal" readonly
                                                         class="text-counter placeholder-13 form-control py-11 pe-76 input-custom"
                                                         type="text" value="0.00">
                                                 </td>
@@ -215,7 +220,7 @@
                                                 </td>
                                                 <td
                                                     class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">
-                                                    <input id="tax" name="tax"
+                                                    <input id="tax" name="tax" readonly
                                                         class="text-counter placeholder-13 form-control py-11 pe-76 input-custom"
                                                         type="text" value="0.00">
                                                 </td>
@@ -281,21 +286,15 @@
                     </div><!-- .cs-note -->
                 </div>
 
-                <input type="text" id="user-email-input" placeholder="User Email">
-
-
                 <div class="cs-invoice_btns cs-hide_print">
                     {{-- <a href="javascript:window.print()" class="cs-invoice_btn cs-color1">
                         <i class="ph ph-paper-plane-tilt invoice-icon"></i>
                         <span>Save & Email</span>
                     </a> --}}
 
-                    <button type="submit" class="cs-invoice_btn cs-color1">
-                        <i class="ph ph-paper-plane-tilt invoice-icon"></i>
-                        <span>Save & Email</span>
-                    </button>
 
-                    <button type="submit" id="download_btn" class="cs-invoice_btn cs-color2">
+
+                    <button type="submit" id="download_btn" class="cs-invoice_btn save-btn cs-color2">
                         <i class="ph ph-floppy-disk invoice-icon"></i>
                         <span>Save</span>
                     </button>

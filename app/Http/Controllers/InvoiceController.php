@@ -2,17 +2,51 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\InvoiceMail;
+use App\Mail\SendPdfMail;
 use App\Models\Application;
 use App\Models\Invoice;
 use App\Models\InvoiceService;
 use App\Models\Services;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class InvoiceController extends Controller
 {
+
+    public function sendPdf(Request $request)
+    {
+        $request->validate([
+            'pdf' => 'required|string',
+            'subject' => 'required|string',
+            'receiver' => 'required|string|email',
+            'message' => 'required|string',
+        ]);
+
+        $pdfData = $request->input('pdf');
+        $subjectLine = $request->input('subject');
+        $recipientEmail = $request->input('receiver');
+        $emailMessage = $request->input('message');
+
+
+        // Decode the PDF from the base64 string
+        $decodedPdf = base64_decode($pdfData);
+
+        // Use Laravel's Mailable feature to send the PDF as an attachment
+        try {
+            Mail::to($recipientEmail)->send(new SendPdfMail($pdfData, $subjectLine, $emailMessage));
+            return response()->json(['message' => 'Invoice sent successfully']);
+        } catch (\Exception $e) {
+            // Handle the error
+            return response()->json(['message' => 'Failed to send Invoice', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+
 
     public function index()
     {
@@ -130,8 +164,9 @@ class InvoiceController extends Controller
                 'total' => $request->total[$index],
             ]);
         }
-
-        return redirect()->back()->with('success', 'Invoice and services saved successfully.');
+        return redirect()->route('admin.invoice.view', $invoice->id)
+        ->with('success', 'Invoice saved successfully.');
+        // return redirect()->back()->with('success', 'Invoice and services saved successfully.');
     }
 
     /**
@@ -163,6 +198,7 @@ class InvoiceController extends Controller
      */
     public function destroy(Invoice $invoice)
     {
-        //
+        $invoice->delete();
+        return redirect()->back()->with('success', 'Invoice deleted successfully!');
     }
 }

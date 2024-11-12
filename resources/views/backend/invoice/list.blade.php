@@ -65,7 +65,7 @@
                     <th>Invoice Number</th>
                     <th>Date</th>
                     <th>Services</th>
-                    <th>Customer Name</th>
+                    <th>Customer Details</th>
                     <th>Subtotal</th>
                     <th>Tax</th>
                     <th>Total Amount</th>
@@ -74,29 +74,32 @@
             </thead>
             <tbody>
                 @foreach ($invoices as $invoice)
-                <tr>
-                    <td>#{{ $invoice->invoice_number }}</td>
-                    <td>{{ $invoice->date }}</td>
-                    <td>
-                        <ul>
-                            @foreach($invoice->services as $service)
-                                <li>
-                                    <strong></strong> {{ $service->service_name }}<br>
-                                    <strong>Quantity:</strong> {{ $service->qty }} | <strong>Price:</strong> ${{ $service->price }}
-                                    | <strong>Total:</strong> ${{ $service->total }} <br><br>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </td>
-                    <td>{{ $invoice->customer->name ?? 'N/A' }} <br> {{ $invoice->customer->email ?? 'N/A' }}</td>
-                    <td>£ {{ $invoice->subtotal }}</td>
-                    <td>£ {{ $invoice->tax }}</td>
-                    <td>£ {{ $invoice->total_fee }}</td>
+                    <tr>
+                        <td>#{{ $invoice->invoice_number }}</td>
+                        <td>{{ $invoice->date }}</td>
+                        <td>
+                            <ul>
+                                @foreach ($invoice->services as $service)
+                                    <li>
+                                        <strong></strong> {{ $service->service_name }}<br>
+                                        <strong>Quantity:</strong> {{ $service->qty }} | <strong>Price:</strong>
+                                        ${{ $service->price }}
+                                        | <strong>Total:</strong> ${{ $service->total }} <br><br>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </td>
+                        <td>{{ $invoice->customer->name ?? 'N/A' }} <br> <span
+                                class="text-danger">{{ $invoice->customer->email ?? 'N/A' }}</span><br> <span
+                                class="text-primary">{{ $invoice->customer->address ?? 'N/A' }}</span></td>
+                        <td>£ {{ $invoice->subtotal }}</td>
+                        <td>£ {{ $invoice->tax }}</td>
+                        <td>£ {{ $invoice->total_fee }}</td>
 
 
 
 
-                    <td>
+                        <td>
 
                             {{-- @if ($vacancy->status == 1)
                                 <a href="{{ route('vacancies.block', $vacancy->id) }}" class="btn btn-danger btn-sm"><i class="ph ph-lock"></i></a>
@@ -112,16 +115,16 @@
                             </button>
 
                             <!-- Delete Form -->
-                            {{-- <form id="delete-form-{{ $invoice->id }}"
+                            <form id="delete-form-{{ $invoice->id }}"
                                 action="{{ route('invoice.destroy', $invoice->id) }}" method="POST"
                                 style="display: none;">
                                 @csrf
                                 @method('DELETE')
-                            </form> --}}
+                            </form>
 
-                    </td>
-                </tr>
-            @endforeach
+                        </td>
+                    </tr>
+                @endforeach
 
 
             </tbody>
@@ -130,7 +133,7 @@
                     <th>Invoice Number</th>
                     <th>Date</th>
                     <th>Services</th>
-                    <th>Customer Name</th>
+                    <th>Customer Details</th>
                     <th>Subtotal</th>
                     <th>Tax</th>
                     <th>Total Amount</th>
@@ -153,13 +156,51 @@
 <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.1.6/js/dataTables.uikit.js"></script>
 <script>
-    new DataTable('#example');
+    new DataTable('#example', {
+        order: [
+            [0, 'desc']
+        ],
+        columnDefs: [{
+                width: "6%",
+                targets: 0
+            }, // Sets the width for the first column
+            {
+                width: "10%",
+                targets: 1
+            }, // Second column
+            {
+                width: "23%",
+                targets: 2
+            }, // Third column
+            {
+                width: "23%",
+                targets: 3
+            }, // Fourth column
+            {
+                width: "10%",
+                targets: 4
+            }, // Fifth column
+            {
+                width: "8%",
+                targets: 5
+            }, // Sixth column
+            {
+                width: "10%",
+                targets: 6
+            }, // Sixth column
+            {
+                width: "10%",
+                targets: 7
+            }, // Sixth column
+        ],
+        autoWidth: false // Disable automatic column width calculation// Set the first column (index 0) to order by descending
+    });
 </script>
 
 
 
 <script>
-    function confirmDelete(userId) {
+    function confirmDelete(invoiceID) {
         Swal.fire({
             title: 'Are you sure?',
             text: "This action cannot be undone!",
@@ -171,7 +212,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 // If confirmed, submit the form
-                document.getElementById('delete-form-' + userId).submit();
+                document.getElementById('delete-form-' + invoiceID).submit();
             }
         });
     }
