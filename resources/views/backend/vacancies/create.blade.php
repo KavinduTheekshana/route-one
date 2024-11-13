@@ -245,11 +245,21 @@
     uploadImageFunction('#imageUpload', '#profileImagePreview');
 </script>
 
-<script src="https://cdn.tiny.cloud/1/mc59edcciy0vssoo3ojx1vwpo2jbsemez61eo60xxi6p5wse/tinymce/7/tinymce.min.js"
-    referrerpolicy="origin"></script>
+<!-- Place the first <script> tag in your HTML's <head> -->
+    <script src="https://cdn.tiny.cloud/1/mc59edcciy0vssoo3ojx1vwpo2jbsemez61eo60xxi6p5wse/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <script>
+          tinymce.init({
+    selector: 'textarea#description', // Replace this CSS selector to match the placeholder element for TinyMCE
+    plugins: 'code table lists',
+    toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | table'
+  });
+    </script>
+    <!-- Place the following <script> and <textarea> tags your HTML's <body> -->
 
 
-<script>
+
+{{-- <script>
     tinymce.init({
         selector: '#description',
         plugins: [
@@ -278,5 +288,5 @@
         ai_request: (request, respondWith) => respondWith.string(() => Promise.reject(
             'See docs to implement AI Assistant')),
     });
-</script>
+</script> --}}
 @endpush
