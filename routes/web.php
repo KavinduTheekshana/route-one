@@ -53,6 +53,8 @@ Route::middleware([
     Route::middleware(['auth', 'status'])->group(function () {
 
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/admin/monthly-data', [DashboardController::class, 'getMonthlyData'])->name('admin.monthlyData');
+
         Route::get('/auth/account', [DashboardController::class, 'account'])->name('auth.account');
         Route::post('/auth/profile/update', [ProfileController::class, 'profile'])->name('auth.profile.update');
         Route::post('/auth/password/update', [ProfileController::class, 'password'])->name('auth.password.update');
