@@ -80,7 +80,8 @@
             font-size: 18px;
             margin-right: 8px;
         }
-        .save-btn{
+
+        .save-btn {
             border-radius: 5px !important;
             width: 250px !important;
             justify-content: center !important;
@@ -305,64 +306,7 @@
 
 
 
-    {{-- <div class="cs-container col-4" style="margin: 0; z-index: 0;">
-        <div class="cs-style1">
-            <div class="card">
-                <div class="card-header border-bottom border-gray-100 flex-align gap-8">
-                    <h5 class="mb-0">Invoice Details</h5>
-                </div>
-                <div class="card-body">
-                    <form action="" method="POST" class="form-content pt-4">
-                        @csrf
-                        <div class="row gy-20">
 
-                            <div class="col-xxl-12 col-md-12 col-sm-12">
-                                <div class="row g-20">
-                                    <div class="col-12">
-                                        <label for="courseTitle" class="h6 mb-8 fw-semibold font-heading">Date
-                                        </label>
-                                        <div class="position-relative">
-                                            <input type="date" name="date" required
-                                                class="text-counter placeholder-13 form-control py-11 pe-76 input-custom">
-
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <label for="courseTitle" class="h6 mb-8 fw-semibold font-heading">Applicant
-                                            Details </label>
-                                        <div class="position-relative">
-                                            <input type="text" name="name" required class="text-counter placeholder-13 form-control py-11 pe-76" placeholder="Applicant Name & Address">
-                                            <select id="user-search" placeholder="Search for a user..."
-                                                style="width: 100%;"></select>
-                                        </div>
-                                    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-                                </div>
-                            </div>
-                            <div class="flex-align justify-content-end gap-8">
-                                <button type="button" class="btn btn-outline-main rounded-pill py-9"
-                                    id="cancelBtn">Cancel</button>
-                                <button type="submit" class="btn btn-main rounded-pill py-9">Continue</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-        </div>
-    </div> --}}
 
 </div>
 
@@ -372,22 +316,26 @@
 <!-- Modal -->
 <div id="editModal"
     style="display: none; position: fixed; z-index: 1000; background-color: rgba(0,0,0,0.5); width: 100%; height: 100%; top: 0; left: 0; justify-content: center; align-items: center;">
-    <div style="background: white; padding: 20px; border-radius: 8px; width: 300px;">
+    <div style="background: white; padding: 20px; border-radius: 8px; width: 500px;">
         <h3>Edit Service</h3>
         <label for="serviceName">Service Name:</label>
-        <input type="text" id="serviceName" style="width: 100%; margin-bottom: 10px;">
+        <input class="text-counter placeholder-13 form-control py-11 pe-11 input-custom mb-10" type="text"
+            id="serviceName">
 
         <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" value="1" style="width: 100%; margin-bottom: 10px;">
+        <input class="text-counter placeholder-13 form-control py-11 pe-11 input-custom mb-10" type="number"
+            value="1" id="quantity">
 
         <label for="price">Price:</label>
-        <input type="text" id="price" style="width: 100%; margin-bottom: 10px;">
+        <input class="text-counter placeholder-13 form-control py-11 pe-11 input-custom mb-10" type="number"
+            id="price">
 
         <label for="description">Description:</label>
-        <input type="text" id="description" style="width: 100%; margin-bottom: 10px;">
+        <textarea name="note" id="description" class="w-100 form-control py-11 pe-11 mb-10" rows="6"></textarea>
 
-        <button id="saveButton">Save</button>
-        <button id="closeButton">Close</button>
+
+        <button id="closeButton" type="button" class="btn btn-dark">Close</button>
+        <button id="saveButton" type="button" class="btn btn-success">Update</button>
     </div>
 </div>
 
