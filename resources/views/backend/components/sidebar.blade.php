@@ -210,9 +210,7 @@
                                 <li class="sidebar-submenu__item">
                                     <a href="{{ route('admin.services.index') }}" class="sidebar-submenu__link {{ request()->is('admin/services') ? 'active-sub-menu' : '' }}">Services</a>
                                 </li>    </li>
-                            <li class="sidebar-submenu__item">
-                                <a href="{{ route('admin.testimonial.create') }}" class="sidebar-submenu__link {{ request()->is('admin/testimonial/create') ? 'active-sub-menu' : '' }}">Products</a>
-                            </li>
+
                         </ul>
                         <!-- Submenu End -->
                     </li>

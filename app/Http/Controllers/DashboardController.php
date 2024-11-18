@@ -7,13 +7,16 @@ use App\Models\User;
 use App\Models\Vacancies;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class DashboardController extends Controller
 {
     public function index()
     {
         if (Auth::user()->user_type === 'user') {
-            return view('frontend.auth.dashboard.profile');
+            $response = Http::get('https://restcountries.com/v3.1/all');
+            $countries = $response->json();
+            return view('frontend.auth.dashboard.profile',['countries' => $countries]);
         } else {
             $userCount = User::where('user_type', 'user')->count();
             $agentCount = User::where('user_type', 'agent')->count();

@@ -1,5 +1,50 @@
 @push('styles')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .flag {
+            height: 20px;
+            /* margin-right: 5px; */
+        }
+    </style>
 
+    <style>
+        /* Add padding to the selected area (input box) */
+        .select2-container--default .select2-selection--single {
+            padding: 0.48rem 1.13rem;
+            height: auto;
+            /* Adjust height dynamically */
+            display: flex;
+            align-items: center;
+            /* Center flag and text vertically */
+        }
+
+        /* Add padding to dropdown options */
+        .select2-container--default .select2-results__option {
+            padding: 0.48rem 1.13rem;
+            display: flex;
+            align-items: center;
+            /* Align flag and text */
+        }
+
+        /* Ensure the dropdown is styled properly */
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            padding: 0;
+            /* Avoid double padding */
+            display: flex;
+            align-items: center;
+        }
+
+        /* Adjust spacing for the flag inside the dropdown */
+        .select2-container--default .select2-results__option img.flag,
+        .select2-container--default .select2-selection--single img.flag {
+            margin-right: 10px;
+            /* Space between flag and text */
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            display: none;
+        }
+    </style>
 @endpush
 
 @extends('layouts.frontend')
@@ -20,7 +65,7 @@
                         @csrf
                         <input type="file" id="imageUpload" name="profile_image" accept="image/*"
                             style="display: none;">
-                            <img id="imagePreview" alt="Profile Image" class="img-account-profile rounded-circle mb-2"
+                        <img id="imagePreview" alt="Profile Image" class="img-account-profile rounded-circle mb-2"
                             src="{{ auth()->user()->profile_image ? asset('storage/' . auth()->user()->profile_image) : asset('frontend/img/hero/765-default-avatar.png') }}">
 
 
@@ -53,8 +98,17 @@
 
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputCountry">Country</label>
-                                <input class="form-control" name="country" type="text"
-                                    placeholder="Enter your country" value="{{ auth()->user()->country }}">
+                                <select id="countries" class="form-control" name="country" style="width: 100%;">
+                                    @foreach ($countries as $country)
+                                        <option value="{{ $country['name']['common'] }}"
+                                            data-flag="{{ $country['flags']['svg'] }}"
+                                            {{ auth()->user()->country == $country['name']['common'] ? 'selected' : '' }}>
+                                            {{ $country['name']['common'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                {{-- <input class="form-control" name="country" type="text"
+                                    placeholder="Enter your country" value="{{ auth()->user()->country }}"> --}}
                             </div>
 
                             <div class="col-md-6">
@@ -102,6 +156,29 @@
 
             // Enable the Save button
             document.getElementById('saveButton').disabled = false;
+        }
+    });
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#countries').select2({
+            templateResult: formatCountry, // For dropdown options
+            templateSelection: formatCountry, // For selected option
+            escapeMarkup: function(markup) {
+                return markup; // Allow HTML
+            }
+        });
+
+        function formatCountry(country) {
+            if (!country.id) {
+                return country.text; // Return default text for search box
+            }
+            let flagUrl = $(country.element).data('flag'); // Get flag URL from data attribute
+            let countryName = country.text; // Get country name
+            return `<span><img class="flag" src="${flagUrl}" alt="flag" /> ${countryName}</span>`;
         }
     });
 </script>
