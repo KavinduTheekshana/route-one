@@ -20,6 +20,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'teacher' => \App\Http\Middleware\Teacher::class,
             'status' => \App\Http\Middleware\CheckUserStatus::class,
             'PDF' => Barryvdh\DomPDF\Facade\Pdf::class,
+            'role' => \App\Http\Middleware\Role::class,
+
 
         ]);
     })

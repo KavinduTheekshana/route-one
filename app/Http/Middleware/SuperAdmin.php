@@ -18,8 +18,10 @@ class SuperAdmin
     {
 
 
-        if (Auth::user()->user_type == 'superadmin') {
-            return $next($request);
+        if (Auth::check()) {
+            if (Auth::user()->user_type == 'superadmin') {
+                return $next($request);
+            }
         }
         abort(401);
     }

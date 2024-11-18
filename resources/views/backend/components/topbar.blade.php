@@ -11,7 +11,7 @@
     <div class="flex-align gap-16">
         <div class="flex-align gap-8">
             <!-- Notification Start -->
-            <div class="dropdown">
+            {{-- <div class="dropdown">
                 <button
                     class="dropdown-btn shaking-animation text-gray-500 w-40 h-40 bg-main-50 hover-bg-main-100 transition-2 rounded-circle text-xl flex-center"
                     type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -122,7 +122,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <!-- Notification Start -->
 
 
@@ -161,7 +161,7 @@
                                     <span class="text">Account Settings</span>
                                 </a>
                             </li>
-                            <li class="mb-4">
+                            {{-- <li class="mb-4">
                                 <a href="pricing-plan.html"
                                     class="py-12 text-15 px-20 hover-bg-gray-50 text-gray-300 rounded-8 flex-align gap-8 fw-medium text-15">
                                     <span class="text-2xl text-primary-600 d-flex"><i
@@ -185,7 +185,7 @@
                                             class="ph ph-envelope-simple"></i></span>
                                     <span class="text">Email</span>
                                 </a>
-                            </li>
+                            </li> --}}
                             <li class="pt-8 border-top border-gray-100">
                                 {{-- <form method="POST" action="{{ route('logout') }}" x-data>
                                     @csrf

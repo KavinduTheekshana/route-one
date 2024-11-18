@@ -9,137 +9,178 @@
 
         <a href="{{ route('dashboard') }}"
             class="sidebar__logo text-center p-20 position-sticky inset-block-start-0 bg-white w-100 z-1 pb-10">
-            <img src="{{ asset('backend/images/logo/routeone_logo.svg')}}" alt="Logo">
+            <img src="{{ asset('backend/images/logo/routeone_logo.svg') }}" alt="Logo">
         </a>
 
         <div class="sidebar-menu-wrapper overflow-y-auto scroll-sm">
             <div class="p-20 pt-10">
                 <ul class="sidebar-menu">
                     <li class="sidebar-menu__item">
-                        <a href="{{ route('dashboard') }}" class="sidebar-menu__link {{ request()->segment(1) === 'dashboard' ? 'activePage' : '' }}">
+                        <a href="{{ route('dashboard') }}"
+                            class="sidebar-menu__link {{ request()->segment(1) === 'dashboard' ? 'activePage' : '' }}">
                             <span class="icon"><i class="ph ph-squares-four"></i></span>
                             <span class="text">Dashboard</span>
                         </a>
                     </li>
 
-                    <li class="sidebar-menu__item">
-                        <a href="{{ route('team.manage') }}" class="sidebar-menu__link {{ request()->segment(1) === 'team' ? 'activePage' : '' }}">
-                            <span class="icon"><i class="ph ph-users"></i></span>
-                            <span class="text">Team</span>
-                        </a>
-                    </li>
-
+                    @auth
+                        @if (Auth::user()->user_type === 'superadmin')
+                            <li class="sidebar-menu__item">
+                                <a href="{{ route('team.manage') }}"
+                                    class="sidebar-menu__link {{ request()->segment(1) === 'team' ? 'activePage' : '' }}">
+                                    <span class="icon"><i class="ph ph-users"></i></span>
+                                    <span class="text">Team</span>
+                                </a>
+                            </li>
+                        @endif
+                    @endauth
 
                     <li class="sidebar-menu__item has-dropdown">
-                        <a href="javascript:void(0)" class="sidebar-menu__link {{ request()->segment(1) === 'user' ? 'activePage' : '' }}">
+                        <a href="javascript:void(0)"
+                            class="sidebar-menu__link {{ request()->segment(1) === 'user' ? 'activePage' : '' }}">
                             <span class="icon"><i class="ph ph-users"></i></span>
                             <span class="text">Users</span>
                         </a>
                         <!-- Submenu start -->
                         <ul class="sidebar-submenu">
                             <li class="sidebar-submenu__item">
-                                <li class="sidebar-submenu__item">
-                                    <a href="{{ route('user.manage') }}" class="sidebar-submenu__link {{ request()->is('user/manage') ? 'active-sub-menu' : '' }}"> Manage Users </a>
-                                </li>    </li>
                             <li class="sidebar-submenu__item">
-                                <a href="{{ route('user.create') }}" class="sidebar-submenu__link {{ request()->is('user/create') ? 'active-sub-menu' : '' }}"> Create User  </a>
+                                <a href="{{ route('user.manage') }}"
+                                    class="sidebar-submenu__link {{ request()->is('user/manage') ? 'active-sub-menu' : '' }}">
+                                    Manage Users </a>
                             </li>
+                    </li>
+                    <li class="sidebar-submenu__item">
+                        <a href="{{ route('user.create') }}"
+                            class="sidebar-submenu__link {{ request()->is('user/create') ? 'active-sub-menu' : '' }}">
+                            Create User </a>
+                    </li>
+                </ul>
+                <!-- Submenu End -->
+                </li>
+
+                <li class="sidebar-menu__item">
+                    <a href="{{ route('admin.message') }}"
+                        class="sidebar-menu__link {{ request()->segment(2) === 'message' ? 'activePage' : '' }}">
+                        <span class="icon"><i class="ph ph-chat-dots"></i></span>
+                        <span class="text">Messages</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-menu__item has-dropdown">
+                    <a href="javascript:void(0)"
+                        class="sidebar-menu__link {{ request()->segment(1) === 'invoice' ? 'activePage' : '' }}">
+                        <span class="icon"><i class="ph ph-invoice"></i></span>
+                        <span class="text">Invoice</span>
+                    </a>
+                    <!-- Submenu start -->
+                    <ul class="sidebar-submenu">
+                        <li class="sidebar-submenu__item">
+                        <li class="sidebar-submenu__item">
+                            <a href="{{ route('admin.invoice.index') }}"
+                                class="sidebar-submenu__link {{ request()->is('invoice') ? 'active-sub-menu' : '' }}">
+                                Invoice List </a>
+                        </li>
+                </li>
+                <li class="sidebar-submenu__item">
+                    <a href="{{ route('admin.invoice.create') }}"
+                        class="sidebar-submenu__link {{ request()->is('invoice/create') ? 'active-sub-menu' : '' }}">
+                        Create Invoice </a>
+                </li>
+                </ul>
+                <!-- Submenu End -->
+                </li>
+
+
+
+                @auth
+                    @if (Auth::user()->user_type === 'superadmin')
+                        <li class="sidebar-menu__item has-dropdown">
+                            <a href="javascript:void(0)"
+                                class="sidebar-menu__link {{ request()->segment(2) === 'vacancies' ? 'activePage' : '' }}">
+                                <span class="icon"><i class="ph ph-briefcase"></i></span>
+                                <span class="text">Jobs</span>
+                            </a>
+                            <!-- Submenu start -->
+                            <ul class="sidebar-submenu">
+                                <li class="sidebar-submenu__item">
+                                <li class="sidebar-submenu__item">
+                                    <a href="{{ route('admin.vacancies.list') }}"
+                                        class="sidebar-submenu__link {{ request()->is('admin/vacancies/list') ? 'active-sub-menu' : '' }}">
+                                        Jobs List </a>
+                                </li>
+                        </li>
+                        <li class="sidebar-submenu__item">
+                            <a href="{{ route('admin.vacancies.create') }}"
+                                class="sidebar-submenu__link {{ request()->is('admin/vacancies/create') ? 'active-sub-menu' : '' }}">
+                                Create Jobs </a>
+                        </li>
                         </ul>
                         <!-- Submenu End -->
-                    </li>
+                        </li>
+                    @endif
+                @endauth
 
-                    <li class="sidebar-menu__item">
-                        <a href="{{ route('admin.message') }}" class="sidebar-menu__link {{ request()->segment(2) === 'message' ? 'activePage' : '' }}">
-                            <span class="icon"><i class="ph ph-chat-dots"></i></span>
-                            <span class="text">Messages</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-menu__item has-dropdown">
-                        <a href="javascript:void(0)" class="sidebar-menu__link {{ request()->segment(1) === 'invoice' ? 'activePage' : '' }}">
-                            <span class="icon"><i class="ph ph-invoice"></i></span>
-                            <span class="text">Invoice</span>
-                        </a>
-                        <!-- Submenu start -->
-                        <ul class="sidebar-submenu">
-                            <li class="sidebar-submenu__item">
+                @auth
+                    @if (Auth::user()->user_type === 'superadmin')
+                        <li class="sidebar-menu__item has-dropdown">
+                            <a href="javascript:void(0)"
+                                class="sidebar-menu__link {{ request()->segment(2) === 'testimonial' ? 'activePage' : '' }}">
+                                <span class="icon"><i class="ph ph-clipboard-text"></i></span>
+                                <span class="text">Testimonial</span>
+                            </a>
+                            <!-- Submenu start -->
+                            <ul class="sidebar-submenu">
                                 <li class="sidebar-submenu__item">
-                                    <a href="{{ route('admin.invoice.index') }}" class="sidebar-submenu__link {{ request()->is('invoice') ? 'active-sub-menu' : '' }}"> Invoice List </a>
-                                </li>    </li>
-                            <li class="sidebar-submenu__item">
-                                <a href="{{ route('admin.invoice.create') }}" class="sidebar-submenu__link {{ request()->is('invoice/create') ? 'active-sub-menu' : '' }}"> Create Invoice  </a>
-                            </li>
+                                <li class="sidebar-submenu__item">
+                                    <a href="{{ route('admin.testimonial.list') }}"
+                                        class="sidebar-submenu__link {{ request()->is('admin/testimonial/list') ? 'active-sub-menu' : '' }}">
+                                        Testimonial List </a>
+                                </li>
+                        </li>
+
+                        <li class="sidebar-submenu__item">
+                            <a href="{{ route('admin.testimonial.create') }}"
+                                class="sidebar-submenu__link {{ request()->is('admin/testimonial/create') ? 'active-sub-menu' : '' }}">
+                                Create Testimonial </a>
+                        </li>
                         </ul>
                         <!-- Submenu End -->
-                    </li>
+                        </li>
+                    @endif
+                @endauth
 
 
 
+                <li class="sidebar-menu__item">
+                    <a href="{{ route('admin.applications') }}"
+                        class="sidebar-menu__link {{ request()->segment(2) === 'applications' ? 'activePage' : '' }}">
+                        <span class="icon"><i class="ph ph-article"></i></span>
+                        <span class="text">Applications</span>
+                    </a>
+                </li>
 
+                <li class="sidebar-menu__item">
+                    <a href="{{ route('admin.calander') }}"
+                        class="sidebar-menu__link {{ request()->segment(2) === 'calander' ? 'activePage' : '' }}">
+                        <span class="icon"><i class="ph ph-calendar-dots"></i></span>
+                        <span class="text">Calander</span>
+                    </a>
+                </li>
 
-                    <li class="sidebar-menu__item has-dropdown">
-                        <a href="javascript:void(0)" class="sidebar-menu__link {{ request()->segment(2) === 'vacancies' ? 'activePage' : '' }}">
-                            <span class="icon"><i class="ph ph-briefcase"></i></span>
-                            <span class="text">Jobs</span>
-                        </a>
-                        <!-- Submenu start -->
-                        <ul class="sidebar-submenu">
-                            <li class="sidebar-submenu__item">
-                                <li class="sidebar-submenu__item">
-                                    <a href="{{ route('admin.vacancies.list') }}" class="sidebar-submenu__link {{ request()->is('admin/vacancies/list') ? 'active-sub-menu' : '' }}"> Jobs List </a>
-                                </li>    </li>
-                            <li class="sidebar-submenu__item">
-                                <a href="{{ route('admin.vacancies.create') }}" class="sidebar-submenu__link {{ request()->is('admin/vacancies/create') ? 'active-sub-menu' : '' }}"> Create Jobs  </a>
-                            </li>
-                        </ul>
-                        <!-- Submenu End -->
-                    </li>
+                @auth
+                    @if (Auth::user()->user_type === 'superadmin')
+                        <li class="sidebar-menu__item">
+                            <a href="{{ route('admin.contact') }}"
+                                class="sidebar-menu__link {{ request()->segment(2) === 'contact' ? 'activePage' : '' }}">
+                                <span class="icon"><i class="ph ph-chats-teardrop"></i></span>
+                                <span class="text">Contact</span>
+                            </a>
+                        </li>
+                    @endif
+                @endauth
 
-                    <li class="sidebar-menu__item has-dropdown">
-                        <a href="javascript:void(0)" class="sidebar-menu__link {{ request()->segment(2) === 'testimonial' ? 'activePage' : '' }}">
-                            <span class="icon"><i class="ph ph-clipboard-text"></i></span>
-                            <span class="text">Testimonial</span>
-                        </a>
-                       <!-- Submenu start -->
-                        <ul class="sidebar-submenu">
-                            <li class="sidebar-submenu__item">
-                                <li class="sidebar-submenu__item">
-                                    <a href="{{ route('admin.testimonial.list') }}" class="sidebar-submenu__link {{ request()->is('admin/testimonial/list') ? 'active-sub-menu' : '' }}"> Testimonial List </a>
-                                </li>    </li>
-                            <li class="sidebar-submenu__item">
-                                <a href="{{ route('admin.testimonial.create') }}" class="sidebar-submenu__link {{ request()->is('admin/testimonial/create') ? 'active-sub-menu' : '' }}"> Create Testimonial  </a>
-                            </li>
-                        </ul>
-                        <!-- Submenu End -->
-                    </li>
-
-
-
-                    <li class="sidebar-menu__item">
-                        <a href="{{ route('admin.applications') }}" class="sidebar-menu__link {{ request()->segment(2) === 'applications' ? 'activePage' : '' }}">
-                            <span class="icon"><i class="ph ph-article"></i></span>
-                            <span class="text">Applications</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-menu__item">
-                        <a href="{{ route('admin.calander') }}" class="sidebar-menu__link {{ request()->segment(2) === 'calander' ? 'activePage' : '' }}">
-                            <span class="icon"><i class="ph ph-calendar-dots"></i></span>
-                            <span class="text">Calander</span>
-                        </a>
-                    </li>
-
-
-
-                    <li class="sidebar-menu__item">
-                        <a href="{{ route('admin.contact') }}" class="sidebar-menu__link {{ request()->segment(2) === 'contact' ? 'activePage' : '' }}">
-                            <span class="icon"><i class="ph ph-chats-teardrop"></i></span>
-                            <span class="text">Contact</span>
-                        </a>
-                    </li>
-
-
-                    {{-- <li class="sidebar-menu__item">
+                {{-- <li class="sidebar-menu__item">
                         <a href="students.html" class="sidebar-menu__link">
                             <span class="icon"><i class="ph ph-users-three"></i></span>
                             <span class="text">Students</span>
@@ -194,38 +235,41 @@
                         </a>
                     </li> --}}
 
-                    <li class="sidebar-menu__item">
-                        <span
-                            class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase">Settings</span>
-                    </li>
+                <li class="sidebar-menu__item">
+                    <span
+                        class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase">Settings</span>
+                </li>
 
-                    <li class="sidebar-menu__item has-dropdown">
-                        <a href="javascript:void(0)" class="sidebar-menu__link {{ request()->segment(2) === 'services' ? 'activePage' : '' }}">
-                            <span class="icon"><i class="ph ph-sliders"></i></span>
-                            <span class="text">Settings</span>
-                        </a>
-                       <!-- Submenu start -->
-                        <ul class="sidebar-submenu">
-                            <li class="sidebar-submenu__item">
-                                <li class="sidebar-submenu__item">
-                                    <a href="{{ route('admin.services.index') }}" class="sidebar-submenu__link {{ request()->is('admin/services') ? 'active-sub-menu' : '' }}">Services</a>
-                                </li>    </li>
+                <li class="sidebar-menu__item has-dropdown">
+                    <a href="javascript:void(0)"
+                        class="sidebar-menu__link {{ request()->segment(2) === 'services' ? 'activePage' : '' }}">
+                        <span class="icon"><i class="ph ph-sliders"></i></span>
+                        <span class="text">Settings</span>
+                    </a>
+                    <!-- Submenu start -->
+                    <ul class="sidebar-submenu">
+                        <li class="sidebar-submenu__item">
+                        <li class="sidebar-submenu__item">
+                            <a href="{{ route('admin.services.index') }}"
+                                class="sidebar-submenu__link {{ request()->is('admin/services') ? 'active-sub-menu' : '' }}">Services</a>
+                        </li>
+                </li>
 
-                        </ul>
-                        <!-- Submenu End -->
-                    </li>
+                </ul>
+                <!-- Submenu End -->
+                </li>
 
 
 
 
-                    <li class="sidebar-menu__item {{ request()->is('auth/account') ? 'activePage' : '' }}">
-                        <a href="{{ route('auth.account') }}" class="sidebar-menu__link">
-                            <span class="icon"><i class="ph ph-gear"></i></span>
-                            <span class="text">Account Settings</span>
-                        </a>
-                    </li>
+                <li class="sidebar-menu__item {{ request()->is('auth/account') ? 'activePage' : '' }}">
+                    <a href="{{ route('auth.account') }}" class="sidebar-menu__link">
+                        <span class="icon"><i class="ph ph-gear"></i></span>
+                        <span class="text">Account Settings</span>
+                    </a>
+                </li>
 
-                    {{-- <li class="sidebar-menu__item has-dropdown">
+                {{-- <li class="sidebar-menu__item has-dropdown">
                         <a href="javascript:void(0)" class="sidebar-menu__link">
                             <span class="icon"><i class="ph ph-shield-check"></i></span>
                             <span class="text">Authetication</span>
