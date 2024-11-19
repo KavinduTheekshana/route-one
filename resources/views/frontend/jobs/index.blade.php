@@ -1,5 +1,49 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('frontend/css/job-card.css') }}">
+    <style>
+        .subscribe-area {
+            text-align: end;
+            position: relative;
+        }
+
+        .search-text-subs {
+            padding: 18px;
+            border: none;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        .job-search-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+
+        .job-search-btn button {
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            vertical-align: middle;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            border: none;
+            outline: none !important;
+            font-weight: var(--f-fw-bold);
+            font-size: var(--f-fs-font-fs16);
+            line-height: var(--f-fs-font-fs16);
+            color: var(--vtc-text-text-white-text-1);
+            text-transform: capitalize;
+            padding: 18px 22px 18px 22px;
+            overflow: hidden;
+            z-index: 1;
+            border-radius: 4px;
+        }
+
+        .search-icon {
+            transform: rotate(0deg) !important;
+        }
+    </style>
 @endpush
 
 
@@ -14,13 +58,17 @@
 @endsection
 
 @push('scripts')
+
+
 <script>
     document.querySelectorAll('.apply-btn').forEach(button => {
         button.addEventListener('click', function() {
-            const jobId = this.getAttribute('data-job-id'); // Get the job ID from the button's data attribute
+            const jobId = this.getAttribute(
+                'data-job-id'); // Get the job ID from the button's data attribute
 
             // Check if the user is authenticated
-            const isAuthenticated = '{{ auth()->check() }}'; // This will be true or false based on the user's auth status
+            const isAuthenticated =
+                '{{ auth()->check() }}'; // This will be true or false based on the user's auth status
 
             if (!isAuthenticated) {
                 // If not authenticated, show a login message
@@ -47,49 +95,49 @@
                 if (result.isConfirmed) {
                     // Make the AJAX request to apply for the job
                     fetch('{{ route('user.jobs.apply') }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            job_id: jobId
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                job_id: jobId
+                            })
                         })
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.status === 'success') {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Success',
-                                text: data.message,
-                            }).then(() => {
-                                window.location.reload(); // Reload the page after successful application
-                            });
-                        } else {
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.status === 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: data.message,
+                                }).then(() => {
+                                    window.location
+                                        .reload(); // Reload the page after successful application
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: data.message,
+                                });
+                            }
+                        })
+                        .catch(error => {
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Error',
-                                text: data.message,
+                                title: 'Oops...',
+                                text: 'Something went wrong! Please try again later.',
                             });
-                        }
-                    })
-                    .catch(error => {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Something went wrong! Please try again later.',
                         });
-                    });
                 }
             });
         });
     });
 </script>
-
 @endpush

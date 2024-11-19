@@ -1,11 +1,12 @@
     <!-- My Details Tab start -->
-    <div class="tab-pane fade {{ session('showApplicationTab') ? '' : 'show active' }}" id="pills-details" role="tabpanel" aria-labelledby="pills-details-tab"
-        tabindex="0">
+    <div class="tab-pane fade {{ session('showApplicationTab') ? '' : 'show active' }}" id="pills-details" role="tabpanel"
+        aria-labelledby="pills-details-tab" tabindex="0">
         <div class="card mt-24">
 
             <div class="card-header border-bottom">
                 <h4 class="mb-4">Member Details</h4>
-                <p class="text-gray-600 text-15">You have selected the user's details. You can update their information below.</p>
+                <p class="text-gray-600 text-15">You have selected the user's details. You can update their information
+                    below.</p>
             </div>
             <div class="card-body">
 
@@ -38,6 +39,8 @@
                             <input type="text" class="form-control py-11" name="phone"
                                 placeholder="Enter Phone Number" value="{{ $user->phone }}">
                         </div>
+
+
 
 
 

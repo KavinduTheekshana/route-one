@@ -1,6 +1,40 @@
-<div class="contact5 sp">
+<div class="contact5">
     <div class="container">
+
+        {{-- <div class="col-12" style="padding: 50px 0">
+            <div class="subscribe-area">
+                <form action="#">
+                    <input type="text" class="search-text-subs" placeholder="Keyword">
+                    <div class="button job-search-btn">
+                        <button type="submit" class="theme-btn1">Search Jobs <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span></button>
+                    </div>
+                </form>
+            </div>
+        </div> --}}
+
+        <div class="col-12" style="padding: 50px 0">
+            <div class="subscribe-area">
+                <form method="POST" action="{{ route('vacancies.search') }}">
+                    @csrf
+                    <input type="text" class="search-text-subs" id="job-search-input" name="keyword"
+                        placeholder="Keyword" value="{{ request('keyword') }}">
+                    <div class="button job-search-btn">
+                        <button type="submit" class="theme-btn1">Search Jobs <span class="search-icon"><i
+                                    class="fa-solid fa-magnifying-glass"></i></span></button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+
+
+
         <div class="row">
+            @if ($vacancies->isEmpty())
+                <p>No jobs found for your search.</p>
+            @endif
+
             @foreach ($vacancies as $vacancy)
                 <div class="col-xl-4 col-lg-4 col-md-4 col-12">
                     <div class="jbs-grid-layout border">
@@ -22,7 +56,8 @@
                         <div class="jbs-grid-job-caption">
                             <div class="jbs-job-employer-wrap"><span>{{ $vacancy->company }}</span></div>
                             <div class="jbs-job-title-wrap">
-                                <h4><a href="{{ route('vacancies.show', $vacancy->id) }}" class="jbs-job-title">{{ $vacancy->title }}</a></h4>
+                                <h4><a href="{{ route('vacancies.show', $vacancy->id) }}"
+                                        class="jbs-job-title">{{ $vacancy->title }}</a></h4>
                             </div>
                         </div>
                         <div class="jbs-grid-job-info-wrap">

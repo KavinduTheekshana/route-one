@@ -50,11 +50,15 @@
                                     Manage Users </a>
                             </li>
                     </li>
-                    <li class="sidebar-submenu__item">
-                        <a href="{{ route('user.create') }}"
-                            class="sidebar-submenu__link {{ request()->is('user/create') ? 'active-sub-menu' : '' }}">
-                            Create User </a>
-                    </li>
+                    @auth
+                        @if (Auth::user()->user_type === 'superadmin')
+                            <li class="sidebar-submenu__item">
+                                <a href="{{ route('user.create') }}"
+                                    class="sidebar-submenu__link {{ request()->is('user/create') ? 'active-sub-menu' : '' }}">
+                                    Create User </a>
+                            </li>
+                        @endif
+                    @endauth
                 </ul>
                 <!-- Submenu End -->
                 </li>

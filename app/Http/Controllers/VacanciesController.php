@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JobApplication;
 use App\Models\User;
 use App\Models\Vacancies;
 use Illuminate\Http\Request;
@@ -10,6 +11,41 @@ use Illuminate\Support\Facades\DB;
 
 class VacanciesController extends Controller
 {
+
+    public function search(Request $request)
+    {
+
+        $user = auth()->user();
+
+        // Create an array to store applied job IDs if the user is authenticated
+        $appliedJobIds = [];
+        if ($user) {
+            $appliedJobIds = JobApplication::where('user_id', $user->id)
+                ->pluck('vacancies_id')
+                ->toArray();
+        }
+
+        // Retrieve the search keyword from the request
+        $keyword = $request->input('keyword');
+
+        // Query the vacancies with a condition on the title, description, etc.
+        // $vacancies = Vacancies::where('status', 1)
+        // ->orderBy('created_at', 'desc')
+        // ->get();
+
+        $vacancies = Vacancies::where('title', 'like', "%$keyword%")
+        ->orWhere('company', 'like', "%$keyword%")
+        ->orWhere('location', 'like', "%$keyword%")
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+        // Return the result to the view
+        return view('frontend.jobs.index', compact('vacancies', 'appliedJobIds'));
+    }
+
+
+
+
     public function list()
     {
         // Get the authenticated user ID

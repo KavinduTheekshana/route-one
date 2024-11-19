@@ -34,6 +34,11 @@ Route::get('user/forgot', [HomeController::class, 'forgot'])->name('user.forgot'
 Route::post('user/password/email', [HomeController::class, 'sendResetLink'])->name('user.password.email');
 Route::get('password/reset/{token}', [HomeController::class, 'showResetForm'])->name('password.reset');
 Route::post('user/password/update/token', [HomeController::class, 'reset'])->name('user.password.update.token');
+// Route::get('/search-vacancies', [VacanciesController::class, 'search'])->name('vacancies.search');
+Route::post('/vacancies/search', [VacanciesController::class, 'search'])->name('vacancies.search');
+
+
+
 
 
 Route::middleware([
@@ -69,7 +74,7 @@ Route::middleware([
         Route::delete('/team/{user}', [UserController::class, 'destroy'])->name('team.destroy')->middleware(['auth', 'superadmin']);
 
         // admin, superadmin and agent
-        Route::get('/user/create', [UserController::class, 'create'])->name('user.create')->middleware(['auth' , 'role:superadmin|agent']);
+        Route::get('/user/create', [UserController::class, 'create'])->name('user.create')->middleware(['auth' , 'superadmin']);
         Route::get('/user/manage', [UserController::class, 'users'])->name('user.manage')->middleware(['auth', 'role:superadmin|agent']);
         Route::get('/user/block/{user}', [UserController::class, 'user_block'])->name('user.block')->middleware(['auth', 'role:superadmin|agent']);
         Route::get('/user/unblock/{user}', [UserController::class, 'user_unblock'])->name('user.unblock')->middleware(['auth', 'role:superadmin|agent']);
@@ -86,6 +91,7 @@ Route::middleware([
         Route::delete('/vacancies/{vacancies}', [VacanciesController::class, 'vacancies_destroy'])->name('vacancies.destroy')->middleware(['auth', 'superadmin']);
         Route::get('/admin/vacancies/settings/{vacancies}', [VacanciesController::class, 'vacancies_settings'])->name('vacancies.settings')->middleware(['auth', 'superadmin']);
         Route::put('/admin/vacancies/update/{vacancies}', [VacanciesController::class, 'vacancies_update'])->name('admin.vacancies.update')->middleware(['auth', 'superadmin']);
+
 
         // Testimonial
         Route::get('/admin/testimonial/list', [TestimonialController::class, 'list'])->name('admin.testimonial.list')->middleware(['auth', 'superadmin']);
@@ -125,7 +131,7 @@ Route::middleware([
         Route::get('/admin/calander', [CalanderController::class, 'index'])->name('admin.calander')->middleware(['auth', 'superadmin']);
 
         //  Message management
-        Route::get('/admin/message', [MessageController::class, 'index'])->name('admin.message')->middleware(['auth', 'superadmin']);
+        Route::get('/admin/message', [MessageController::class, 'index'])->name('admin.message')->middleware(['auth', 'role:superadmin|agent']);
         Route::get('/search-users', [MessageController::class, 'searchUsers'])->name('search.users');
         Route::get('/messages/{userId}', [MessageController::class, 'getMessages']);
         Route::post('/messages/store', [MessageController::class, 'sendMessage'])->name('messages.store');

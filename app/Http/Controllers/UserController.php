@@ -8,6 +8,7 @@ use App\Models\JobApplication;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Vacancies;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -16,9 +17,25 @@ class UserController extends Controller
 {
     public function users()
     {
-        $users = User::where('user_type', '=', 'user')
-            ->orderBy('id', 'desc')  // Ordering by the 'id' column in descending order
-            ->get();
+        $authUser = auth()->user();
+
+        // Initialize the $users query
+        if ($authUser->user_type === 'superadmin') {
+            $users = User::where('user_type', '=', 'user')
+                ->orderBy('id', 'desc')
+                ->get();
+        } elseif ($authUser->user_type === 'agent') {
+            $agentId = Auth::id(); // Get authenticated user's ID
+
+            // Fetch applications where the agent matches and include user data
+            $users = Application::where('agent', $agentId)
+                ->with('user') // Eager load user relationship
+                ->get();
+        } else {
+            abort(403, 'Unauthorized access');
+        }
+
+
 
         return view('backend.user.manage.manage', compact('users'));
     }
