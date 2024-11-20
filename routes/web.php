@@ -82,6 +82,7 @@ Route::middleware([
         Route::post('/user/submit/details', [UserController::class, 'details'])->name('user.submit.details')->middleware(['auth', 'role:superadmin|agent']);
         Route::get('/user/settings/{user}', [UserController::class, 'user_settings'])->name('user.settings')->middleware(['auth', 'role:superadmin|agent']);
         Route::put('/user/update/{user}', [UserController::class, 'user_update'])->name('user.update')->middleware(['auth', 'role:superadmin|agent']);
+        Route::post('/user-notes', [UserController::class, 'storeOrUpdate'])->name('user.notes.storeOrUpdate');
 
         Route::get('/admin/vacancies/list', [VacanciesController::class, 'list'])->name('admin.vacancies.list')->middleware(['auth', 'superadmin']);
         Route::get('/admin/vacancies/create', [VacanciesController::class, 'create'])->name('admin.vacancies.create')->middleware(['auth', 'superadmin']);

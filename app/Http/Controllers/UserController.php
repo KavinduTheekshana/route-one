@@ -7,6 +7,7 @@ use App\Models\Document;
 use App\Models\JobApplication;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\UserNotes;
 use App\Models\Vacancies;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -15,6 +16,24 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+
+    public function storeOrUpdate(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'review' => 'required|string',
+        ]);
+
+        // Update if the note exists, otherwise create a new one
+        UserNotes::updateOrCreate(
+            ['user_id' => $request->user_id], // Check by user_id
+            ['review' => $request->review]   // Update the review
+        );
+
+        return redirect()->back()->with('success', 'Notes saved successfully!');
+    }
+
+
     public function users()
     {
         $authUser = auth()->user();
@@ -101,13 +120,15 @@ class UserController extends Controller
         $application = Application::where('user_id', $id)->first();
         $agents = User::where('user_type', 'agent')->get();
 
+        $note = UserNotes::where('user_id', $id)->first();
+
         // Fetch the jobs that the user has applied for
         $vacancies = JobApplication::where('user_id', $user->id)
             ->with('job') // Assuming you have a relationship defined
             ->get();
 
         $jobs = Vacancies::get();
-        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs'));
+        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs','note'));
     }
 
     public function user_update(Request $request, $id)

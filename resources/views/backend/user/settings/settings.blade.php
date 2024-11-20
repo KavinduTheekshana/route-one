@@ -104,6 +104,18 @@
                         Application
                     </button>
                 </li>
+
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-notes-tab"
+                            data-bs-toggle="pill"
+                            data-bs-target="#pills-notes"
+                            type="button"
+                            role="tab"
+                            aria-controls="pills-notes"
+                            aria-selected="true">
+                        Notes
+                    </button>
+                </li>
             </ul>
 
 
@@ -120,7 +132,9 @@
     @include('backend.user.settings.password')
     @include('backend.user.settings.application')
     @include('backend.user.settings.jobs')
+    @include('backend.user.settings.notes')
     @include('backend.user.settings.documents')
+
 
 
 

@@ -82,4 +82,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Application::class);
     }
+
+    public function note()
+    {
+        return $this->hasOne(UserNotes::class);
+    }
 }
