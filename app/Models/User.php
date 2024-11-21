@@ -29,6 +29,8 @@ class User extends Authenticatable
         'user_type',
         'country',
         'phone',
+        'phone',
+        'agent_id',
         'password',
         'profile_image', // Add this for default profile image
     ];

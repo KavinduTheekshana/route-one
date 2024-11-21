@@ -74,7 +74,7 @@ Route::middleware([
         Route::delete('/team/{user}', [UserController::class, 'destroy'])->name('team.destroy')->middleware(['auth', 'superadmin']);
 
         // admin, superadmin and agent
-        Route::get('/user/create', [UserController::class, 'create'])->name('user.create')->middleware(['auth' , 'superadmin']);
+        Route::get('/user/create', [UserController::class, 'create'])->name('user.create')->middleware(['auth' , 'role:superadmin|agent']);
         Route::get('/user/manage', [UserController::class, 'users'])->name('user.manage')->middleware(['auth', 'role:superadmin|agent']);
         Route::get('/user/block/{user}', [UserController::class, 'user_block'])->name('user.block')->middleware(['auth', 'role:superadmin|agent']);
         Route::get('/user/unblock/{user}', [UserController::class, 'user_unblock'])->name('user.unblock')->middleware(['auth', 'role:superadmin|agent']);

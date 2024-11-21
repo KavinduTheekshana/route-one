@@ -44,12 +44,10 @@ class UserController extends Controller
                 ->orderBy('id', 'desc')
                 ->get();
         } elseif ($authUser->user_type === 'agent') {
-            $agentId = Auth::id(); // Get authenticated user's ID
-
-            // Fetch applications where the agent matches and include user data
-            $users = Application::where('agent', $agentId)
-                ->with('user') // Eager load user relationship
-                ->get();
+            $users = User::where('user_type', 'user') // First condition
+            ->where('agent_id', Auth::id()) // Second condition (AND)
+            ->orderBy('id', 'desc') // Sort by id in descending order
+            ->get();
         } else {
             abort(403, 'Unauthorized access');
         }
@@ -86,6 +84,7 @@ class UserController extends Controller
             'user_type' => 'user',  // Assuming 'role' field corresponds to 'user_type'
             'country' => $validatedData['country'] ?? null,
             'phone' => $validatedData['phone'] ?? null,
+            'agent_id' => Auth::id(),
             'password' => Hash::make($validatedData['password']),
         ]);
 
@@ -116,6 +115,8 @@ class UserController extends Controller
     public function user_settings($id)
     {
         $user = User::findOrFail($id);
+        // $agent = User::findOrFail($id);
+        $agent = User::where('id', $user->agent_id)->first();
         $documents = Document::where('user_id', $id)->get();
         $application = Application::where('user_id', $id)->first();
         $agents = User::where('user_type', 'agent')->get();
@@ -128,7 +129,7 @@ class UserController extends Controller
             ->get();
 
         $jobs = Vacancies::get();
-        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs','note'));
+        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs','note','agent'));
     }
 
     public function user_update(Request $request, $id)

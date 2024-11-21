@@ -39,6 +39,11 @@
                             <input type="text" class="form-control py-11" name="phone"
                                 placeholder="Enter Phone Number" value="{{ $user->phone }}">
                         </div>
+                        <div class="col-sm-6 col-xs-6">
+                            <label for="phone" class="form-label mb-8 h6">Agent (Readonly)</label>
+                            <input type="text" class="form-control py-11" disabled
+                                placeholder="Enter Phone Number" value="{{ $agent->name }}">
+                        </div>
 
 
 
