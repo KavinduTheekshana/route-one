@@ -20,21 +20,42 @@ class MessageController extends Controller
     public function searchUsers(Request $request)
     {
         $query = $request->input('query');
-
+        $authUser = auth()->user();
         // Fetch only users where user_type is 'user'
-        if ($query) {
-            // Filter users based on the search query (name, email, or country) and user_type = 'user'
-            $users = User::where('user_type', 'user')
-                ->where(function ($queryBuilder) use ($query) {
-                    $queryBuilder->where('name', 'like', '%' . $query . '%')
-                        ->orWhere('email', 'like', '%' . $query . '%')
-                        ->orWhere('country', 'like', '%' . $query . '%');
-                })
-                ->get(['name', 'email', 'country', 'profile_image', 'id']);
+        if ($authUser->user_type === 'superadmin') {
+            if ($query) {
+                // Filter users based on the search query (name, email, or country) and user_type = 'user'
+                $users = User::where('user_type', 'user')
+                    ->where(function ($queryBuilder) use ($query) {
+                        $queryBuilder->where('name', 'like', '%' . $query . '%')
+                            ->orWhere('email', 'like', '%' . $query . '%')
+                            ->orWhere('country', 'like', '%' . $query . '%');
+                    })
+                    ->get(['name', 'email', 'country', 'profile_image', 'id']);
+            } else {
+                // Fetch all users where user_type is 'user' if no query is provided
+                $users = User::where('user_type', 'user')
+                    ->get(['name', 'email', 'country', 'profile_image', 'id']);
+            }
+        } elseif ($authUser->user_type === 'agent') {
+            if ($query) {
+                // Filter users based on the search query (name, email, or country) and user_type = 'user'
+                $users = User::where('user_type', 'user')
+                    ->where('agent_id', Auth::id())
+                    ->where(function ($queryBuilder) use ($query) {
+                        $queryBuilder->where('name', 'like', '%' . $query . '%')
+                            ->orWhere('email', 'like', '%' . $query . '%')
+                            ->orWhere('country', 'like', '%' . $query . '%');
+                    })
+                    ->get(['name', 'email', 'country', 'profile_image', 'id']);
+            } else {
+                // Fetch all users where user_type is 'user' if no query is provided
+                $users = User::where('user_type', 'user')
+                    ->where('agent_id', Auth::id())
+                    ->get(['name', 'email', 'country', 'profile_image', 'id']);
+            }
         } else {
-            // Fetch all users where user_type is 'user' if no query is provided
-            $users = User::where('user_type', 'user')
-                ->get(['name', 'email', 'country', 'profile_image', 'id']);
+            abort(403, 'Unauthorized access');
         }
 
         // Return the user data as JSON

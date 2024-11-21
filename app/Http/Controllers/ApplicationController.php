@@ -141,6 +141,9 @@ class ApplicationController extends Controller
         $documents = Document::where('user_id', $id)->get();
         $application = Application::where('user_id', $id)->first();
         $agents = User::where('user_type', 'agent')->get();
+        $agent = User::where('id', $user->agent_id)->first();
+
+        // dd($user->agent_id);
 
         $vacancies = JobApplication::where('user_id', $user->id)
             ->with('job') // Assuming you have a relationship defined
@@ -151,6 +154,6 @@ class ApplicationController extends Controller
         // Flash the session variable to indicate the application tab should be shown
         session()->flash('showApplicationTab', true);
 
-        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents','vacancies','jobs'));
+        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents','vacancies','jobs','agent'));
     }
 }
