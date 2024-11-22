@@ -184,7 +184,27 @@
     new DataTable('#example', {
         order: [
             [0, 'desc']
-        ],
+        ],columnDefs: [{
+                    targets: 0,
+                    width: "10%"
+                }, // 3rd column (index 2) width set to 40%
+                {
+                    targets: 1,
+                    width: "30%"
+                }, // Example: 1st column width to 10%
+                {
+                    targets: 2,
+                    width: "30%"
+                }, // Example: 2nd column width to 10%
+                {
+                    targets: 3,
+                    width: "15%"
+                },
+                {
+                    targets: 4,
+                    width: "15%"
+                } // Example: 2nd column width to 10%
+            ],
 
         autoWidth: false // Disable automatic column width calculation// Set the first column (index 0) to order by descending
     });
