@@ -53,8 +53,6 @@
                             </p>
                             <p class="cs-invoice_date cs-primary_color cs-m0"><b class="cs-primary_color">Date:
                                 </b>{{ $invoice->date }}
-
-
                             </p>
                         </div>
                         <div class="cs-invoice_right cs-text_right">

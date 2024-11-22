@@ -115,7 +115,7 @@ Route::middleware([
         Route::get('/enquiries/{id}', [EnquiryController::class, 'show'])->middleware(['auth', 'superadmin']);
 
         // Application
-        Route::get('/admin/applications', [ApplicationController::class, 'applications'])->name('admin.applications')->middleware(['auth', 'superadmin']);
+        Route::get('/admin/applications', [ApplicationController::class, 'applications'])->name('admin.applications')->middleware(['auth', 'role:superadmin|agent']);
         Route::post('/user/application/update', [ApplicationController::class, 'update'])->name('user.application.update')->middleware(['auth', 'superadmin']);
         Route::get('/application/approve/{id}', [ApplicationController::class, 'approve'])->name('application.approve')->middleware(['auth', 'superadmin']);
         Route::get('/application/reject/{id}', [ApplicationController::class, 'reject'])->name('application.reject')->middleware(['auth', 'superadmin']);
@@ -144,6 +144,7 @@ Route::middleware([
         Route::get('/search-users-invoice', [InvoiceController::class, 'search'])->name('users.search.invoice');
         Route::get('/invoice/view/{invoiceId}', [InvoiceController::class, 'view'])->name('admin.invoice.view');
         Route::post('/sendpdf', [InvoiceController::class, 'sendPdf']);
+        Route::patch('admin/invoice/{invoice}/toggle-status', [InvoiceController::class, 'toggleStatus'])->name('admin.invoice.toggleStatus');
 
 
 

@@ -73,26 +73,44 @@
                 @foreach ($invoices as $invoice)
                     <tr>
                         <td>#{{ $invoice->invoice_number }} <br>
-                            {{ $invoice->date }}</td>
+                            {{ $invoice->date }}
+
+                        </td>
 
                         <td>
+                            <small class="text-primary">Agent : {{ $invoice->user->name }}</small>
                             <ul>
                                 @foreach ($invoice->services as $service)
                                     <li>
                                         <strong></strong> {{ $service->service_name }}<br>
                                         <strong>Quantity:</strong> {{ $service->qty }} | <strong>Price:</strong>
                                         ${{ $service->price }}
-                                        | <strong>Total:</strong> ${{ $service->total }} <br><br>
+                                        | <strong>Total:</strong> ${{ $service->total }} <br>
                                     </li>
                                 @endforeach
                             </ul>
                         </td>
+
                         <td>{{ $invoice->customer->name ?? 'N/A' }} <br> <span
-                                class="text-danger">{{ $invoice->customer->email ?? 'N/A' }}</span><br> <span
-                                class="text-primary">{{ $invoice->customer->address ?? 'N/A' }}</span></td>
+                                class="text-secondary">{{ $invoice->customer->email ?? 'N/A' }}</span><br> <span
+                                class="text-secondary">{{ $invoice->customer->address ?? 'N/A' }}</span></td>
+
                         <td><small>Subtotal : £ {{ $invoice->subtotal }} </small> <br>
                             <small>Tax : £ {{ $invoice->tax }} </small> <br>
-                           <b> Total : £ {{ $invoice->total_fee }} </b>
+                            <b> Total : £ {{ $invoice->total_fee }} </b> <br>
+                            @if ($invoice->status == 1)
+                                <span
+                                    class="text-13 py-2 px-8 bg-success-50 text-success-600 d-inline-flex align-items-center gap-8 rounded-pill">
+                                    <span class="w-6 h-6 bg-success-600 rounded-circle flex-shrink-0"></span>
+                                    &nbsp;&nbsp;   PAID &nbsp;&nbsp;
+                                </span>
+                            @else
+                                <span
+                                    class="text-13 py-2 px-8 bg-pink-50 text-pink-600 d-inline-flex align-items-center gap-8 rounded-pill">
+                                    <span class="w-6 h-6 bg-pink-600 rounded-circle flex-shrink-0"></span>
+                                    &nbsp;&nbsp;  UNPAID &nbsp;&nbsp;
+                                </span>
+                            @endif
                         </td>
 
 
@@ -101,16 +119,26 @@
 
                         <td>
 
-                            {{-- @if ($vacancy->status == 1)
-                                <a href="{{ route('vacancies.block', $vacancy->id) }}" class="btn btn-danger btn-sm"><i class="ph ph-lock"></i></a>
-                            @else
-                                <a href="{{ route('vacancies.unblock', $vacancy->id) }}" class="btn btn-success btn-sm"><i class="ph ph-lock-open"></i></a>
-                            @endif --}}
+                            <form action="{{ route('admin.invoice.toggleStatus', $invoice->id) }}" method="POST"
+                                style="display: inline;">
+                                @csrf
+                                @method('PATCH')
 
-                            <a href="{{ route('admin.invoice.view', $invoice->id) }}" class="btn btn-warning btn-sm"><i
+                                @if ($invoice->status == 1)
+                                    <button type="submit" class="btn btn-danger btn-sm" title="Mark as Unpaid">
+                                        <i class="ph ph-x"></i>
+                                    </button>
+                                @else
+                                    <button type="submit" class="btn btn-success btn-sm" title="Mark as Paid">
+                                        <i class="ph ph-check"></i>
+                                    </button>
+                                @endif
+                            </form>
+
+                            <a href="{{ route('admin.invoice.view', $invoice->id) }}" title="View Invoice" class="btn btn-warning btn-sm"><i
                                     class="ph ph-eye"></i></a>
                             <!-- Delete Button -->
-                            <button class="btn btn-dark btn-sm" onclick="confirmDelete({{ $invoice->id }})">
+                            <button class="btn btn-dark btn-sm" title="Delete" onclick="confirmDelete({{ $invoice->id }})">
                                 <i class="ph ph-trash"></i>
                             </button>
 

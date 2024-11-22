@@ -50,11 +50,26 @@ class InvoiceController extends Controller
 
     public function index()
     {
-        // Get the authenticated user ID
-        $user_id = Auth::user()->id;
-        $invoices = Invoice::with(['customer', 'services'])->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
+        $authUser = auth()->user();
+        if ($authUser->user_type === 'superadmin') {
+            $invoices = Invoice::with(['customer', 'services', 'user'])->orderBy('created_at', 'desc')->get();
+        } elseif ($authUser->user_type === 'agent') {
+            $user_id = Auth::user()->id;
+            $invoices = Invoice::with(['customer', 'services', 'user'])->where('user_id', $user_id)->orderBy('created_at', 'desc')->get();
+        } else {
+            abort(403, 'Unauthorized access');
+        }
+
 
         return view('backend.invoice.list', compact('invoices'));
+    }
+
+    public function toggleStatus(Invoice $invoice)
+    {
+        $invoice->status = !$invoice->status; // Toggles between 1 and 0
+        $invoice->save();
+
+        return redirect()->back()->with('success', 'Invoice status updated.');
     }
 
     public function view($id)
@@ -126,7 +141,7 @@ class InvoiceController extends Controller
             'total_fee' => 'required',
             'date' => 'nullable|date', // Optional date field
             'note' => 'nullable',
-            'tax_rate'=>'required' // Optional date field
+            'tax_rate' => 'required' // Optional date field
         ]);
 
         $currentDate = Carbon::now()->format('d/m/Y');
@@ -160,7 +175,7 @@ class InvoiceController extends Controller
             ]);
         }
         return redirect()->route('admin.invoice.view', $invoice->id)
-        ->with('success', 'Invoice saved successfully.');
+            ->with('success', 'Invoice saved successfully.');
         // return redirect()->back()->with('success', 'Invoice and services saved successfully.');
     }
 
