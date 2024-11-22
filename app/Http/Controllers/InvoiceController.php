@@ -130,8 +130,10 @@ class InvoiceController extends Controller
         ]);
 
         $currentDate = Carbon::now()->format('d/m/Y');
+        $formattedDate = Carbon::createFromFormat('Y-m-d', $request->date)->format('d/m/Y');
 
-        $date = $request->date ?? $currentDate;
+        $date = $formattedDate ?? $currentDate;
+        dd($date);
 
         // Create the invoice
         $invoice = Invoice::create([
