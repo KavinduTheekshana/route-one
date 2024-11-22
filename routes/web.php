@@ -139,9 +139,7 @@ Route::middleware([
         Route::get('/userdata/{userId}', [MessageController::class, 'getUser']);
 
 
-        Route::resource('invoice', InvoiceController::class)
-            ->names('admin.invoice')
-            ->middleware(['auth', 'superadmin']);
+        Route::resource('invoice', InvoiceController::class)->names('admin.invoice')->middleware(['auth', 'role:superadmin|agent']);
         Route::delete('/invoice/{invoice}', [InvoiceController::class, 'destroy'])->name('invoice.destroy');
         Route::get('/search-users-invoice', [InvoiceController::class, 'search'])->name('users.search.invoice');
         Route::get('/invoice/view/{invoiceId}', [InvoiceController::class, 'view'])->name('admin.invoice.view');

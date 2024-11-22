@@ -6,6 +6,7 @@ use App\Models\Application;
 use App\Models\Document;
 use App\Models\JobApplication;
 use App\Models\User;
+use App\Models\UserNotes;
 use App\Models\Vacancies;
 use Illuminate\Http\Request;
 
@@ -142,7 +143,7 @@ class ApplicationController extends Controller
         $application = Application::where('user_id', $id)->first();
         $agents = User::where('user_type', 'agent')->get();
         $agent = User::where('id', $user->agent_id)->first();
-
+        $note = UserNotes::where('user_id', $id)->first();
         // dd($user->agent_id);
 
         $vacancies = JobApplication::where('user_id', $user->id)
@@ -154,6 +155,6 @@ class ApplicationController extends Controller
         // Flash the session variable to indicate the application tab should be shown
         session()->flash('showApplicationTab', true);
 
-        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents','vacancies','jobs','agent'));
+        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents','vacancies','jobs','agent','note'));
     }
 }

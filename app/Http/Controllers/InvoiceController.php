@@ -52,14 +52,7 @@ class InvoiceController extends Controller
     {
         // Get the authenticated user ID
         $user_id = Auth::user()->id;
-
-        // Retrieve vacancies for the authenticated user, ordered by created_at in descending order
-        // $invoices = Invoice::where('user_id', $user_id)
-        //     ->orderBy('created_at', 'desc')
-        //     ->get();
-        // $invoices = Invoice::with('customer')->orderBy('created_at', 'desc')->get();
-        $invoices = Invoice::with(['customer', 'services'])->orderBy('created_at', 'desc')->get();
-
+        $invoices = Invoice::with(['customer', 'services'])->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
 
         return view('backend.invoice.list', compact('invoices'));
     }

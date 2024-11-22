@@ -62,21 +62,19 @@
         <table id="example" class="uk-table uk-table-hover uk-table-striped" style="width:100%">
             <thead>
                 <tr>
-                    <th>Invoice Number</th>
-                    <th>Date</th>
-                    <th>Services</th>
+                    <th>IN / Date</th>
+                    <th>Agent & Services</th>
                     <th>Customer Details</th>
-                    <th>Subtotal</th>
-                    <th>Tax</th>
-                    <th>Total Amount</th>
+                    <th>Values</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($invoices as $invoice)
                     <tr>
-                        <td>#{{ $invoice->invoice_number }}</td>
-                        <td>{{ $invoice->date }}</td>
+                        <td>#{{ $invoice->invoice_number }} <br>
+                            {{ $invoice->date }}</td>
+
                         <td>
                             <ul>
                                 @foreach ($invoice->services as $service)
@@ -92,9 +90,11 @@
                         <td>{{ $invoice->customer->name ?? 'N/A' }} <br> <span
                                 class="text-danger">{{ $invoice->customer->email ?? 'N/A' }}</span><br> <span
                                 class="text-primary">{{ $invoice->customer->address ?? 'N/A' }}</span></td>
-                        <td>£ {{ $invoice->subtotal }}</td>
-                        <td>£ {{ $invoice->tax }}</td>
-                        <td>£ {{ $invoice->total_fee }}</td>
+                        <td><small>Subtotal : £ {{ $invoice->subtotal }} </small> <br>
+                            <small>Tax : £ {{ $invoice->tax }} </small> <br>
+                           <b> Total : £ {{ $invoice->total_fee }} </b>
+                        </td>
+
 
 
 
@@ -130,13 +130,10 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th>Invoice Number</th>
-                    <th>Date</th>
+                    <th>IN / Date</th>
                     <th>Services</th>
                     <th>Customer Details</th>
-                    <th>Subtotal</th>
-                    <th>Tax</th>
-                    <th>Total Amount</th>
+                    <th>Values</th>
                     <th>Action</th>
                 </tr>
             </tfoot>
@@ -160,39 +157,7 @@
         order: [
             [0, 'desc']
         ],
-        columnDefs: [{
-                width: "6%",
-                targets: 0
-            }, // Sets the width for the first column
-            {
-                width: "10%",
-                targets: 1
-            }, // Second column
-            {
-                width: "23%",
-                targets: 2
-            }, // Third column
-            {
-                width: "23%",
-                targets: 3
-            }, // Fourth column
-            {
-                width: "10%",
-                targets: 4
-            }, // Fifth column
-            {
-                width: "8%",
-                targets: 5
-            }, // Sixth column
-            {
-                width: "10%",
-                targets: 6
-            }, // Sixth column
-            {
-                width: "10%",
-                targets: 7
-            }, // Sixth column
-        ],
+
         autoWidth: false // Disable automatic column width calculation// Set the first column (index 0) to order by descending
     });
 </script>

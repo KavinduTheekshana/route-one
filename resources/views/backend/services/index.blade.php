@@ -104,41 +104,49 @@
 
                         <td>
 
-                            <form action="{{ route('admin.services.toggleStatus', $service->id) }}" method="POST"
-                                style="display: inline;">
-                                @csrf
-                                @method('PATCH')
+                            @auth
+                                @if (Auth::user()->user_type === 'superadmin')
+                                    <form action="{{ route('admin.services.toggleStatus', $service->id) }}" method="POST"
+                                        style="display: inline;">
+                                        @csrf
+                                        @method('PATCH')
 
-                                @if ($service->status == 1)
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="ph ph-lock"></i>
-                                    </button>
-                                @else
-                                    <button type="submit" class="btn btn-success btn-sm">
-                                        <i class="ph ph-lock-open"></i>
-                                    </button>
+                                        @if ($service->status == 1)
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="ph ph-lock"></i>
+                                            </button>
+                                        @else
+                                            <button type="submit" class="btn btn-success btn-sm">
+                                                <i class="ph ph-lock-open"></i>
+                                            </button>
+                                        @endif
+                                    </form>
                                 @endif
-                            </form>
-
+                            @endauth
 
 
                             <a href="{{ route('admin.services.show', $service->id) }}" class="btn btn-warning btn-sm"><i
-                                class="ph ph-eye"></i></a>
+                                    class="ph ph-eye"></i></a>
 
 
+                            @auth
+                                @if (Auth::user()->user_type === 'superadmin')
+                                    <!-- Delete Button -->
+                                    <button class="btn btn-dark btn-sm" onclick="confirmDelete({{ $service->id }})">
+                                        <i class="ph ph-trash"></i>
+                                    </button>
 
-                            <!-- Delete Button -->
-                            <button class="btn btn-dark btn-sm" onclick="confirmDelete({{ $service->id }})">
-                                <i class="ph ph-trash"></i>
-                            </button>
 
-                            <!-- Delete Form -->
-                            <form id="delete-form-{{ $service->id }}"
-                                action="{{ route('admin.services.destroy', $service->id) }}" method="POST"
-                                style="display: none;">
-                                @csrf
-                                @method('DELETE')
-                            </form>
+                                    <!-- Delete Form -->
+                                    <form id="delete-form-{{ $service->id }}"
+                                        action="{{ route('admin.services.destroy', $service->id) }}" method="POST"
+                                        style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                @endif
+                            @endauth
+
 
                         </td>
                     </tr>
@@ -180,11 +188,22 @@
 <script>
     $(document).ready(function() {
         $('#example').DataTable({
-columnDefs: [
-                { targets: 0, width: "15%" }, // 3rd column (index 2) width set to 40%
-                { targets: 1, width: "10%" }, // Example: 1st column width to 10%
-                { targets: 2, width: "8%" }, // Example: 2nd column width to 10%
-                { targets: 3, width: "35%" }, // Example: 2nd column width to 10%
+            columnDefs: [{
+                    targets: 0,
+                    width: "15%"
+                }, // 3rd column (index 2) width set to 40%
+                {
+                    targets: 1,
+                    width: "10%"
+                }, // Example: 1st column width to 10%
+                {
+                    targets: 2,
+                    width: "8%"
+                }, // Example: 2nd column width to 10%
+                {
+                    targets: 3,
+                    width: "35%"
+                }, // Example: 2nd column width to 10%
             ]
         });
     });
