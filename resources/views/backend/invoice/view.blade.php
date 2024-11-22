@@ -52,7 +52,7 @@
                                     No:</b> #{{ $invoice->invoice_number }}
                             </p>
                             <p class="cs-invoice_date cs-primary_color cs-m0"><b class="cs-primary_color">Date:
-                                </b>{{ \Carbon\Carbon::createFromFormat('d/m/Y', $invoice->date)->format('d/m/Y') }}
+                                </b>{{ $invoice->date }}
 
 
                             </p>
