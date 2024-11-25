@@ -74,7 +74,7 @@ Route::middleware([
         Route::delete('/team/{user}', [UserController::class, 'destroy'])->name('team.destroy')->middleware(['auth', 'superadmin']);
 
         // admin, superadmin and agent
-        Route::get('/user/create', [UserController::class, 'create'])->name('user.create')->middleware(['auth' , 'role:superadmin|agent']);
+        Route::get('/user/create', [UserController::class, 'create'])->name('user.create')->middleware(['auth', 'role:superadmin|agent']);
         Route::get('/user/manage', [UserController::class, 'users'])->name('user.manage')->middleware(['auth', 'role:superadmin|agent']);
         Route::get('/user/block/{user}', [UserController::class, 'user_block'])->name('user.block')->middleware(['auth', 'role:superadmin|agent']);
         Route::get('/user/unblock/{user}', [UserController::class, 'user_unblock'])->name('user.unblock')->middleware(['auth', 'role:superadmin|agent']);
@@ -149,7 +149,18 @@ Route::middleware([
 
 
 
-        Route::resource('admin/services', ServicesController::class)->names('admin.services');
+        // Route::resource('admin/services', ServicesController::class)->names('admin.services')->middleware(['auth', 'role:superadmin|agent']);
+        // Route::get('admin/services/create', [ServicesController::class, 'create'])->names('admin.services')->middleware(['auth', 'superadmin']);
+        // Apply role:superadmin only to create
+        Route::get('admin/services/create', [ServicesController::class, 'create'])
+            ->name('admin.services.create')
+            ->middleware(['auth', 'role:superadmin']);
+
+        // Resource route for other methods
+        Route::resource('admin/services', ServicesController::class)
+            ->except(['create'])
+            ->names('admin.services')
+            ->middleware(['auth', 'role:superadmin|agent']);
         Route::patch('admin/services/{service}/toggle-status', [ServicesController::class, 'toggleStatus'])->name('admin.services.toggleStatus');
 
         // Route::patch('admin/services/{service}/status', [ServicesController::class, 'changeStatus'])->name('admin.services.changeStatus');

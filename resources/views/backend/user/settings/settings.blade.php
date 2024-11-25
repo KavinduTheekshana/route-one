@@ -106,6 +106,18 @@
                 </li>
 
                 <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-message-tab"
+                            data-bs-toggle="pill"
+                            data-bs-target="#pills-message"
+                            type="button"
+                            role="tab"
+                            aria-controls="pills-message"
+                            aria-selected="true">
+                        Message
+                    </button>
+                </li>
+
+                <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-notes-tab"
                             data-bs-toggle="pill"
                             data-bs-target="#pills-notes"
@@ -133,6 +145,7 @@
     @include('backend.user.settings.application')
     @include('backend.user.settings.jobs')
     @include('backend.user.settings.notes')
+    @include('backend.user.settings.message')
     @include('backend.user.settings.documents')
 
 

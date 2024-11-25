@@ -38,17 +38,23 @@
     @section('page_name', 'Services Management')
     @include('backend.components.breadcrumb')
 
-    <!-- Breadcrumb Right Start -->
-    <div class="flex-align gap-8 flex-wrap">
 
-        <div
-            class="flex-align text-gray-500 text-13 border border-gray-100 rounded-4 ps-20 focus-border-main-600 bg-white">
-            <span class="text-lg"><i class="ph ph-plus"></i></span>
-            <a href="{{ route('admin.services.create') }}"
-                class="form-control ps-8 pe-20 py-16 border-0 text-inherit rounded-4 text-center">CREATE SERVICE</a>
-        </div>
-    </div>
-    <!-- Breadcrumb Right End -->
+    @auth
+        @if (Auth::user()->user_type === 'superadmin')
+            <!-- Breadcrumb Right Start -->
+            <div class="flex-align gap-8 flex-wrap">
+                <div
+                    class="flex-align text-gray-500 text-13 border border-gray-100 rounded-4 ps-20 focus-border-main-600 bg-white">
+                    <span class="text-lg"><i class="ph ph-plus"></i></span>
+                    <a href="{{ route('admin.services.create') }}"
+                        class="form-control ps-8 pe-20 py-16 border-0 text-inherit rounded-4 text-center">CREATE SERVICE</a>
+                </div>
+            </div>
+            <!-- Breadcrumb Right End -->
+        @endif
+    @endauth
+
+
 </div>
 
 

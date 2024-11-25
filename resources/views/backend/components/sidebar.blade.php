@@ -160,13 +160,18 @@
                     </a>
                 </li>
 
-                <li class="sidebar-menu__item">
-                    <a href="{{ route('admin.calander') }}"
-                        class="sidebar-menu__link {{ request()->segment(2) === 'calander' ? 'activePage' : '' }}">
-                        <span class="icon"><i class="ph ph-calendar-dots"></i></span>
-                        <span class="text">Calander</span>
-                    </a>
-                </li>
+                @auth
+                    @if (Auth::user()->user_type === 'superadmin')
+                        <li class="sidebar-menu__item">
+                            <a href="{{ route('admin.calander') }}"
+                                class="sidebar-menu__link {{ request()->segment(2) === 'calander' ? 'activePage' : '' }}">
+                                <span class="icon"><i class="ph ph-calendar-dots"></i></span>
+                                <span class="text">Calander</span>
+                            </a>
+                        </li>
+                    @endif
+                @endauth
+
 
                 @auth
                     @if (Auth::user()->user_type === 'superadmin')

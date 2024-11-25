@@ -4,7 +4,14 @@
     <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
 
-
+    @if (Auth::user()->user_type === 'superadmin')
+        <style>
+            .service-row:hover .total {
+                display: none !important;
+                /* Hide the total amount on hover */
+            }
+        </style>
+    @endif
 
     <style>
         .input-custom {
@@ -35,10 +42,10 @@
             /* Highlight the row on hover */
         }
 
-        .service-row:hover .total {
-            display: none !important;
-            /* Hide the total amount on hover */
-        }
+
+        /* .service-row:hover .total {
+                display: none !important;
+            } */
 
         .service-row:hover .edit-icon,
         .service-row:hover .delete-icon {
@@ -411,12 +418,18 @@
             <td class="cs-width_2 price-display price"><input readonly name="price[]" class="text-counter form-control py-11 mb-1 input-custom"
                        type="text" value="${price.toFixed(2)}"></td>
             <td class="cs-width_2 cs-text_right actions">
+
+                @auth
+                @if (Auth::user()->user_type === 'superadmin')
                 <span class="icon edit-icon d-none" title="Edit">
                     <i class="ph ph-pencil"></i>
                 </span>
                 <span class="icon delete-icon d-none" title="Delete">
                     <i class="ph ph-trash"></i>
                 </span>
+                    @endif
+                    @endauth
+
                 <span class="total"><input readonly name="total[]" class="text-counter form-control py-11 mb-1 input-custom"
                            type="text" value="${calculateTotal(price, quantity)}"></span>
             </td>

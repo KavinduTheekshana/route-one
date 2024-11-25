@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ApplicationApproved;
 use App\Models\Application;
 use App\Models\Document;
 use App\Models\JobApplication;
@@ -9,6 +10,8 @@ use App\Models\User;
 use App\Models\UserNotes;
 use App\Models\Vacancies;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewMessageNotification;
 
 class ApplicationController extends Controller
 {
@@ -98,6 +101,8 @@ class ApplicationController extends Controller
         // Update the status to 1 (approved)
         $application->update(['status' => 1]);
 
+        Mail::to($application->email)->send(new ApplicationApproved($application->name));
+
         // Redirect back with a success message
         return redirect()->back()->with([
             'success' => 'Application approved successfully.',
@@ -155,6 +160,6 @@ class ApplicationController extends Controller
         // Flash the session variable to indicate the application tab should be shown
         session()->flash('showApplicationTab', true);
 
-        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents','vacancies','jobs','agent','note'));
+        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs', 'agent', 'note'));
     }
 }
