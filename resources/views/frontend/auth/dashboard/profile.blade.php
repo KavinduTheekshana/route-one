@@ -1,13 +1,34 @@
 @push('styles')
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-    <style>
+   <!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+    {{-- <style>
         .flag {
             height: 20px;
-            /* margin-right: 5px; */
         }
     </style>
 
     <style>
+        .country-select {
+            width: 100%;
+            max-width: 300px;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        .flag-icon {
+            margin-right: 8px;
+            width: 20px;
+            height: 15px;
+            vertical-align: middle;
+        }
+
         /* Add padding to the selected area (input box) */
         .select2-container--default .select2-selection--single {
             padding: 0.48rem 1.13rem;
@@ -44,7 +65,9 @@
         .select2-container--default .select2-selection--single .select2-selection__arrow {
             display: none;
         }
-    </style>
+    </style> --}}
+
+
 @endpush
 
 @extends('layouts.frontend')
@@ -98,7 +121,15 @@
 
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputCountry">Country</label>
-                                <select id="countries" class="form-control" name="country" style="width: 100%;">
+
+
+
+
+                                <select id="countrySelect" class="form-control" name="country" style="width: 100%;">
+                                    <option value="" disabled selected>Loading countries...</option>
+                                </select>
+
+                                {{-- <select id="countries" class="form-control" name="country" style="width: 100%;">
                                     @foreach ($countries as $country)
                                         <option value="{{ $country['name']['common'] }}"
                                             data-flag="{{ $country['flags']['svg'] }}"
@@ -106,7 +137,7 @@
                                             {{ $country['name']['common'] }}
                                         </option>
                                     @endforeach
-                                </select>
+                                </select> --}}
                                 {{-- <input class="form-control" name="country" type="text"
                                     placeholder="Enter your country" value="{{ auth()->user()->country }}"> --}}
                             </div>
@@ -143,6 +174,7 @@
 @endsection
 
 @push('scripts')
+
 <script>
     document.getElementById('imageUpload').addEventListener('change', function(event) {
         const file = event.target.files[0];
@@ -161,7 +193,7 @@
 </script>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
     $(document).ready(function() {
         $('#countries').select2({
@@ -181,5 +213,43 @@
             return `<span><img class="flag" src="${flagUrl}" alt="flag" /> ${countryName}</span>`;
         }
     });
+</script> --}}
+
+<script>
+    // Fetch country data
+    fetch('https://restcountries.com/v3.1/all')
+        .then(response => response.json())
+        .then(data => {
+            const select = document.getElementById('countrySelect');
+            const savedCountryCode = "{{ auth()->user()->country }}"; // Get saved country code (e.g., "US")
+
+            select.innerHTML = ''; // Clear the placeholder
+
+            // Sort countries alphabetically by name
+            data.sort((a, b) => a.name.common.localeCompare(b.name.common));
+
+            // Populate the dropdown
+            data.forEach(country => {
+                const option = document.createElement('option');
+                option.value = country.name.common; // Use country code (cca2) as value
+                option.textContent = country.name.common; // Display country name
+
+                // Check if this country matches the saved country code
+                if (country.name.common === savedCountryCode) {
+                    option.selected = true; // Set the saved country as selected
+                }
+
+                select.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching countries:', error);
+            const select = document.getElementById('countrySelect');
+            select.innerHTML = '<option value="" disabled>Error loading countries</option>';
+        });
 </script>
+
+
+
+
 @endpush

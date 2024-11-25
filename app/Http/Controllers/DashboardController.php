@@ -14,9 +14,9 @@ class DashboardController extends Controller
     public function index()
     {
         if (Auth::user()->user_type === 'user') {
-            $response = Http::get('https://restcountries.com/v3.1/all');
-            $countries = $response->json();
-            return view('frontend.auth.dashboard.profile', ['countries' => $countries]);
+            // $response = Http::get('https://restcountries.com/v3.1/all');
+            // $countries = $response->json();
+            return view('frontend.auth.dashboard.profile');
         } else {
             $userCount = User::where('user_type', 'user')->count();
             $agentCount = User::where('user_type', 'agent')->count();
