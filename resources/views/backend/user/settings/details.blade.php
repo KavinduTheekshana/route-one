@@ -42,7 +42,7 @@
                         <div class="col-sm-6 col-xs-6">
                             <label for="phone" class="form-label mb-8 h6">Agent (Readonly)</label>
                             <input type="text" class="form-control py-11" disabled
-                                value="{{ $agent->name }}">
+                                value="{{ $agent->name ?? 'N/A' }}">
                         </div>
 
 
