@@ -7,7 +7,9 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use NotifyLk\Api\SmsApi;
 
 class MessageController extends Controller
 {
@@ -119,6 +121,16 @@ class MessageController extends Controller
         // Get the receiver's email
         $receiver = User::find($request->receiver_id);
 
+        // $phone = $receiver->phone;
+
+        // if (str_starts_with($phone, '0') && strlen($phone) === 10) {
+        //     $phone = '94' . substr($phone, 1);
+        //     // Send SMS notification to the receiver
+        //     $this->sendTextMessage($phone, $receiver->name);
+        // } elseif (str_starts_with($phone, '+94') && strlen($phone) === 12) {
+        //     $phone = substr($phone, 1);
+        //     $this->sendTextMessage($phone, $receiver->name);
+        // }
         // Send email notification to the receiver
         if ($receiver) {
             Mail::to($receiver->email)->send(new NewMessageNotification($request->message, auth()->user()));
@@ -128,6 +140,24 @@ class MessageController extends Controller
         return response()->json(['success' => true]);
     }
 
+    private function sendTextMessage($phone, $name)
+    {
+        $api_instance = new SmsApi();
+        $user_id = "25086";
+        $api_key = "bxw9mVd8JJRz2nVFR1bR";
+        $message = "Dear " . $name . ", \n\n We are pleased to inform you that your application has been successfully approved.\n\nBest Regards,\nRoute One Recruitment";
+        // $message = "Your Verification Code is: " . $storedOtp . "\n\nThanks for voting with us!\nIf you didn't request an OTP, click here.\nhttps://bit.ly/3Z3gBZ2";
+        $to = $phone;
+        $sender_id = "ROUTE ONE";
+        try {
+            $api_instance->sendSMS($user_id, $api_key, $message, $to, $sender_id);
+            // return redirect()->route('vote')->with('status', 'SMS sent successfully');
+        } catch (\Exception $e) {
+            Log::error('An error occurred: ' . $e->getMessage(), ['exception' => $e]);
+            echo ($e->getMessage());
+            return redirect()->route('vote')->with('exception', 'Something went wrong');
+        }
+    }
 
     public function create()
     {
