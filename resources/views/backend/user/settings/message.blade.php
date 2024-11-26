@@ -1,9 +1,9 @@
 @push('styles')
-    <style>
+    {{-- <style>
         .h-96 {
             height: 50vh !important;
         }
-    </style>
+    </style> --}}
 @endpush
 <!-- Notes Tab Content -->
 <div class="tab-content" id="pills-tabContent">
@@ -70,6 +70,9 @@
     </div>
 </div>
 
+<div id="user-info" data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}"
+    data-user-country="{{ $user->country }}">
+</div>
 
 @push('scripts')
     <script>
@@ -114,44 +117,12 @@
         // Function to render user list
         let selectedUserId = null;
 
-        function renderUserList(users) {
-            var chatList = document.getElementById('chatList');
-            chatList.innerHTML = ''; // Clear the list
+        document.addEventListener('DOMContentLoaded', function() {
+            const userInfo = document.getElementById('user-info');
 
-            if (users.length > 0) {
-                users.forEach(function(user) {
-                    // Build profile image path or use default
-                    var profileImage = user.profile_image ? `/storage/${user.profile_image}` :
-                        '/backend/images/thumbs/setting-profile-img.webp';
-
-                    var userItem = `
-                <div class="chat-list__item flex-between gap-8 cursor-pointer" data-user-id="${user.id}" onclick="handleUserClick(this)">
-                    <div class="d-flex align-items-start gap-16">
-                        <div class="position-relative flex-shrink-0">
-                            <img src="${profileImage}" alt="Profile Image" class="selected-user-image w-44 h-44 rounded-circle object-fit-cover flex-shrink-0">
-                            <span class="activation-badge activation-badge-dot w-12 h-12 border-2 position-absolute inset-block-end-0 inset-inline-end-0"></span>
-                        </div>
-                        <div class="d-flex flex-column w-100">
-                            <h6 class="user-name text-line-1 text-15 text-gray-400 fw-bold mb-0">${user.name}</h6>
-                            <span class="text-line-1 text-13 text-gray-200">${user.email}</span>
-                            <span class="user-country text-line-1 text-13 text-gray-200">${user.country ? user.country : 'N/A'}</span>
-                        </div>
-                    </div>
-                </div>
-                `;
-                    chatList.insertAdjacentHTML('beforeend', userItem);
-                });
-
-                // Scroll to the bottom of the chat box to show the latest message
-                chatBox.scrollTop = chatBox.scrollHeight;
-            } else {
-                chatList.innerHTML = '<p>No users found</p>';
-            }
-        }
-
-
-        function handleUserClick(element) {
-            const userId = element.getAttribute('data-user-id'); // Get the user ID from the data attribute
+            // Get the user data from the `data-` attributes
+            const userId = userInfo.getAttribute('data-user-id');
+            // const userId = "23"; // Get the user ID from the data attribute
             // console.log('User ID:', userId);
             selectedUserId = userId; // Set the selected user ID
             // console.log('Selected user ID:', selectedUserId);
@@ -175,7 +146,8 @@
             document.getElementById('selected-user-image').setAttribute('src', profileImage);
             // Clear the message input field
             document.getElementById('messageInput').value = '';
-        }
+        });
+
 
 
         function fetchMessages(userId) {
