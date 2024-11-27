@@ -140,7 +140,7 @@ class MessageController extends Controller
         return response()->json(['success' => true]);
     }
 
-    private function sendTextMessage($phone, $name , $messagecontent)
+    private function sendTextMessage($phone, $name, $messagecontent)
     {
         $api_instance = new SmsApi();
         $user_id = "25086";
