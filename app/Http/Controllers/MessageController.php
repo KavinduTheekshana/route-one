@@ -107,7 +107,7 @@ class MessageController extends Controller
     {
         // Validate the input
         $request->validate([
-            'message' => 'required|string',
+            'message' => 'required|string|max:65535',
             'receiver_id' => 'required|integer',
         ]);
 
@@ -120,20 +120,23 @@ class MessageController extends Controller
 
         // Get the receiver's email
         $receiver = User::find($request->receiver_id);
-
+        $messagecontent = $request->message;
         $phone = $receiver->phone;
 
-        if (str_starts_with($phone, '0') && strlen($phone) === 10) {
-            $phone = '94' . substr($phone, 1);
-            // Send SMS notification to the receiver
-            $this->sendTextMessage($phone, $receiver->name, $request->message);
-        } elseif (str_starts_with($phone, '+94') && strlen($phone) === 12) {
-            $phone = substr($phone, 1);
-            $this->sendTextMessage($phone, $receiver->name, $request->message);
-        }
+        // if (str_starts_with($phone, '0') && strlen($phone) === 10) {
+        //     $phone = '94' . substr($phone, 1);
+        //     // Send SMS notification to the receiver
+        //     $this->sendTextMessage($phone, $receiver->name, $request->message);
+        // } elseif (str_starts_with($phone, '+94') && strlen($phone) === 12) {
+        //     $phone = substr($phone, 1);
+        //     $this->sendTextMessage($phone, $receiver->name, $request->message);
+        // }
         // Send email notification to the receiver
         if ($receiver) {
-            Mail::to($receiver->email)->send(new NewMessageNotification($request->message, auth()->user()));
+            // Simulate a long message
+            Mail::to($receiver->email)->send(new NewMessageNotification($messagecontent, auth()->user()));
+        } else {
+            Log::error('User not found with ID: '. $request->receiver_id);
         }
 
         // Return a JSON response for AJAX

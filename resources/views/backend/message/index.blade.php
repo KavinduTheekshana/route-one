@@ -68,22 +68,25 @@
         <div class="card-footer border-top border-gray-100">
             <div class="flex-align gap-8 chat-box-bottom">
 
-                <label for="fileUp"
+                {{-- <label for="fileUp"
                     class="flex-shrink-0 file-btn w-48 h-48 flex-center bg-main-50 text-24 text-main-600 rounded-circle hover-bg-main-100 transition-2">
                     <i class="ph ph-plus"></i>
                 </label>
-                <input type="file" name="fileName" id="fileUp" hidden>
+                <input type="file" name="fileName" id="fileUp" hidden> --}}
 
 
-                <form id="messageForm" class="flex-align gap-8 chat-box-bottom w-100">
+                <form id="messageForm" class="chat-box-bottom w-100">
                     @csrf
                     <input type="hidden" id="selectedUserId" name="receiver_id" value="">
                     <!-- Hidden field for receiver user ID -->
 
-                    <input type="text" id="messageInput" name="message"
+                    {{-- <input type="text" id="messageInput" name="message"
                         class="form-control h-48 border-transparent px-20 focus-border-main-600 bg-main-50 rounded-pill placeholder-15"
-                        placeholder="Type your message...">
+                        placeholder="Type your message..."> --}}
+                    {{-- <textarea name="description" id="description" class="form-control" rows="3"></textarea> --}}
 
+                    <textarea name="message" id="messageInput" class="form-control w-100" style="width: 100%" rows="10"></textarea>
+                    <br>
                     <button type="submit" id="sendMessageButton"
                         class="flex-shrink-0 submit-btn btn btn-main rounded-pill flex-align gap-4 py-15">
                         Send Message <span class="d-flex text-md d-sm-flex d-none"><i
@@ -111,6 +114,19 @@
 @endsection
 
 @push('scripts')
+
+<script src="https://cdn.tiny.cloud/1/mc59edcciy0vssoo3ojx1vwpo2jbsemez61eo60xxi6p5wse/tinymce/7/tinymce.min.js"
+referrerpolicy="origin"></script>
+
+<script>
+tinymce.init({
+    selector: 'textarea#messageInput', // Replace this CSS selector to match the placeholder element for TinyMCE
+    plugins: 'code table lists',
+    toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | table'
+});
+</script>
+
+
 <script>
     $(document).ready(function() {
         $('#messageForm').on('submit', function(e) {
@@ -134,6 +150,7 @@
                     if (response.success) {
                         // alert('Message sent successfully!');
                         fetchMessages(receiver_id);
+                        tinymce.get('messageInput').setContent('');
                         $('#messageInput').val(
                             ''); // Clear input after successful submission
                     }
@@ -253,33 +270,36 @@
     }
 
     function renderMessages(messages, userId) {
-        console.log(messages);
-        // Logic to render messages in your chat box
-        const chatBox = document.querySelector('.chat-box-item-wrapper'); // Adjust the selector as needed
-        chatBox.innerHTML = ''; // Clear previous messages
+            // console.log(messages);
+            // Logic to render messages in your chat box
+            const chatBox = document.querySelector('.chat-box-item-wrapper'); // Adjust the selector as needed
+            chatBox.innerHTML = ''; // Clear previous messages
 
-        messages.forEach(msg => {
-            const senderProfileImage = msg.sender.profile_image ?
-                `/storage/${msg.sender.profile_image}` :
-                '/backend/images/thumbs/setting-profile-img.webp';
+            messages.forEach(msg => {
+                const senderProfileImage = msg.sender.profile_image ?
+                    `/storage/${msg.sender.profile_image}` :
+                    '/backend/images/thumbs/setting-profile-img.webp';
 
-            const receiverProfileImage = msg.receiver.profile_image ?
-                `/storage/${msg.receiver.profile_image}` :
-                '/backend/images/thumbs/setting-profile-img.webp';
+                const receiverProfileImage = msg.receiver.profile_image ?
+                    `/storage/${msg.receiver.profile_image}` :
+                    '/backend/images/thumbs/setting-profile-img.webp';
 
-            const messageItem = `
-            <div class="${msg.receiver_id === userId ? 'chat-box-item' : 'chat-box-item right'} d-flex align-items-end gap-8 mb-15">
-                <div class="pb-20">
+                const messageItem = document.createElement('div');
+                messageItem.className =
+                    `${msg.receiver_id === userId ? 'chat-box-item' : 'chat-box-item right'} d-flex align-items-end gap-8 mb-15`;
+
+                messageItem.innerHTML = `
+            <div class="pb-20">
                 <img src="${msg.receiver_id === userId ? senderProfileImage : receiverProfileImage}" alt="Profile Image" class="w-40 h-40 rounded-circle object-fit-cover flex-shrink-0">
-               </div>
-                <div class="chat-box-item__content">
-                    <p class="chat-box-item__text py-16 px-16 px-lg-4">${msg.message}</p>
-                    <span class="text-gray-200 text-13 mt-2 d-block">${new Date(msg.created_at).toLocaleString()}</span>
-                </div>
+            </div>
+            <div class="chat-box-item__content">
+                <div class="chat-box-item__text py-16 px-16 px-lg-4 text-left">${msg.message}</div>
+                <span class="text-gray-200 text-13 mt-2 d-block">${new Date(msg.created_at).toLocaleString()}</span>
             </div>
         `;
-            chatBox.insertAdjacentHTML('beforeend', messageItem);
-        });
-    }
+
+                chatBox.appendChild(messageItem);
+            });
+        }
 </script>
 @endpush

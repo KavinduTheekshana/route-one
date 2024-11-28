@@ -27,8 +27,14 @@ class NewMessageNotification extends Mailable
 
     public function build()
     {
-        return $this->subject('New Message') // Set the email subject
-                    ->view('emails.new_message'); // Set the view for the email
+        return $this->from(config('mail.from.address'), config('mail.from.name'))
+                    ->subject('You Have a New Message')
+                    ->view('emails.new_message')
+                    ->with([
+                        'messageContent' => $this->messageContent,
+                        'sender' => $this->sender,
+                    ])
+                    ->html($this->messageContent); // Explicitly send as HTML
     }
 
     /**
