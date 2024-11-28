@@ -9,10 +9,15 @@ class UserNotes extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'review'];
+    protected $fillable = ['user_id', 'review','admin_id'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+    public function admin()
+{
+    return $this->belongsTo(User::class, 'admin_id');
+}
 }

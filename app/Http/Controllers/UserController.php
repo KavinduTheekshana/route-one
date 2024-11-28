@@ -19,16 +19,27 @@ class UserController extends Controller
 
     public function storeOrUpdate(Request $request)
     {
-        $request->validate([
+        // $request->validate([
+        //     'user_id' => 'required|exists:users,id',
+        //     'review' => 'required|string',
+        // ]);
+        $validatedData = $request->validate([
             'user_id' => 'required|exists:users,id',
             'review' => 'required|string',
         ]);
 
+        UserNotes::create([
+            'user_id' => $validatedData['user_id'],
+            'review' => $validatedData['review'],
+            'admin_id' => Auth::id(),
+        ]);
+
         // Update if the note exists, otherwise create a new one
-        UserNotes::updateOrCreate(
-            ['user_id' => $request->user_id], // Check by user_id
-            ['review' => $request->review]   // Update the review
-        );
+        // UserNotes::Create(
+
+        //     'user_id' => $request->user_id, // Check by user_id
+        //     'review' => $request->review   // Update the review
+        // );
 
         return redirect()->back()->with('success', 'Notes saved successfully!');
     }
@@ -45,9 +56,9 @@ class UserController extends Controller
                 ->get();
         } elseif ($authUser->user_type === 'agent') {
             $users = User::where('user_type', 'user') // First condition
-            ->where('agent_id', Auth::id()) // Second condition (AND)
-            ->orderBy('id', 'desc') // Sort by id in descending order
-            ->get();
+                ->where('agent_id', Auth::id()) // Second condition (AND)
+                ->orderBy('id', 'desc') // Sort by id in descending order
+                ->get();
         } else {
             abort(403, 'Unauthorized access');
         }
@@ -121,7 +132,8 @@ class UserController extends Controller
         $application = Application::where('user_id', $id)->first();
         $agents = User::where('user_type', 'agent')->get();
 
-        $note = UserNotes::where('user_id', $id)->first();
+        $notes = UserNotes::with('admin')->where('user_id', $id)->get();
+
 
         // Fetch the jobs that the user has applied for
         $vacancies = JobApplication::where('user_id', $user->id)
@@ -129,7 +141,7 @@ class UserController extends Controller
             ->get();
 
         $jobs = Vacancies::get();
-        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs','note','agent'));
+        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs', 'notes', 'agent'));
     }
 
     public function user_update(Request $request, $id)

@@ -1,4 +1,7 @@
 @push('styles')
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> --}}
 @endpush
 
 @extends('layouts.backend')
@@ -19,6 +22,7 @@
 <div class="card mt-24 bg-transparent">
     <div class="card-body p-0">
         <div id='wrap'>
+            {{-- <div id="calendar"></div> --}}
             <div id='calendar' class="position-relative">
                 <button type="button"
                     class="add-event btn btn-main text-sm btn-sm px-24 rounded-pill py-12 d-flex align-items-center gap-2"
@@ -35,7 +39,7 @@
 
 
 <!-- Modal Add Event -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+{{-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog modal-dialog-centered">
         <div class="modal-content radius-16 bg-base">
             <div class="modal-header py-16 px-24 border border-top-0 border-start-0 border-end-0">
@@ -150,7 +154,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
 
 
@@ -158,4 +162,149 @@
 @endsection
 
 @push('scripts')
+
+
+{{-- <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const calendarEl = document.getElementById('calendar');
+
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth', // Default view
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay', // Add week and day views
+            },
+            events: {
+                url: '/admin/calander/data', // Fetch events
+                extraParams: {}, // Add extra parameters if needed
+                failure: function () {
+                    alert('Failed to fetch events!');
+                },
+                success: function (events) {
+                    console.log(events); // Log events for debugging
+                }
+            },
+            eventDataTransform: function (event) {
+                // Map fields from the backend to FullCalendar's expected fields
+                return {
+                    id: event.id,
+                    title: event.title,
+                    start: event.start_date, // Map start_date to start
+                    end: event.end_date,     // Map end_date to end
+                    description: event.description,
+                };
+            },
+            editable: true, // Enable drag-and-drop
+            selectable: true, // Enable selection
+            eventClick: function (info) {
+                // Show event details in a SweetAlert
+                Swal.fire({
+                    title: info.event.title,
+                    html: `
+                        <strong>Start:</strong> ${info.event.start.toLocaleString()}<br>
+                        <strong>End:</strong> ${info.event.end ? info.event.end.toLocaleString() : 'N/A'}<br>
+                        <strong>Description:</strong> ${info.event.extendedProps.description || 'No description'}
+                    `,
+                    icon: 'info',
+                    confirmButtonText: 'Close',
+                });
+            },
+        });
+
+        calendar.render();
+    });
+</script> --}}
+
+
+<script>
+    $(document).ready(function() {
+        var calendar = $("#calendar").fullCalendar({
+            header: {
+                left: "title",
+                center: "agendaDay,agendaWeek,month",
+                right: "prev,next today",
+            },
+            editable: true,
+            firstDay: 1, // 1 (Monday)
+            selectable: true,
+            defaultView: "month",
+            events: '/admin/calander/data', // Fetch events from the backend
+            eventDataTransform: function (event) {
+                console.log(event);
+                // Map fields from the backend to FullCalendar's expected fields
+                return {
+                    id: event.id,
+                    title: event.title,
+                    start: event.start_date, // Map start_date to start
+                    end: event.end_date,     // Map end_date to end
+                    description: event.description,
+                };
+            },
+
+            eventClick: function (info) {
+    // Log the event object to see its structure
+    console.log(info.event);
+
+    Swal.fire({
+        title: info.event.title,
+        html: `
+            <strong>Start:</strong> ${info.event.start.toLocaleString()}<br>
+            <strong>End:</strong> ${info.event.end ? info.event.end.toLocaleString() : 'N/A'}<br>
+            <strong>Description:</strong> ${info.event.extendedProps.description || 'No description provided'}<br>
+        `,
+        icon: 'info',
+        confirmButtonText: 'Close'
+    });
+}
+        });
+    });
+</script>
+
+
+
+{{-- <script>
+    $(document).ready(function() {
+        var date = new Date();
+        var d = date.getDate();
+        var m = date.getMonth();
+        var y = date.getFullYear();
+
+        /* Initialize the calendar */
+        var calendar = $("#calendar").fullCalendar({
+            header: {
+                left: "title",
+                center: "agendaDay,agendaWeek,month",
+                right: "prev,next today",
+            },
+            editable: true,
+            firstDay: 1, // 1(Monday)
+            selectable: true,
+            defaultView: "month",
+            events: '/admin/calander/data', // Fetch events from the backend
+
+            // Handle event click to show tooltip
+            eventClick: function(info) {
+                const startDate = new Date(info.event.extendedProps.start_date).toLocaleString();
+                const endDate = info.event.extendedProps.end_date ?
+                    new Date(info.event.extendedProps.end_date).toLocaleString() :
+                    "N/A";
+
+                    console.log(endDate);
+                // Use SweetAlert2 to show appointment details
+                Swal.fire({
+                    title: `${event.title}`,
+                    html: `
+
+                    <strong>Start:</strong> ${new Date(event.start_date).toLocaleString()}<br>
+                    <strong>End:</strong> ${new Date(event.end_date).toLocaleString()}<br>
+                    <strong>Description:</strong> ${event.description || 'No description provided'}<br>
+                `,
+                    icon: 'info',
+                    confirmButtonText: 'Close'
+                });
+            },
+        });
+    });
+</script> --}}
 @endpush

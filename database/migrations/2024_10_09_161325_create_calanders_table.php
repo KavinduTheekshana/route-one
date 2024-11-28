@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('calanders', function (Blueprint $table) {
             $table->id();
+            $table->string('title'); // Title for the appointment
+            $table->text('description')->nullable(); // Optional description
+            $table->dateTime('start_date'); // Start date and time
+            $table->dateTime('end_date'); // End date and time
             $table->timestamps();
         });
     }
