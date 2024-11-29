@@ -127,7 +127,7 @@ class ApplicationController extends Controller
         $api_instance = new SmsApi();
         $user_id = "25086";
         $api_key = "bxw9mVd8JJRz2nVFR1bR";
-        $message = "Dear " . $name . ", \n\n We are pleased to inform you that your application has been successfully approved.\n\nBest Regards,\nRoute One Recruitment";
+        $message = "Dear " . $name . ", \n\nWe are pleased to inform you that your application has been successfully approved.\n\nBest Regards,\nRoute One Recruitment";
         // $message = "Your Verification Code is: " . $storedOtp . "\n\nThanks for voting with us!\nIf you didn't request an OTP, click here.\nhttps://bit.ly/3Z3gBZ2";
         $to = $phone;
         $sender_id = "ROUTE ONE";
@@ -179,7 +179,7 @@ class ApplicationController extends Controller
         $application = Application::where('user_id', $id)->first();
         $agents = User::where('user_type', 'agent')->get();
         $agent = User::where('id', $user->agent_id)->first();
-        $note = UserNotes::where('user_id', $id)->first();
+        $notes = UserNotes::with('admin')->where('user_id', $id)->get();
         // dd($user->agent_id);
 
         $vacancies = JobApplication::where('user_id', $user->id)
@@ -191,6 +191,6 @@ class ApplicationController extends Controller
         // Flash the session variable to indicate the application tab should be shown
         session()->flash('showApplicationTab', true);
 
-        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs', 'agent', 'note'));
+        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs', 'agent', 'notes'));
     }
 }
