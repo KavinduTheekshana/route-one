@@ -101,8 +101,9 @@ class ApplicationController extends Controller
 
         // Update the status to 1 (approved)
         $application->update(['status' => 1]);
+        Mail::to($application->email)->send(new ApplicationApproved($application->name));
 
-         $phone = $application->phone;
+        $phone = $application->phone;
 
         if (str_starts_with($phone, '0') && strlen($phone) === 10) {
             $phone = '94' . substr($phone, 1);
@@ -113,7 +114,7 @@ class ApplicationController extends Controller
             $this->sendTextMessage($phone, $application->name);
         }
 
-        Mail::to($application->email)->send(new ApplicationApproved($application->name));
+
 
         // Redirect back with a success message
         return redirect()->back()->with([

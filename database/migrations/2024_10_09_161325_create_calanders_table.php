@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title'); // Title for the appointment
             $table->text('description')->nullable(); // Optional description
-            $table->dateTime('start_date'); // Start date and time
-            $table->dateTime('end_date'); // End date and time
+            $table->dateTime('start'); // Start date and time
+            $table->dateTime('end'); // End date and time
             $table->timestamps();
         });
     }

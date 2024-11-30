@@ -29,19 +29,23 @@ class CalanderController extends Controller
      */
     public function getData()
     {
-        $events = Calander::all();
 
-        $formattedEvents = $events->map(function ($event) {
-            return [
-                'id' => $event->id,
-                'title' => $event->title,
-                'start_date' => Carbon::parse($event->start_date)->toIso8601String(),
-                'end_date' => Carbon::parse($event->end_date)->toIso8601String(),
-                'description' => $event->description,
-            ];
-        });
+        return response()->json(Calander::all());
+        // $events = Calander::all();
 
-        return response()->json($formattedEvents);
+        // $formattedEvents = $events->map(function ($event) {
+        //     return [
+        //         'id' => $event->id,
+        //         'title' => $event->title,
+        //         'start_date' => Carbon::parse($event->start_date)->toIso8601String(),
+        //         'end_date' => Carbon::parse($event->end_date)->toIso8601String(),
+        //         'description' => $event->description,
+        //     ];
+        // });
+
+        // return response()->json($formattedEvents);
+
+
     }
 
     public function store(Request $request)

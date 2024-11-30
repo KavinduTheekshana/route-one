@@ -1,7 +1,7 @@
 @push('styles')
-    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> --}}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 @endpush
 
 @extends('layouts.backend')
@@ -22,8 +22,8 @@
 <div class="card mt-24 bg-transparent">
     <div class="card-body p-0">
         <div id='wrap'>
-            {{-- <div id="calendar"></div> --}}
-            <div id='calendar' class="position-relative">
+            <div id="calendar" style="width: 100%"></div>
+            {{-- <div id='calendar' class="position-relative">
                 <button type="button"
                     class="add-event btn btn-main text-sm btn-sm px-24 rounded-pill py-12 d-flex align-items-center gap-2"
                     data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -31,7 +31,7 @@
                     Add Event
                 </button>
             </div>
-            <div style='clear:both'></div>
+            <div style='clear:both'></div> --}}
         </div>
     </div>
 </div>
@@ -162,6 +162,42 @@
 @endsection
 
 @push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const calendarEl = document.getElementById('calendar');
+
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            events: '/admin/calander/data', // Fetch appointments
+            editable: true,
+            selectable: true,
+            select: function (info) {
+                const title = prompt('Enter a title for the appointment:');
+                if (title) {
+                    axios.post('/admin/appointments', {
+                        title: title,
+                        start: info.startStr,
+                        end: info.endStr
+                    }).then(response => {
+                        alert(response.data.message);
+                        calendar.refetchEvents(); // Refresh events
+                    }).catch(error => {
+                        console.error(error);
+                    });
+                }
+            },
+            eventDrop: function (info) {
+                // Handle drag-and-drop updates here
+            },
+            eventResize: function (info) {
+                // Handle resizing updates here
+            }
+        });
+
+        calendar.render();
+    });
+</script>
+
 
 
 {{-- <script>
@@ -217,7 +253,7 @@
 </script> --}}
 
 
-<script>
+{{-- <script>
     $(document).ready(function() {
         var calendar = $("#calendar").fullCalendar({
             header: {
@@ -259,7 +295,7 @@
 }
         });
     });
-</script>
+</script> --}}
 
 
 
