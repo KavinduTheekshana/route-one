@@ -105,7 +105,7 @@ class ApplicationController extends Controller
         // Mail::raw('This is a test email', function ($message) {
         //     $message->to('kavindutheekshana@gmail.com')->subject('Test Email');
         // });
-        Mail::to($application->email)->send(new ApplicationApproved($application->name));
+        // Mail::to($application->email)->send(new ApplicationApproved($application->name));
 
         // Mail::to($application->email)->send(new ApplicationApproved($application->name));
 
