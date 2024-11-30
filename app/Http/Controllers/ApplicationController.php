@@ -102,11 +102,11 @@ class ApplicationController extends Controller
 
         // Update the status to 1 (approved)
         $application->update(['status' => 1]);
-        try {
-            Mail::to($application->email)->send(new ApplicationApproved($application->name));
-        } catch (\Exception $e) {
-            Log::error('Email sending failed: ' . $e->getMessage());
-        }
+        Mail::raw('This is a test email', function ($message) {
+            $message->to('kavindutheekshana@gmail.com')->subject('Test Email');
+        });
+        Mail::to($application->email)->send(new ApplicationApproved($application->name));
+
         // Mail::to($application->email)->send(new ApplicationApproved($application->name));
 
         $phone = $application->phone;
