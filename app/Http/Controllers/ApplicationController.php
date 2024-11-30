@@ -12,6 +12,7 @@ use App\Models\Vacancies;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NewMessageNotification;
+use Illuminate\Support\Facades\Log;
 use NotifyLk\Api\SmsApi;
 
 class ApplicationController extends Controller
@@ -101,7 +102,12 @@ class ApplicationController extends Controller
 
         // Update the status to 1 (approved)
         $application->update(['status' => 1]);
-        Mail::to($application->email)->send(new ApplicationApproved($application->name));
+        try {
+            Mail::to($application->email)->send(new ApplicationApproved($application->name));
+        } catch (\Exception $e) {
+            Log::error('Email sending failed: ' . $e->getMessage());
+        }
+        // Mail::to($application->email)->send(new ApplicationApproved($application->name));
 
         $phone = $application->phone;
 
