@@ -130,14 +130,35 @@
 <script>
     $(document).ready(function() {
         $('#example').DataTable({
-            columnDefs: [
-                { width: "24%", targets: 0 }, // Sets the width for the first column
-                { width: "10%", targets: 1 }, // Second column
-                { width: "10%", targets: 2 }, // Third column
-                { width: "20%", targets: 3 }, // Fourth column
-                { width: "8%", targets: 4 }, // Fifth column
-                { width: "8%", targets: 5 },  // Sixth column
-                { width: "20%", targets: 6 },  // Sixth column
+            "order": [[5, "desc"]],
+            columnDefs: [{
+                    width: "24%",
+                    targets: 0
+                }, // Sets the width for the first column
+                {
+                    width: "10%",
+                    targets: 1
+                }, // Second column
+                {
+                    width: "10%",
+                    targets: 2
+                }, // Third column
+                {
+                    width: "20%",
+                    targets: 3
+                }, // Fourth column
+                {
+                    width: "8%",
+                    targets: 4
+                }, // Fifth column
+                {
+                    width: "8%",
+                    targets: 5
+                }, // Sixth column
+                {
+                    width: "20%",
+                    targets: 6
+                }, // Sixth column
             ],
             autoWidth: false // Disable automatic column width calculation
         });
