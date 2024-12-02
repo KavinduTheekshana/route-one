@@ -107,7 +107,7 @@ class ApplicationController extends Controller
         // });
         // Mail::to($application->email)->send(new ApplicationApproved($application->name));
 
-        // Mail::to($application->email)->send(new ApplicationApproved($application->name));
+        Mail::to($application->email)->send(new ApplicationApproved($application->name));
 
         $phone = $application->phone;
 
