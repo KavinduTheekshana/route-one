@@ -1,7 +1,26 @@
 @push('styles')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css">
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+        .fc-event {
+            color: #FFFFFF !important;
+            /* White text color */
+        }
+
+        .fc-event {
+            background-color: #3788d8 !important;
+        }
+
+        .fc-daygrid-dot-event .fc-event-title {
+            font-weight: 400;
+        }
+
+        .fc .fc-col-header-cell-cushion {
+            font-weight: 400;
+        }
+    </style>
 @endpush
 
 @extends('layouts.backend')
@@ -12,6 +31,18 @@
         {{-- Breadcrumb  --}}
     @section('page_name', 'Calander')
     @include('backend.components.breadcrumb')
+
+    <!-- Breadcrumb Right Start -->
+    <div class="flex-align gap-8 flex-wrap">
+
+        <div
+            class="flex-align text-gray-500 text-13 border border-gray-100 rounded-4 ps-20 focus-border-main-600 bg-white">
+            <span class="text-lg"><i class="ph ph-plus"></i></span>
+            <button data-bs-toggle="modal" data-bs-target="#exampleModal"
+                class="form-control ps-8 pe-20 py-16 border-0 text-inherit rounded-4 text-center">Create Appointment</button>
+        </div>
+    </div>
+    <!-- Breadcrumb Right End -->
 </div>
 
 
@@ -19,8 +50,9 @@
 
 
 <!-- Recommended Start -->
-<div class="card mt-24 bg-transparent">
-    <div class="card-body p-0">
+<div class="card mt-24">
+    <div class="card-body p-16">
+
         <div id='wrap'>
             <div id="calendar" style="width: 100%"></div>
             {{-- <div id='calendar' class="position-relative">
@@ -30,16 +62,20 @@
                     <i class="ph ph-plus me-4"></i>
                     Add Event
                 </button>
-            </div>
-            <div style='clear:both'></div> --}}
+            </div> --}}
+            <div style='clear:both'></div>
         </div>
     </div>
 </div>
 <!-- Recommended End -->
 
 
+
+
+
+
 <!-- Modal Add Event -->
-{{-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog modal-dialog-centered">
         <div class="modal-content radius-16 bg-base">
             <div class="modal-header py-16 px-24 border border-top-0 border-start-0 border-end-0">
@@ -154,7 +190,7 @@
             </div>
         </div>
     </div>
-</div> --}}
+</div>
 
 
 
@@ -163,40 +199,87 @@
 
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const calendarEl = document.getElementById('calendar');
 
         const calendar = new FullCalendar.Calendar(calendarEl, {
+            timeZone: 'UTC',
+            themeSystem: 'bootstrap5',
             initialView: 'dayGridMonth',
-            events: '/admin/calander/data', // Fetch appointments
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+            },
+            events: function(info, successCallback, failureCallback) {
+                fetch('/admin/calander/data')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Modify events with colors based on the status
+                        const updatedEvents = data.map(event => {
+                            if (event.status === 'pending') {
+                                event.backgroundColor = '#FFA500'; // Orange background
+                                event.borderColor = '#FFA500'; // Orange border
+                                event.textColor = '#FFFFFF'; // White text
+                            } else if (event.status === 'complete') {
+                                event.backgroundColor = '#32CD32'; // Green background
+                                event.borderColor = '#32CD32'; // Green border
+                                event.textColor = '#FFFFFF'; // White text
+                            }
+                            return event;
+                        });
+
+                        successCallback(updatedEvents); // Pass updated events to FullCalendar
+                    })
+                    .catch(error => {
+                        console.error('Error fetching events:', error);
+                        failureCallback(error);
+                    });
+            },
             editable: true,
             selectable: true,
-            select: function (info) {
-                const title = prompt('Enter a title for the appointment:');
-                if (title) {
-                    axios.post('/admin/appointments', {
-                        title: title,
-                        start: info.startStr,
-                        end: info.endStr
-                    }).then(response => {
-                        alert(response.data.message);
-                        calendar.refetchEvents(); // Refresh events
-                    }).catch(error => {
-                        console.error(error);
-                    });
-                }
-            },
-            eventDrop: function (info) {
-                // Handle drag-and-drop updates here
-            },
-            eventResize: function (info) {
-                // Handle resizing updates here
-            }
+            firstDay: 1, // 1 (Monday)
         });
 
         calendar.render();
     });
 </script>
+{{-- <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const calendarEl = document.getElementById('calendar');
+
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            timeZone: 'UTC', // Ensures consistent time handling
+            initialView: 'dayGridMonth', // Default view is Month
+            headerToolbar: {
+                left: 'prev,next today', // Navigation buttons
+                center: 'title', // Calendar title in the center
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth' // View options
+            },
+            weekNumbers: true, // Displays week numbers
+            dayMaxEvents: true, // Limits maximum events per day and shows "+X more"
+            events: function(info, successCallback, failureCallback) {
+                // Fetch events from the server
+                fetch('/admin/calander/data')
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Fetched Event Data:", data); // Log the response
+                        data.forEach(event => {
+                            event.color = '#34e009'; // Red text
+                        });
+                        successCallback(data); // Pass modified events to the calendar
+                    })
+                    .catch(error => {
+                        console.error('Error fetching events:', error);
+                    });
+            },
+            editable: true, // Allows event drag-and-drop editing
+            selectable: true, // Allows selecting time slots
+            firstDay: 1, // Start the week on Monday
+        });
+        calendar.render(); // Renders the calendar on the page
+    });
+</script> --}}
 
 
 
