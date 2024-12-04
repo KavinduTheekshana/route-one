@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AppointmentNotification;
 use App\Models\Calander;
 use App\Models\Services;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class CalanderController extends Controller
 {
@@ -73,6 +75,9 @@ class CalanderController extends Controller
         $calander->service_id = $request->input('service');
         $calander->status = 'pending'; // Default status
         $calander->save();
+
+
+        Mail::to($user->email)->send(new AppointmentNotification($calander));
 
         // Redirect or return response
         return redirect()->back()->with('success', 'Appointment saved successfully!');
