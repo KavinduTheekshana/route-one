@@ -130,9 +130,9 @@ Route::middleware([
 
         //  Calander application
         Route::get('/admin/calander', [CalanderController::class, 'index'])->name('admin.calander')->middleware(['auth', 'superadmin']);
-        // Route::get('/admin/calander', [CalanderController::class, 'index'])->name('calander.index');
         Route::post('/admin/calander', [CalanderController::class, 'store'])->name('calander.store');
         Route::get('/admin/calander/data', [CalanderController::class, 'getData'])->name('calander.data');
+        Route::get('/admin/calander/events/{id}', [CalanderController::class, 'show'])->name('admin.calander.events');
         Route::get('/search-users-calander', [CalanderController::class, 'search'])->name('users.search.calander');
 
         //  Message management

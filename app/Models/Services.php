@@ -16,4 +16,8 @@ class Services extends Model
         'currency',
         'description',
     ];
+    public function events()
+    {
+        return $this->hasMany(Calander::class);
+    }
 }

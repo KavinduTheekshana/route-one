@@ -81,10 +81,16 @@ class CalanderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Calander $calander)
-    {
-        //
-    }
+    public function show($id)
+{
+    $event = Calander::with('service')->findOrFail($id);
+    $user = User::where('id', $event->user_id)->first();
+    $startMonth = Carbon::parse($event->start_date)->format('F');
+    $eventDate = Carbon::parse($event->start_date)->format('d');
+    $eventDateTime = Carbon::parse($event->start_date)->format('D, F j, g:i A'); // Start date and time
+    $eventEndTime = Carbon::parse($event->end_date)->format('g:i A'); // End time with AM/PM
+    return view('backend.calander.show', compact('event','startMonth','eventDate','eventDateTime','eventEndTime','user'));
+}
 
     /**
      * Show the form for editing the specified resource.

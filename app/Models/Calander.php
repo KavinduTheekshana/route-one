@@ -16,4 +16,9 @@ class Calander extends Model
         'start_date' => 'datetime',
         'end_date' => 'datetime',
     ];
+
+    public function service()
+    {
+        return $this->belongsTo(Services::class);
+    }
 }

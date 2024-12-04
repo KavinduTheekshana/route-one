@@ -122,7 +122,8 @@
                             <label for="startDate" class="form-label fw-semibold text-primary-light text-sm mb-8">Start
                                 Date</label>
                             <div class=" position-relative">
-                                <input class="form-control br-3" name="start_date" id="start-date-picker" type="date">
+                                <input class="form-control br-3" name="start_date" id="start-date-picker"
+                                    type="date">
                                 <span
                                     class="position-absolute end-0 top-50 translate-middle-y me-12 line-height-1"></span>
                             </div>
@@ -176,13 +177,12 @@
 @endsection
 
 @push('scripts')
-
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         flatpickr("#start-date-picker", {
             dateFormat: "Y-m-d", // Format: YYYY-MM-DD
-            minDate: "today",   // Disable past dates
+            minDate: "today", // Disable past dates
         });
     });
 </script>
@@ -300,6 +300,17 @@
             editable: true,
             selectable: true,
             firstDay: 1, // 1 (Monday)
+
+            // Add eventClick to handle clicks on events
+            eventClick: function(info) {
+                const eventId = info.event.id; // Assuming each event has a unique ID
+                if (eventId) {
+                    // Redirect to the event page
+                    window.location.href = `/admin/calander/events/${eventId}`;
+                } else {
+                    console.error('Event ID is missing!');
+                }
+            }
         });
 
         calendar.render();
