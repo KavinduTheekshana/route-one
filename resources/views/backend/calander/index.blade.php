@@ -3,6 +3,12 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
+    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/timedropper/1.0/timedropper.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         .fc-event {
             color: #FFFFFF !important;
@@ -19,6 +25,14 @@
 
         .fc .fc-col-header-cell-cushion {
             font-weight: 400;
+        }
+
+        .br-3 {
+            border-radius: 3px !important;
+        }
+
+        .user-search .ts-control {
+            padding: 13px 16px !important;
         }
     </style>
 @endpush
@@ -39,7 +53,8 @@
             class="flex-align text-gray-500 text-13 border border-gray-100 rounded-4 ps-20 focus-border-main-600 bg-white">
             <span class="text-lg"><i class="ph ph-plus"></i></span>
             <button data-bs-toggle="modal" data-bs-target="#exampleModal"
-                class="form-control ps-8 pe-20 py-16 border-0 text-inherit rounded-4 text-center">Create Appointment</button>
+                class="form-control ps-8 pe-20 py-16 border-0 text-inherit rounded-4 text-center">Create
+                Appointment</button>
         </div>
     </div>
     <!-- Breadcrumb Right End -->
@@ -79,22 +94,35 @@
     <div class="modal-dialog modal-lg modal-dialog modal-dialog-centered">
         <div class="modal-content radius-16 bg-base">
             <div class="modal-header py-16 px-24 border border-top-0 border-start-0 border-end-0">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Event</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Create New Appointment</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-24">
-                <form action="#">
+                <form action="{{ route('calander.store') }}" method="POST">
+                    @csrf
                     <div class="row">
                         <div class="col-12 mb-20">
-                            <label class="form-label fw-semibold text-primary-light text-sm mb-8">Event Title :
+                            <label class="form-label fw-semibold text-primary-light text-sm mb-8">Client Name
                             </label>
-                            <input type="text" class="form-control radius-8" placeholder="Enter Event Title ">
+                            <select id="user-search" class="user-search" name="customer"
+                                placeholder="Search for a user..." style="width: 100%;"></select>
+                        </div>
+
+
+                        <div class="col-12 mb-20">
+                            <label class="form-label fw-semibold text-primary-light text-sm mb-8">Service Name
+                            </label>
+                            <select name="service" class="form-control br-3 mb-10">
+                                @foreach ($services as $service)
+                                    <option value="{{ $service->id }}">{{ $service->service_name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-md-6 mb-20">
                             <label for="startDate" class="form-label fw-semibold text-primary-light text-sm mb-8">Start
                                 Date</label>
                             <div class=" position-relative">
-                                <input class="form-control radius-8 bg-base" id="startDate" type="date">
+                                <input class="form-control br-3" name="start_date" id="start-date-picker" type="date">
                                 <span
                                     class="position-absolute end-0 top-50 translate-middle-y me-12 line-height-1"></span>
                             </div>
@@ -103,7 +131,7 @@
                             <label for="startTime" class="form-label fw-semibold text-primary-light text-sm mb-8">Start
                                 Time </label>
                             <div class=" position-relative">
-                                <input class="form-control radius-8 bg-base" id="startTime" type="time">
+                                <input class="form-control br-3 timepicker" name="start_time" type="time">
                                 <span
                                     class="position-absolute end-0 top-50 translate-middle-y me-12 line-height-1"></span>
                             </div>
@@ -112,71 +140,21 @@
                             <label for="endTime" class="form-label fw-semibold text-primary-light text-sm mb-8">End
                                 Time </label>
                             <div class=" position-relative">
-                                <input class="form-control radius-8 bg-base" id="endTime" type="time">
+                                <input class="form-control br-3 timepicker" name="end_time" type="time">
                                 <span
                                     class="position-absolute end-0 top-50 translate-middle-y me-12 line-height-1"></span>
                             </div>
                         </div>
-                        <div class="col-12 mb-20">
-                            <label for="endDate" class="form-label fw-semibold text-primary-light text-sm mb-8">Color
-                            </label>
-                            <div class="d-flex align-items-center flex-wrap gap-28">
-                                <div class="form-check form-radio d-flex align-items-center gap-2 mb-0">
-                                    <input class="form-check-input" type="radio" name="label" id="Personal">
-                                    <label
-                                        class="form-check-label min-width-max-content line-height-1 fw-medium text-primary text-sm d-flex align-items-center gap-1 ps-4"
-                                        for="Personal">
-                                        <span class="w-8-px h-8-px bg-success-600 rounded-circle"></span>
-                                        Primary
-                                    </label>
-                                </div>
-                                <div class="form-check form-radio d-flex align-items-center gap-2 mb-0">
-                                    <input class="form-check-input" type="radio" name="label" id="Business">
-                                    <label
-                                        class="form-check-label min-width-max-content line-height-1 fw-medium text-secondary text-sm d-flex align-items-center gap-1 ps-4"
-                                        for="Business">
-                                        <span class="w-8-px h-8-px bg-primary-600 rounded-circle"></span>
-                                        Secondary
-                                    </label>
-                                </div>
-                                <div class="form-check form-radio d-flex align-items-center gap-2 mb-0">
-                                    <input class="form-check-input" type="radio" name="label" id="Family">
-                                    <label
-                                        class="form-check-label min-width-max-content line-height-1 fw-medium text-success text-sm d-flex align-items-center gap-1 ps-4"
-                                        for="Family">
-                                        <span class="w-8-px h-8-px bg-warning-600 rounded-circle"></span>
-                                        Success
-                                    </label>
-                                </div>
-                                <div class="form-check form-radio d-flex align-items-center gap-2 mb-0">
-                                    <input class="form-check-input" type="radio" name="label" id="Important">
-                                    <label
-                                        class="form-check-label min-width-max-content line-height-1 fw-medium text-danger text-sm d-flex align-items-center gap-1 ps-4"
-                                        for="Important">
-                                        <span class="w-8-px h-8-px bg-lilac-600 rounded-circle"></span>
-                                        Danger
-                                    </label>
-                                </div>
-                                <div class="form-check form-radio d-flex align-items-center gap-2 mb-0">
-                                    <input class="form-check-input" type="radio" name="label" id="Holiday">
-                                    <label
-                                        class="form-check-label min-width-max-content line-height-1 fw-medium text-secondary-light text-sm d-flex align-items-center gap-1 ps-4"
-                                        for="Holiday">
-                                        <span class="w-8-px h-8-px bg-danger-600 rounded-circle"></span>
-                                        Dark
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+
 
                         <div class="col-12 mb-20">
                             <label for="desc"
                                 class="form-label fw-semibold text-primary-light text-sm mb-8">Description</label>
-                            <textarea class="form-control" id="desc" rows="4" cols="50" placeholder="Write some text"></textarea>
+                            <textarea name="description" id="messageInput" class="form-control w-100" style="width: 100%" rows="10"></textarea>
                         </div>
 
                         <div class="d-flex align-items-center justify-content-center gap-8 mt-24">
-                            <button type="reset"
+                            <button type="button" aria-label="Close" data-bs-dismiss="modal"
                                 class="btn bg-danger-600 hover-bg-danger-800 border-danger-600 hover-border-danger-800 text-md px-24 py-12 radius-8">
                                 Cancel
                             </button>
@@ -198,6 +176,89 @@
 @endsection
 
 @push('scripts')
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        flatpickr("#start-date-picker", {
+            dateFormat: "Y-m-d", // Format: YYYY-MM-DD
+            minDate: "today",   // Disable past dates
+        });
+    });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/timedropper/1.0/timedropper.min.js"></script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        $('.timepicker').timeDropper({
+            format: 'HH:mm', // 24-hour format (use 'hh:mm' for 12-hour)
+            autoswitch: true, // Automatically switch to the next input field
+            setCurrentTime: true, // Set the current time as default
+            meridians: false, // Hide AM/PM (set true for 12-hour format)
+            primaryColor: "#3498db", // Customize the primary color
+            borderColor: "#2980b9", // Customize the border color
+        });
+    });
+</script>
+
+<script src="https://cdn.tiny.cloud/1/mc59edcciy0vssoo3ojx1vwpo2jbsemez61eo60xxi6p5wse/tinymce/7/tinymce.min.js"
+    referrerpolicy="origin"></script>
+
+<script>
+    tinymce.init({
+        selector: 'textarea#messageInput', // Replace this CSS selector to match the placeholder element for TinyMCE
+        plugins: 'code table lists',
+        toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | table'
+    });
+</script>
+
+<script>
+    new TomSelect('#user-search', {
+        valueField: 'user_id',
+        labelField: 'name',
+        searchField: 'name',
+        placeholder: 'Search for a user...',
+        load: function(query, callback) {
+            if (!query.length) return callback();
+
+            // Fetch user data with AJAX
+            fetch(`/search-users-calander?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => callback(data))
+                .catch(() => callback());
+        },
+        render: {
+            option: function(item, escape) {
+                return `
+                  <div>
+                      <strong>${escape(item.name)}</strong><br>
+                      <small style="color: gray;">${escape(item.country)}</small><br>
+                      <small style="color: gray;">${escape(item.email)}</small>
+                  </div>
+              `;
+            },
+            item: function(item, escape) {
+                // Show both name and email in the selected item
+                return `<div>${escape(item.name)}<br><small style="color: gray;">${escape(item.email)}</small></div>`;
+            }
+        },
+        onChange: function(value) {
+            console.log(value); // Log the selected value
+            const selectedItem = this.options[value];
+            console.log(selectedItem); // Log the selected item to inspect its properties
+
+            if (selectedItem) {
+                document.getElementById('user-email-input').value = selectedItem.email;
+            }
+        }
+
+    });
+</script>
+
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const calendarEl = document.getElementById('calendar');

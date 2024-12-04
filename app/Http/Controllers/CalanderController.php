@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Calander;
+use App\Models\Services;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -13,51 +15,67 @@ class CalanderController extends Controller
      */
     public function index()
     {
-        return view('backend.calander.index');
+        $services = Services::where('status', 1)->get();
+        return view('backend.calander.index', compact('services'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function search(Request $request)
     {
-        //
-    }
+        $query = $request->input('q');
+        $users = User::where('name', 'LIKE', "%$query%")
+            ->select('id', 'name', 'email','country')
+            ->get();
 
+        $results = $users->map(function ($user) {
+            return [
+                'user_id' => $user->id,
+                'id' => $user->id,
+                'name' => $user->name, // This will be the display name
+                'email' => $user->email, // This will be the display name
+                'country' => $user->country, // Add the address here
+            ];
+        });
+
+        return response()->json($results);
+    }
     /**
      * Store a newly created resource in storage.
      */
     public function getData()
     {
-
         return response()->json(Calander::all());
-        // $events = Calander::all();
-
-        // $formattedEvents = $events->map(function ($event) {
-        //     return [
-        //         'id' => $event->id,
-        //         'title' => $event->title,
-        //         'start_date' => Carbon::parse($event->start_date)->toIso8601String(),
-        //         'end_date' => Carbon::parse($event->end_date)->toIso8601String(),
-        //         'description' => $event->description,
-        //     ];
-        // });
-
-        // return response()->json($formattedEvents);
-
-
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'start' => 'required|date',
-            'end' => 'required|date|after_or_equal:start',
+        // Validate the incoming data
+        $validated = $request->validate([
+            'customer' => 'required|exists:users,id', // Ensures the user exists
+            'service' => 'required|exists:services,id', // Ensures the service exists
+            'start_date' => 'required|date', // Validates the start date
+            'start_time' => 'required|date_format:H:i', // Validates the start time
+            'end_time' => 'required|date_format:H:i|after:start_time', // Ensures end time is after start time
+            'description' => 'nullable|string',
         ]);
 
-        Calander::create($request->all());
-        return response()->json(['message' => 'Appointment added successfully.']);
+        // Combine start date and time
+        $start = $request->input('start_date') . ' ' . $request->input('start_time');
+        $end = $request->input('start_date') . ' ' . $request->input('end_time');
+
+        // Save the data into the `calanders` table
+        $user = User::where('id', $request->input('customer'))->first();
+        $calander = new Calander();
+        $calander->title = $user->name; // Add a meaningful title if needed
+        $calander->description = $request->input('description');
+        $calander->start = $start;
+        $calander->end = $end;
+        $calander->user_id = $request->input('customer');
+        $calander->service_id = $request->input('service');
+        $calander->status = 'pending'; // Default status
+        $calander->save();
+
+        // Redirect or return response
+        return redirect()->back()->with('success', 'Appointment saved successfully!');
     }
 
     /**

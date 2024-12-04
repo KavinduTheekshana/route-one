@@ -133,6 +133,7 @@ Route::middleware([
         // Route::get('/admin/calander', [CalanderController::class, 'index'])->name('calander.index');
         Route::post('/admin/calander', [CalanderController::class, 'store'])->name('calander.store');
         Route::get('/admin/calander/data', [CalanderController::class, 'getData'])->name('calander.data');
+        Route::get('/search-users-calander', [CalanderController::class, 'search'])->name('users.search.calander');
 
         //  Message management
         Route::get('/admin/message', [MessageController::class, 'index'])->name('admin.message')->middleware(['auth', 'role:superadmin|agent']);
