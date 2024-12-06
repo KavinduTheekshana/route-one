@@ -44,8 +44,8 @@
                       <div class="mb-3">
                           <label class="small mb-1" for="inputEmailAddress">Email address</label>
                           <input class="form-control" name="email" type="email"
-                              placeholder="Enter your email address" value="{{ $application->email==1 ?? '' }}" required
-                              {{ isset($application) && $application->status ? 'disabled' : '' }}>
+                              placeholder="Enter your email address" value="{{ $application->email ?? '' }}" required
+                              {{ isset($application) && $application->status==1 ? 'disabled' : '' }}>
                       </div>
 
                       <div class="mb-3">
