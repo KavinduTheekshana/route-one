@@ -122,7 +122,7 @@
         .then(response => response.json())
         .then(data => {
             const select = document.getElementById('countrySelect');
-            const savedCountryCode = "{{ $application->country }}"; // Get saved country code (e.g., "US")
+            const savedCountryCode = "{{ $application->country ?? '' }}"; // Get saved country code (e.g., "US")
 
             select.innerHTML = ''; // Clear the placeholder
 
