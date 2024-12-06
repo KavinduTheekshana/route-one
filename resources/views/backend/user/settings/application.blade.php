@@ -87,7 +87,7 @@
 
                       <br>
                       <button class="btn btn-primary" type="submit"
-                          {{ isset($application) && $application->status ? 'disabled' : '' }}>
+                          {{ isset($application) && $application->statu==1 ? 'disabled' : '' }}>
                           Update Application
                       </button>
 
