@@ -59,6 +59,13 @@ class ApplicationController extends Controller
             $request->all() + ['user_id' => auth()->id()] // Fill data
         );
 
+        // Update the agent_id in the users table
+        if ($request->filled('agent')) {
+            $user = auth()->user(); // Get the authenticated user
+            $user->agent_id = $request->agent; // Set the agent_id
+            $user->save(); // Save the user record
+        }
+
         return redirect()->route('user.application')->with('success', 'Application saved successfully.');
     }
 
@@ -88,6 +95,14 @@ class ApplicationController extends Controller
 
         // Update the application with the validated data
         $application->update($request->all());
+
+        if ($request->filled('agent')) {
+            $user = User::find($request->user_id); // Get the user by user_id from the request
+            if ($user) {
+                $user->agent_id = $request->agent; // Set the agent_id
+                $user->save(); // Save the user record
+            }
+        }
 
         return redirect()->back()->with([
             'success' => 'Application updated successfully.',

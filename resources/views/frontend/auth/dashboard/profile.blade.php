@@ -113,14 +113,14 @@
                         @csrf
 
                         <div class="mb-3">
-                            <label class="small mb-1" for="inputUsername">Full Name</label>
+                            <label class="small mb-1" for="inputUsername">Full Name <span class="text-danger">*</span></label>
                             <input class="form-control" name="name" type="text" placeholder="Enter your full name"
                                 value="{{ auth()->user()->name }}">
                         </div>
                         <div class="row gx-3 mb-3">
 
                             <div class="col-md-6">
-                                <label class="small mb-1" for="inputCountry">Country</label>
+                                <label class="small mb-1" for="inputCountry">Country <span class="text-danger">*</span></label>
 
 
 
@@ -143,14 +143,14 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label class="small mb-1" for="inputPhone">Phone Number</label>
+                                <label class="small mb-1" for="inputPhone">Phone Number <span class="text-danger">*</span></label>
                                 <input class="form-control" name="phone" type="text"
                                     placeholder="Enter your phone number" value="{{ auth()->user()->phone }}">
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="small mb-1" for="inputEmailAddress">Email address</label>
+                            <label class="small mb-1" for="inputEmailAddress">Email address <span class="text-danger">*</span></label>
                             <input readonly class="form-control" name="email" type="email"
                                 placeholder="Enter your email address" value="{{ auth()->user()->email }}">
                         </div>

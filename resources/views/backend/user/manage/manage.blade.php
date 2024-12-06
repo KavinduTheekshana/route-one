@@ -78,7 +78,7 @@
                                 class="rounded-circle round-profile" height="50px"></td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>{{ $user->phone }}</td>
+                        <td>{{ $user->phone ?? 'N/A' }}</td>
                         <td>{{ $user->country ?? 'N/A' }}</td>
                         <td>
                             @if ($user->status == 1)
@@ -155,11 +155,11 @@
         $('#example').DataTable({
             columnDefs: [
                 { width: "7%", targets: 0 }, // Sets the width for the first column
-                { width: "20%", targets: 1 }, // Second column
+                { width: "18%", targets: 1 }, // Second column
                 { width: "15%", targets: 2 }, // Third column
                 { width: "10%", targets: 3 }, // Fourth column
                 { width: "10%", targets: 4 }, // Fifth column
-                { width: "8%", targets: 5 },  // Sixth column
+                { width: "10%", targets: 5 },  // Sixth column
                 { width: "10%", targets: 6 },  // Sixth column
                 { width: "20%", targets: 7 },  // Sixth column
             ],

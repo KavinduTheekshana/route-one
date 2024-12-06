@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('dob')->nullable();
             $table->string('passport')->nullable();
             $table->unsignedBigInteger('agent')->nullable();
-            $table->boolean('status')->default(0);
+            $table->boolean('status')->default(3);
             $table->boolean('english')->default(0);
             $table->timestamps();
             $table->foreign('agent')->references('id')->on('users')->onDelete('set null');

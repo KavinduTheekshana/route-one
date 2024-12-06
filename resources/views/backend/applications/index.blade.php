@@ -59,11 +59,17 @@
                                     <span class="w-6 h-6 bg-success-600 rounded-circle flex-shrink-0"></span>
                                     Approved
                                 </span>
-                            @else
+                            @elseif($application->status == 0)
                                 <span
                                     class="text-13 py-2 px-8 bg-pink-50 text-pink-600 d-inline-flex align-items-center gap-8 rounded-pill">
                                     <span class="w-6 h-6 bg-pink-600 rounded-circle flex-shrink-0"></span>
                                     Rejected
+                                </span>
+                            @else
+                                <span
+                                    class="text-13 py-2 px-8 bg-warning-100 text-warning-600 d-inline-flex align-items-center gap-8 rounded-pill">
+                                    <span class="w-6 h-6 bg-warning-600 rounded-circle flex-shrink-0"></span>
+                                    Pending
                                 </span>
                             @endif
                         </td>
@@ -130,7 +136,9 @@
 <script>
     $(document).ready(function() {
         $('#example').DataTable({
-            "order": [[5, "desc"]],
+            "order": [
+                [5, "desc"]
+            ],
             columnDefs: [{
                     width: "24%",
                     targets: 0
