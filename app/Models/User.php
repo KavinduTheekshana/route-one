@@ -80,9 +80,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Message::class, 'receiver_id');
     }
+    // public function applications()
+    // {
+    //     return $this->hasMany(Application::class);
+    // }
     public function applications()
     {
-        return $this->hasMany(Application::class);
+        return $this->hasMany(Application::class, 'agent_id');
     }
 
     public function note()

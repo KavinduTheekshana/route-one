@@ -21,11 +21,11 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('dob')->nullable();
             $table->string('passport')->nullable();
-            $table->unsignedBigInteger('agent')->nullable();
+            $table->unsignedBigInteger('agent_id')->nullable();
             $table->boolean('status')->default(3);
             $table->boolean('english')->default(0);
             $table->timestamps();
-            $table->foreign('agent')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('agent_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

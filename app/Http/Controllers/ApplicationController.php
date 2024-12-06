@@ -12,6 +12,7 @@ use App\Models\Vacancies;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NewMessageNotification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use NotifyLk\Api\SmsApi;
 
@@ -50,7 +51,7 @@ class ApplicationController extends Controller
             'address' => 'nullable|string|max:255',
             'dob' => 'nullable|date',
             'passport' => 'nullable|string|max:50',
-            'agent' => 'nullable|exists:users,id',
+            'agent_id' => 'nullable|exists:users,id',
         ]);
 
         // Create or update the application record
@@ -90,7 +91,7 @@ class ApplicationController extends Controller
             'address' => 'nullable|string|max:255',
             'dob' => 'nullable|date',
             'passport' => 'nullable|string|max:50',
-            'agent' => 'nullable|exists:users,id',
+            'agent_id' => 'nullable|exists:users,id',
         ]);
 
         // Update the application with the validated data
@@ -99,7 +100,7 @@ class ApplicationController extends Controller
         if ($request->filled('agent')) {
             $user = User::find($request->user_id); // Get the user by user_id from the request
             if ($user) {
-                $user->agent_id = $request->agent; // Set the agent_id
+                $user->agent_id = $request->agent_id; // Set the agent_id
                 $user->save(); // Save the user record
             }
         }
@@ -189,9 +190,23 @@ class ApplicationController extends Controller
 
     public function applications()
     {
-        $applications = Application::orderBy('created_at', 'desc')
-            ->get();
 
+
+        $authUser = auth()->user();
+
+        if ($authUser->user_type === 'superadmin') {
+            $applications = Application::with('agent')->orderBy('created_at', 'desc')
+                ->get();
+
+
+        } elseif ($authUser->user_type === 'agent') {
+            $applications = Application::with('agent')->where('agent_id', Auth::id())->orderBy('created_at', 'desc')
+                ->get();
+        } else {
+            abort(403, 'Unauthorized access');
+        }
+
+        // $applications = Application::with('agent')->get();
         return view('backend.applications.index', compact('applications'));
     }
     public function user_settings_application($id)

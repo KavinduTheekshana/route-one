@@ -73,12 +73,12 @@
 
                       <div class="mb-3">
                           <label class="small mb-1">Agent</label>
-                          <select name="agent" class="form-control"
+                          <select name="agent_id" class="form-control"
                               {{ isset($application) && $application->status==1 ? 'disabled' : '' }}>
                               <option value="">-- Select Agent --</option>
                               @foreach ($agents as $agent)
                                   <option value="{{ $agent->id }}"
-                                      {{ isset($application) && $application->agent == $agent->id ? 'selected' : '' }}>
+                                      {{ isset($application) && $application->agent_id == $agent->id ? 'selected' : '' }}>
                                       {{ $agent->name }}
                                   </option>
                               @endforeach

@@ -20,7 +20,7 @@ class Application extends Model
         'address',
         'dob',
         'passport',
-        'agent',
+        'agent_id',
         'status',
         'english',
     ];
@@ -36,5 +36,8 @@ class Application extends Model
         return $this->hasMany(Invoice::class, 'customer_id', 'user_id');
     }
 
-
+    public function agent()
+    {
+        return $this->belongsTo(User::class, 'agent_id', 'id');
+    }
 }

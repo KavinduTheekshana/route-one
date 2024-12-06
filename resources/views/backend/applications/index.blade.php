@@ -35,10 +35,11 @@
         <table id="example" class="uk-table uk-table-hover uk-table-striped" style="width:100%">
             <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>Image</th>
+                    <th>Name & Email</th>
                     <th>Country</th>
                     <th>Phone</th>
-                    <th>Email</th>
+                    <th>Agent</th>
                     <th>Status</th>
                     <th>Date</th>
                     <th>Action</th>
@@ -47,11 +48,13 @@
             <tbody>
                 @foreach ($applications as $application)
                     <tr>
-                        <td>{{ $application->name }}</td>
+                        <td><img src="{{ $application->user->profile_image ? asset('storage/' . $application->user->profile_image) : asset('backend/images/thumbs/setting-profile-img.webp') }}" alt="Profile Image" width="50px"
+                            class="rounded-circle round-profile" height="50px"></td>
+                        <td>{{ $application->name }} <br> {{ $application->email }}</td>
                         <td>{{ $application->country }}</td>
 
                         <td>{{ $application->phone }}</td>
-                        <td>{{ $application->email }}</td>
+                        <td>{{ $application->agent->name ?? 'N/A' }}</td>
                         <td>
                             @if ($application->status == 1)
                                 <span
@@ -104,10 +107,11 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th>Name</th>
+                    <th>Image</th>
+                    <th>Name & Email</th>
                     <th>Country</th>
                     <th>Phone</th>
-                    <th>Email</th>
+                    <th>Agent</th>
                     <th>Status</th>
                     <th>Date</th>
                     <th>Action</th>
@@ -137,14 +141,14 @@
     $(document).ready(function() {
         $('#example').DataTable({
             "order": [
-                [5, "desc"]
+                [6, "desc"]
             ],
             columnDefs: [{
-                    width: "24%",
+                    width: "10%",
                     targets: 0
                 }, // Sets the width for the first column
                 {
-                    width: "10%",
+                    width: "20%",
                     targets: 1
                 }, // Second column
                 {
@@ -152,11 +156,11 @@
                     targets: 2
                 }, // Third column
                 {
-                    width: "20%",
+                    width: "10%",
                     targets: 3
                 }, // Fourth column
                 {
-                    width: "8%",
+                    width: "12%",
                     targets: 4
                 }, // Fifth column
                 {
@@ -164,9 +168,13 @@
                     targets: 5
                 }, // Sixth column
                 {
-                    width: "20%",
+                    width: "10%",
                     targets: 6
-                }, // Sixth column
+                },
+                {
+                    width: "20%",
+                    targets: 7
+                },// Sixth column
             ],
             autoWidth: false // Disable automatic column width calculation
         });
@@ -195,7 +203,7 @@
                             <p><strong>Address:</strong> ${response.address || 'N/A'}</p>
                             <p><strong>Date of Birth:</strong> ${response.dob || 'N/A'}</p>
                             <p><strong>Passport:</strong> ${response.passport || 'N/A'}</p>
-                            <p><strong>Agent ID:</strong> ${response.agent || 'N/A'}</p>
+                            <p><strong>Agent ID:</strong> ${response.agent_id || 'N/A'}</p>
                             <p><strong>Status:</strong> ${response.status ? 'Approved' : 'Pending'}</p>
                             <p><strong>English Proficiency:</strong> ${response.english ? 'Yes' : 'No'}</p>
                         </div>
