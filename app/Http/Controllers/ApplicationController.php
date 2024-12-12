@@ -195,7 +195,7 @@ class ApplicationController extends Controller
         $authUser = auth()->user();
 
         if ($authUser->user_type === 'superadmin') {
-            $applications = Application::with('agent')->orderBy('created_at', 'desc')
+            $applications = Application::with(['user', 'certificate','agent'])->orderBy('created_at', 'desc')
                 ->get();
 
 

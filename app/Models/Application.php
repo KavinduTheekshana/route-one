@@ -40,4 +40,8 @@ class Application extends Model
     {
         return $this->belongsTo(User::class, 'agent_id', 'id');
     }
+    public function certificate()
+    {
+        return $this->hasOne(Certificate::class);
+    }
 }

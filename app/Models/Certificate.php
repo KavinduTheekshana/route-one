@@ -20,4 +20,14 @@ class Certificate extends Model
         'assessment_date',
         'confirmation_code',
     ];
+
+    public function application()
+    {
+        return $this->belongsTo(Application::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

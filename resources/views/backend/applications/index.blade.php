@@ -48,8 +48,9 @@
             <tbody>
                 @foreach ($applications as $application)
                     <tr>
-                        <td><img src="{{ $application->user->profile_image ? asset('storage/' . $application->user->profile_image) : asset('backend/images/thumbs/setting-profile-img.webp') }}" alt="Profile Image" width="50px"
-                            class="rounded-circle round-profile" height="50px"></td>
+                        <td><img src="{{ $application->user->profile_image ? asset('storage/' . $application->user->profile_image) : asset('backend/images/thumbs/setting-profile-img.webp') }}"
+                                alt="Profile Image" width="50px" class="rounded-circle round-profile" height="50px">
+                        </td>
                         <td>{{ $application->name }} <br> {{ $application->email }}</td>
                         <td>{{ $application->country }}</td>
 
@@ -75,6 +76,15 @@
                                     Pending
                                 </span>
                             @endif
+
+                            @if ($application->certificate)
+                            <span class="text-13 py-2 px-10 rounded-pill bg-purple-50 text-purple-600 mt-4"> <span
+                                class="w-6 h-6 bg-purple-600 rounded-circle flex-shrink-0"></span> Certified</span>
+                            {{-- @else
+                            <span class="text-13 py-2 px-10 rounded-pill bg-purple-50 text-purple-600 mt-4"> <span
+                                class="w-6 h-6 bg-purple-600 rounded-circle flex-shrink-0"></span> N/A</span> --}}
+                            @endif
+
                         </td>
                         <td>{{ $application->created_at->format('Y-m-d') }}</td>
                         <td>
@@ -174,7 +184,7 @@
                 {
                     width: "20%",
                     targets: 7
-                },// Sixth column
+                }, // Sixth column
             ],
             autoWidth: false // Disable automatic column width calculation
         });
