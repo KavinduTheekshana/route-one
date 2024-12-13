@@ -40,7 +40,7 @@
                     <th>Name & Email</th>
                     <th>Country & Phone</th>
 
-                    <th>Agent</th>
+                    <th>Agent & Applied Position</th>
 
                     <th>Date</th>
                     <th>Action</th>
@@ -68,7 +68,7 @@
                         <td>{{ $application->country }} <br> {{ $application->phone }}</td>
 
 
-                        <td>{{ $application->agent->name ?? 'N/A' }} <br>
+                        <td><b>{{ $application->agent->name ?? 'N/A' }}</b> <br>
                             @if ($application->vacancies->isNotEmpty())
                                 {{ $application->vacancies->pluck('title')->implode(', ') }}
                             @else
@@ -143,7 +143,7 @@
                     <th>Name & Email</th>
                     <th>Country & Phone</th>
 
-                    <th>Agent</th>
+                    <th>Agent & Applied Position</th>
 
                     <th>Date</th>
                     <th>Action</th>
@@ -175,40 +175,36 @@
             "order": [
                 [0, "desc"]
             ],
-            // columnDefs: [{
-            //         width: "3%",
-            //         targets: 0
-            //     }, {
-            //         width: "10%",
-            //         targets: 1
-            //     },// Sets the width for the first column
-            //     {
-            //         width: "20%",
-            //         targets: 2
-            //     }, // Second column
-            //     {
-            //         width: "10%",
-            //         targets: 3
-            //     }, // Third column
-            //     {
-            //         width: "10%",
-            //         targets: 4
-            //     }, // Fourth column
-            //     {
-            //         width: "12%",
-            //         targets: 5
-            //     }, // Fifth column
-            //     {
-            //         width: "10%",
-            //         targets: 6
-            //     }, // Sixth column
-            //     {
-            //         width: "20%",
-            //         targets: 7
-            //     },
+            columnDefs: [{
+                    width: "4%",
+                    targets: 0
+                }, {
+                    width: "8%",
+                    targets: 1
+                },// Sets the width for the first column
+                {
+                    width: "20%",
+                    targets: 2
+                }, // Second column
+                {
+                    width: "13%",
+                    targets: 3
+                }, // Third column
+                {
+                    width: "25%",
+                    targets: 4
+                }, // Fourth column
+                {
+                    width: "10%",
+                    targets: 5
+                }, // Fifth column
+                {
+                    width: "20%",
+                    targets: 6
+                }, // Sixth column
 
-            // ],
-            autoWidth: true // Disable automatic column width calculation
+            ],
+            autoWidth: false // Disable automatic column width calculation
         });
     });
 </script>
