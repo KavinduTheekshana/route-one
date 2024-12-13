@@ -71,7 +71,7 @@
                                     <i class="fa-solid fa-sack-dollar text-primary fs-1"></i>
                                 </div>
                                 <div class="single-explot-last ps-2">
-                                    <span class="text-light opacity-75">Sallary</span>
+                                    <span class="text-light opacity-75">Salary</span>
                                     <p class="text-light fw-bold fs-6 m-0">£{{ number_format($vacancy->salary) }} / Year
                                     </p>
                                 </div>
