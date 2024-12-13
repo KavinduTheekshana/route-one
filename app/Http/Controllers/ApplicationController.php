@@ -20,6 +20,25 @@ use Illuminate\Support\Str;
 
 class ApplicationController extends Controller
 {
+    public function generateApplicationNumbers()
+    {
+        $applications = Application::whereNull('application_number')->get();
+
+        foreach ($applications as $application) {
+            $countryCode = $application->country ? Str::upper(Str::substr($application->country, 0, 3)) : 'XXX';
+            $randomNumber = mt_rand(10, 99);
+
+            // Use the created_at field for the date
+            $createdDate = $application->created_at ? $application->created_at->format('ymd') : now()->format('ymd');
+
+            $applicationNumber = "R1{$countryCode}{$createdDate}{$randomNumber}";
+
+            $application->update(['application_number' => $applicationNumber]);
+        }
+
+        return 'Application numbers generated successfully!';
+    }
+
     public function application()
     {
         $application = Application::where('user_id', auth()->id())->first();

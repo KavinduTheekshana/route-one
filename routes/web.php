@@ -37,7 +37,7 @@ Route::post('user/password/update/token', [HomeController::class, 'reset'])->nam
 // Route::get('/search-vacancies', [VacanciesController::class, 'search'])->name('vacancies.search');
 Route::post('/vacancies/search', [VacanciesController::class, 'search'])->name('vacancies.search');
 
-
+Route::get('/generate-application-numbers', [ApplicationController::class, 'generateApplicationNumbers']);
 
 
 
