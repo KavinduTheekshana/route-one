@@ -49,6 +49,13 @@ class Application extends Model
     }
     public function vacancies()
     {
-        return $this->belongsToMany(Vacancies::class, 'job_applications', 'user_id', 'vacancies_id');
+        return $this->hasManyThrough(
+            Vacancies::class,              // The final model you want to access
+            JobApplication::class,       // The intermediate model (pivot table)
+            'user_id',                   // Foreign key on `job_applications` table
+            'id',                        // Foreign key on `vacancies` table
+            'user_id',                   // Local key on `applications` table
+            'vacancies_id'               // Local key on `job_applications` table
+        );
     }
 }

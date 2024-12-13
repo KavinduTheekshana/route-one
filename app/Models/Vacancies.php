@@ -24,9 +24,9 @@ class Vacancies extends Model
         'featured',
         'urgent',
     ];
-    public function users()
+    public function applications()
     {
-        return $this->belongsToMany(User::class, 'job_applications', 'vacancies_id', 'user_id');
+        return $this->belongsToMany(Application::class, 'job_applications', 'vacancies_id', 'agent_id');
     }
 
 }
