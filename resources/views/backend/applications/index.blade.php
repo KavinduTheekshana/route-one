@@ -100,8 +100,7 @@
                             <br>
                             @if ($application->certificate)
                                 <span class="text-13 py-2 px-10 rounded-pill bg-purple-50 text-purple-600 mt-4"> <span
-                                        class="w-6 h-6 bg-purple-600 rounded-circle flex-shrink-0"></span>
-                                    Certified</span>
+                                        class="w-6 h-6 bg-purple-600 rounded-circle flex-shrink-0"></span> Certified</span>
                                 {{-- @else
                             <span class="text-13 py-2 px-10 rounded-pill bg-purple-50 text-purple-600 mt-4"> <span
                                 class="w-6 h-6 bg-purple-600 rounded-circle flex-shrink-0"></span> N/A</span> --}}
