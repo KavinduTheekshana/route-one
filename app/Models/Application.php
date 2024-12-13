@@ -23,6 +23,7 @@ class Application extends Model
         'agent_id',
         'status',
         'english',
+        'application_number'
     ];
 
     // Add relationships if necessary
@@ -40,8 +41,14 @@ class Application extends Model
     {
         return $this->belongsTo(User::class, 'agent_id', 'id');
     }
+
+
     public function certificate()
     {
         return $this->hasOne(Certificate::class);
+    }
+    public function vacancies()
+    {
+        return $this->belongsToMany(Vacancies::class, 'job_applications', 'user_id', 'vacancies_id');
     }
 }

@@ -93,4 +93,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserNotes::class);
     }
+    public function vacancies()
+    {
+        return $this->belongsToMany(Vacancies::class, 'job_applications', 'user_id', 'vacancies_id');
+    }
 }

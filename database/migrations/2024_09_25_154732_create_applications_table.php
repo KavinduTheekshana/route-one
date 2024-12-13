@@ -24,6 +24,7 @@ return new class extends Migration
             $table->unsignedBigInteger('agent_id')->nullable();
             $table->boolean('status')->default(3);
             $table->boolean('english')->default(0);
+            $table->string('application_number')->nullable();
             $table->timestamps();
             $table->foreign('agent_id')->references('id')->on('users')->onDelete('set null');
         });

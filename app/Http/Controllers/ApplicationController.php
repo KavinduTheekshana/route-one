@@ -13,8 +13,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NewMessageNotification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use NotifyLk\Api\SmsApi;
+use Illuminate\Support\Str;
 
 class ApplicationController extends Controller
 {
@@ -54,10 +56,19 @@ class ApplicationController extends Controller
             'agent_id' => 'nullable|exists:users,id',
         ]);
 
+        // Generate application number
+        $countryCode = $request->country ? Str::upper(Str::substr($request->country, 0, 3)) : 'XXX'; // Handle null or empty country
+        $randomNumber = mt_rand(10, 99);
+        $currentDate = now()->format('ymd'); // Format the current date as YYMMDD
+        $applicationNumber = "R1{$countryCode}{$currentDate}{$randomNumber}";
+
         // Create or update the application record
         Application::updateOrCreate(
             ['user_id' => auth()->id()], // Condition to find the existing application
-            $request->all() + ['user_id' => auth()->id()] // Fill data
+            $request->except(['application_number']) + [
+                'application_number' => $applicationNumber,
+                'user_id' => auth()->id(),
+            ]
         );
 
         // Update the agent_id in the users table
@@ -192,20 +203,23 @@ class ApplicationController extends Controller
     {
 
 
+
+        // $applications = Application::with(['user', 'certificate', 'agent', 'vacancies'])->orderBy('created_at', 'desc')
+        //     ->get();
+        // dd($applications);
+
+
         $authUser = auth()->user();
 
         if ($authUser->user_type === 'superadmin') {
-            $applications = Application::with(['user', 'certificate','agent'])->orderBy('created_at', 'desc')
+            $applications = Application::with(['user', 'certificate', 'agent', 'vacancies'])->orderBy('created_at', 'desc')
                 ->get();
-
-
         } elseif ($authUser->user_type === 'agent') {
             $applications = Application::with('agent')->where('agent_id', Auth::id())->orderBy('created_at', 'desc')
                 ->get();
         } else {
             abort(403, 'Unauthorized access');
         }
-
         // $applications = Application::with('agent')->get();
         return view('backend.applications.index', compact('applications'));
     }

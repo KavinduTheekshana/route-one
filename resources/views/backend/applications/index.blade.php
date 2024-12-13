@@ -35,12 +35,13 @@
         <table id="example" class="uk-table uk-table-hover uk-table-striped" style="width:100%">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Image</th>
                     <th>Name & Email</th>
-                    <th>Country</th>
-                    <th>Phone</th>
+                    <th>Country & Phone</th>
+
                     <th>Agent</th>
-                    <th>Status</th>
+
                     <th>Date</th>
                     <th>Action</th>
                 </tr>
@@ -48,15 +49,34 @@
             <tbody>
                 @foreach ($applications as $application)
                     <tr>
+                        <td>{{ $application->id }}</td>
                         <td><img src="{{ $application->user->profile_image ? asset('storage/' . $application->user->profile_image) : asset('backend/images/thumbs/setting-profile-img.webp') }}"
                                 alt="Profile Image" width="50px" class="rounded-circle round-profile" height="50px">
                         </td>
-                        <td>{{ $application->name }} <br> {{ $application->email }}</td>
-                        <td>{{ $application->country }}</td>
+                        <td>{{ $application->name }} <br> {{ $application->email }}
 
-                        <td>{{ $application->phone }}</td>
-                        <td>{{ $application->agent->name ?? 'N/A' }}</td>
-                        <td>
+                            @if ($application->application_number)
+                                <br>
+                                <span
+                                    class="text-13 py-2 px-8 bg-success-50 text-success-600 d-inline-flex align-items-center gap-8 rounded-pill">
+                                    <span class="w-6 h-6 bg-success-600 rounded-circle flex-shrink-0"></span>
+                                    {{ $application->application_number }}
+                            @endif
+                            </span>
+
+                        </td>
+                        <td>{{ $application->country }} <br> {{ $application->phone }}</td>
+
+
+                        <td>{{ $application->agent->name ?? 'N/A' }} <br>
+                            @if ($application->vacancies->isNotEmpty())
+                                {{ $application->vacancies->pluck('title')->implode(', ') }}
+                            @else
+                                No vacancies assigned.
+                            @endif
+                        </td>
+
+                        <td>{{ $application->created_at->format('Y-m-d') }} <br>
                             @if ($application->status == 1)
                                 <span
                                     class="text-13 py-2 px-8 bg-success-50 text-success-600 d-inline-flex align-items-center gap-8 rounded-pill">
@@ -77,16 +97,16 @@
                                 </span>
                             @endif
 
+                            <br>
                             @if ($application->certificate)
-                            <span class="text-13 py-2 px-10 rounded-pill bg-purple-50 text-purple-600 mt-4"> <span
-                                class="w-6 h-6 bg-purple-600 rounded-circle flex-shrink-0"></span> Certified</span>
-                            {{-- @else
+                                <span class="text-13 py-2 px-10 rounded-pill bg-purple-50 text-purple-600 mt-4"> <span
+                                        class="w-6 h-6 bg-purple-600 rounded-circle flex-shrink-0"></span>
+                                    Certified</span>
+                                {{-- @else
                             <span class="text-13 py-2 px-10 rounded-pill bg-purple-50 text-purple-600 mt-4"> <span
                                 class="w-6 h-6 bg-purple-600 rounded-circle flex-shrink-0"></span> N/A</span> --}}
                             @endif
-
                         </td>
-                        <td>{{ $application->created_at->format('Y-m-d') }}</td>
                         <td>
 
 
@@ -117,12 +137,14 @@
             </tbody>
             <tfoot>
                 <tr>
+                    <th>Id</th>
                     <th>Image</th>
+
                     <th>Name & Email</th>
-                    <th>Country</th>
-                    <th>Phone</th>
+                    <th>Country & Phone</th>
+
                     <th>Agent</th>
-                    <th>Status</th>
+
                     <th>Date</th>
                     <th>Action</th>
                 </tr>
@@ -151,42 +173,42 @@
     $(document).ready(function() {
         $('#example').DataTable({
             "order": [
-                [6, "desc"]
+                [0, "desc"]
             ],
-            columnDefs: [{
-                    width: "10%",
-                    targets: 0
-                }, // Sets the width for the first column
-                {
-                    width: "20%",
-                    targets: 1
-                }, // Second column
-                {
-                    width: "10%",
-                    targets: 2
-                }, // Third column
-                {
-                    width: "10%",
-                    targets: 3
-                }, // Fourth column
-                {
-                    width: "12%",
-                    targets: 4
-                }, // Fifth column
-                {
-                    width: "8%",
-                    targets: 5
-                }, // Sixth column
-                {
-                    width: "10%",
-                    targets: 6
-                },
-                {
-                    width: "20%",
-                    targets: 7
-                }, // Sixth column
-            ],
-            autoWidth: false // Disable automatic column width calculation
+            // columnDefs: [{
+            //         width: "3%",
+            //         targets: 0
+            //     }, {
+            //         width: "10%",
+            //         targets: 1
+            //     },// Sets the width for the first column
+            //     {
+            //         width: "20%",
+            //         targets: 2
+            //     }, // Second column
+            //     {
+            //         width: "10%",
+            //         targets: 3
+            //     }, // Third column
+            //     {
+            //         width: "10%",
+            //         targets: 4
+            //     }, // Fourth column
+            //     {
+            //         width: "12%",
+            //         targets: 5
+            //     }, // Fifth column
+            //     {
+            //         width: "10%",
+            //         targets: 6
+            //     }, // Sixth column
+            //     {
+            //         width: "20%",
+            //         targets: 7
+            //     },
+
+            // ],
+            autoWidth: true // Disable automatic column width calculation
         });
     });
 </script>
