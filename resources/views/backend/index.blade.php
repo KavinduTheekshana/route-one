@@ -274,10 +274,7 @@
                                                             class="btn btn-success btn-sm"><i class="ph ph-check"></i></a>
                                                     @endif
 
-                                                    <a href="javascript:void(0)" class="btn btn-warning btn-sm view-enquiry"
-                                                        data-id="{{ $application->id }}">
-                                                        <i class="ph ph-eye"></i>
-                                                    </a>
+
                                                     <a href=" {{ route('user.settings.application', $application->user_id) }}"
                                                         class="btn btn-info btn-sm">
                                                         <i class="ph ph-arrow-right"></i>
@@ -377,6 +374,64 @@
 
                     </div>
 
+
+                    {{-- <div class="col-lg-6">
+                        <!-- Top Course Start -->
+                        <div class="card mt-24">
+                            <div class="card-body">
+                                <div class="mb-20 flex-between flex-wrap gap-8">
+                                    <h4 class="mb-0">Recently Updated Documents</h4>
+
+                                </div>
+                                <table id="recentuser" class="uk-table uk-table-hover uk-table-striped" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>Name</th>
+                                            <th>Country</th>
+                                            <th>Join date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($users as $user)
+                                            <tr>
+                                                <td><img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('backend/images/thumbs/setting-profile-img.webp') }}"
+                                                        alt="Profile Image" width="50px"
+                                                        class="rounded-circle round-profile" height="50px"></td>
+                                                <td>{{ $user->name }}</td>
+
+                                                <td>{{ $user->country ?? 'N/A' }}</td>
+
+                                                <td>{{ $user->created_at->format('Y-m-d') }}</td>
+                                                <td>
+
+
+
+                                                    <a href="{{ route('user.settings', $user->id) }}"
+                                                        class="btn btn-warning btn-sm"><i class="ph ph-eye"></i></a>
+
+
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>Name</th>
+                                            <th>Country</th>
+                                            <th>Join date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+
+                            </div>
+                        </div>
+
+
+                    </div> --}}
 
 
 
