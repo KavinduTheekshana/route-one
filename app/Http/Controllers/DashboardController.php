@@ -24,7 +24,7 @@ class DashboardController extends Controller
             $activeVacancies = Vacancies::where('status', '1')->count();
             $approvedApplications = Application::count();
             $users = User::where('user_type', 'user')
-                ->whereBetween('created_at', [Carbon::now()->startOfDay()->subDays(6), Carbon::now()->endOfDay()])
+                ->whereBetween('created_at', [Carbon::now()->startOfDay()->subDays(2), Carbon::now()->endOfDay()])
                 ->orderBy('id', 'desc')
                 ->get();
             $applications = Application::with(['user', 'certificate', 'agent', 'vacancies'])

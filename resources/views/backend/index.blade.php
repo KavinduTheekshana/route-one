@@ -256,8 +256,7 @@
                                                         <span
                                                             class="text-13 py-2 px-10 rounded-pill bg-purple-50 text-purple-600 mt-4">
                                                             <span
-                                                                class="w-6 h-6 bg-purple-600 rounded-circle flex-shrink-0"></span>
-                                                            Certified</span>
+                                                                class="w-6 h-6 bg-purple-600 rounded-circle flex-shrink-0"></span> Certified</span>
                                                         {{-- @else
                             <span class="text-13 py-2 px-10 rounded-pill bg-purple-50 text-purple-600 mt-4"> <span
                                 class="w-6 h-6 bg-purple-600 rounded-circle flex-shrink-0"></span> N/A</span> --}}
@@ -321,7 +320,7 @@
                         <div class="card mt-24">
                             <div class="card-body">
                                 <div class="mb-20 flex-between flex-wrap gap-8">
-                                    <h4 class="mb-0">Users Registered in the Last 7 Days</h4>
+                                    <h4 class="mb-0">Users Registered in the Last 3 Days</h4>
 
                                 </div>
                                 <table id="recentuser" class="uk-table uk-table-hover uk-table-striped" style="width:100%">
@@ -383,49 +382,7 @@
                                     <h4 class="mb-0">Recently Updated Documents</h4>
 
                                 </div>
-                                <table id="recentuser" class="uk-table uk-table-hover uk-table-striped" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>Image</th>
-                                            <th>Name</th>
-                                            <th>Country</th>
-                                            <th>Join date</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($users as $user)
-                                            <tr>
-                                                <td><img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('backend/images/thumbs/setting-profile-img.webp') }}"
-                                                        alt="Profile Image" width="50px"
-                                                        class="rounded-circle round-profile" height="50px"></td>
-                                                <td>{{ $user->name }}</td>
 
-                                                <td>{{ $user->country ?? 'N/A' }}</td>
-
-                                                <td>{{ $user->created_at->format('Y-m-d') }}</td>
-                                                <td>
-
-
-
-                                                    <a href="{{ route('user.settings', $user->id) }}"
-                                                        class="btn btn-warning btn-sm"><i class="ph ph-eye"></i></a>
-
-
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Image</th>
-                                            <th>Name</th>
-                                            <th>Country</th>
-                                            <th>Join date</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
 
                             </div>
                         </div>
