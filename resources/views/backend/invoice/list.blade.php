@@ -89,6 +89,18 @@
                                     </li>
                                 @endforeach
                             </ul>
+                            @auth
+                                @if (Auth::user()->user_type === 'superadmin')
+                                    @if ($invoice->deleted_at)
+                                        <span
+                                            class="text-13 py-2 px-8 bg-pink-50 text-pink-600 d-inline-flex align-items-center gap-8 rounded-pill">
+                                            <span class="w-6 h-6 bg-pink-600 rounded-circle flex-shrink-0"></span>
+                                            &nbsp;&nbsp; Deleted ( {{ $invoice->deleted_at }} ) &nbsp;&nbsp;
+                                        </span>
+                                        @endif
+
+                                    @endif
+                                @endauth
                         </td>
 
                         <td>{{ $invoice->customer->name ?? 'N/A' }} <br> <span
@@ -102,13 +114,13 @@
                                 <span
                                     class="text-13 py-2 px-8 bg-success-50 text-success-600 d-inline-flex align-items-center gap-8 rounded-pill">
                                     <span class="w-6 h-6 bg-success-600 rounded-circle flex-shrink-0"></span>
-                                    &nbsp;&nbsp;   PAID &nbsp;&nbsp;
+                                    &nbsp;&nbsp; PAID &nbsp;&nbsp;
                                 </span>
                             @else
                                 <span
                                     class="text-13 py-2 px-8 bg-pink-50 text-pink-600 d-inline-flex align-items-center gap-8 rounded-pill">
                                     <span class="w-6 h-6 bg-pink-600 rounded-circle flex-shrink-0"></span>
-                                    &nbsp;&nbsp;  UNPAID &nbsp;&nbsp;
+                                    &nbsp;&nbsp; UNPAID &nbsp;&nbsp;
                                 </span>
                             @endif
                         </td>
@@ -135,20 +147,40 @@
                                 @endif
                             </form>
 
-                            <a href="{{ route('admin.invoice.view', $invoice->id) }}" title="View Invoice" class="btn btn-warning btn-sm"><i
-                                    class="ph ph-eye"></i></a>
-                            <!-- Delete Button -->
-                            <button class="btn btn-dark btn-sm" title="Delete" onclick="confirmDelete({{ $invoice->id }})">
-                                <i class="ph ph-trash"></i>
-                            </button>
+                            <a href="{{ route('admin.invoice.view', $invoice->id) }}" title="View Invoice"
+                                class="btn btn-warning btn-sm"><i class="ph ph-eye"></i></a>
 
-                            <!-- Delete Form -->
-                            <form id="delete-form-{{ $invoice->id }}"
-                                action="{{ route('invoice.destroy', $invoice->id) }}" method="POST"
-                                style="display: none;">
-                                @csrf
-                                @method('DELETE')
-                            </form>
+                            @auth
+                                @if (Auth::user()->user_type === 'superadmin')
+                                    <!-- Delete Button -->
+                                    <button class="btn btn-dark btn-sm" title="Delete"
+                                        onclick="confirmDelete({{ $invoice->id }})">
+                                        <i class="ph ph-trash"></i>
+                                    </button>
+
+                                    <!-- Delete Form -->
+                                    <form id="delete-form-{{ $invoice->id }}"
+                                        action="{{ route('invoice.destroy', $invoice->id) }}" method="POST"
+                                        style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                @elseif (Auth::user()->user_type === 'agent')
+                                    <!-- Delete Button -->
+                                    <button class="btn btn-dark btn-sm" title="Delete"
+                                        onclick="confirmDelete({{ $invoice->id }})">
+                                        <i class="ph ph-trash"></i>
+                                    </button>
+
+                                    <!-- Delete Form -->
+                                    <form id="delete-form-{{ $invoice->id }}"
+                                        action="{{ route('invoice.destroy.agent', $invoice->id) }}" method="POST"
+                                        style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                @endif
+                            @endauth
 
                         </td>
                     </tr>
@@ -184,27 +216,28 @@
     new DataTable('#example', {
         order: [
             [0, 'desc']
-        ],columnDefs: [{
-                    targets: 0,
-                    width: "10%"
-                }, // 3rd column (index 2) width set to 40%
-                {
-                    targets: 1,
-                    width: "30%"
-                }, // Example: 1st column width to 10%
-                {
-                    targets: 2,
-                    width: "30%"
-                }, // Example: 2nd column width to 10%
-                {
-                    targets: 3,
-                    width: "15%"
-                },
-                {
-                    targets: 4,
-                    width: "15%"
-                } // Example: 2nd column width to 10%
-            ],
+        ],
+        columnDefs: [{
+                targets: 0,
+                width: "10%"
+            }, // 3rd column (index 2) width set to 40%
+            {
+                targets: 1,
+                width: "30%"
+            }, // Example: 1st column width to 10%
+            {
+                targets: 2,
+                width: "30%"
+            }, // Example: 2nd column width to 10%
+            {
+                targets: 3,
+                width: "15%"
+            },
+            {
+                targets: 4,
+                width: "15%"
+            } // Example: 2nd column width to 10%
+        ],
 
         autoWidth: false // Disable automatic column width calculation// Set the first column (index 0) to order by descending
     });

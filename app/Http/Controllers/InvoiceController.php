@@ -55,7 +55,7 @@ class InvoiceController extends Controller
             $invoices = Invoice::with(['customer', 'services', 'user'])->orderBy('created_at', 'desc')->get();
         } elseif ($authUser->user_type === 'agent') {
             $user_id = Auth::user()->id;
-            $invoices = Invoice::with(['customer', 'services', 'user'])->where('user_id', $user_id)->orderBy('created_at', 'desc')->get();
+            $invoices = Invoice::with(['customer', 'services', 'user'])->where('user_id', $user_id)->where('deleted_at', null)->orderBy('created_at', 'desc')->get();
         } else {
             abort(403, 'Unauthorized access');
         }
@@ -210,5 +210,20 @@ class InvoiceController extends Controller
     {
         $invoice->delete();
         return redirect()->back()->with('success', 'Invoice deleted successfully!');
+    }
+    public function destroyAgent($invoice)
+    {
+        // Assuming $invoice is the ID of the invoice
+        $invoiceModel = Invoice::find($invoice);
+
+        if ($invoiceModel) {
+            // Update the deleted_at column with the current timestamp
+            $invoiceModel->deleted_at = now();
+            $invoiceModel->save();
+
+            return redirect()->back()->with('success', 'Invoice deleted successfully!');
+        }
+
+        return response()->json(['message' => 'Invoice not found.'], 404);
     }
 }
