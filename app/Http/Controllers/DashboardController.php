@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Application;
 use App\Models\User;
 use App\Models\Vacancies;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -22,7 +23,11 @@ class DashboardController extends Controller
             $agentCount = User::where('user_type', 'agent')->count();
             $activeVacancies = Vacancies::where('status', '1')->count();
             $approvedApplications = Application::count();
-            return view('backend.index', compact('userCount', 'agentCount', 'activeVacancies', 'approvedApplications'));
+            $users = User::where('user_type', 'user')
+                ->whereBetween('created_at', [Carbon::now()->startOfDay()->subDays(6), Carbon::now()->endOfDay()])
+                ->orderBy('id', 'desc')
+                ->get();
+            return view('backend.index', compact('userCount', 'agentCount', 'activeVacancies', 'approvedApplications','users'));
         }
     }
 

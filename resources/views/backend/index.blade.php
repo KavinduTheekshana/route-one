@@ -1,3 +1,7 @@
+@push('styles')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/css/uikit.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.6/css/dataTables.uikit.css">
+@endpush
 @extends('layouts.backend')
 
 @section('content')
@@ -135,10 +139,88 @@
             </div>
 
         </div>
+
+
+
+        <div class="row gy-4">
+            <div class="col-lg-6">
+
+
+                <!-- Top Course Start -->
+                <div class="card mt-24">
+                    <div class="card-body">
+                        <div class="mb-20 flex-between flex-wrap gap-8">
+                            <h4 class="mb-0">Users Registered in the Last 7 Days</h4>
+
+                        </div>
+                        <table id="recentuser" class="uk-table uk-table-hover uk-table-striped" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Country</th>
+                                    <th>Join date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($users as $user)
+                                    <tr>
+                                        <td><img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('backend/images/thumbs/setting-profile-img.webp') }}"
+                                                alt="Profile Image" width="50px" class="rounded-circle round-profile"
+                                                height="50px"></td>
+                                        <td>{{ $user->name }}</td>
+
+                                        <td>{{ $user->country ?? 'N/A' }}</td>
+
+                                        <td>{{ $user->created_at->format('Y-m-d') }}</td>
+                                        <td>
+
+
+
+                                            <a href="{{ route('user.settings', $user->id) }}"
+                                                class="btn btn-warning btn-sm"><i class="ph ph-eye"></i></a>
+
+
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Country</th>
+                                    <th>Join date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+        </div>
     </div>
 @endsection
 
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.1.6/js/dataTables.uikit.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#recentuser').DataTable({
+                // Sixth column
+                autoWidth: true // Disable automatic column width calculation
+            });
+        });
+    </script>
     <script>
         // =========================== Double Line Chart Start ===============================
         // function createLineChart(chartId, chartColor) {
@@ -353,7 +435,8 @@
                 },
                 xaxis: {
                     categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov',
-                        'Dec'],
+                        'Dec'
+                    ],
                     labels: {
                         style: {
                             fontSize: "14px"
