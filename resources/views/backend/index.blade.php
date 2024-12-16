@@ -375,7 +375,7 @@
                     </div>
 
 
-                    {{-- <div class="col-lg-6">
+                    <div class="col-lg-6">
                         <!-- Top Course Start -->
                         <div class="card mt-24">
                             <div class="card-body">
@@ -431,7 +431,7 @@
                         </div>
 
 
-                    </div> --}}
+                    </div>
 
 
 

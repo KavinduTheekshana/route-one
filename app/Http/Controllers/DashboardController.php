@@ -28,8 +28,8 @@ class DashboardController extends Controller
                 ->orderBy('id', 'desc')
                 ->get();
             $applications = Application::with(['user', 'certificate', 'agent', 'vacancies'])
-                ->whereBetween('updated_at', [Carbon::now()->startOfDay()->subDays(6), Carbon::now()->endOfDay()])
-                ->orderBy('created_at', 'desc')
+                ->whereBetween('updated_at', [Carbon::now()->startOfDay()->subDays(2), Carbon::now()->endOfDay()])
+                ->orderBy('updated_at', 'desc')
                 ->get();
             return view('backend.index', compact('userCount', 'agentCount', 'activeVacancies', 'approvedApplications', 'users', 'applications'));
         }
