@@ -1,6 +1,32 @@
 @push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/css/uikit.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.6/css/dataTables.uikit.css">
+    <style>
+        ol,
+        ul {
+            padding-left: 0 !important;
+        }
+
+        *+address,
+        *+dl,
+        *+fieldset,
+        *+figure,
+        *+ol,
+        *+p,
+        *+pre,
+        *+ul {
+            margin-top: 0 !important;
+        }
+
+        .round-image {
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        a:hover {
+            text-decoration: none !important;
+        }
+    </style>
 @endpush
 @extends('layouts.backend')
 
@@ -140,72 +166,225 @@
 
         </div>
 
+        @auth
+            @if (Auth::user()->user_type === 'superadmin')
+                <div class="row gy-4">
+                    <div class="col-lg-12">
 
 
-        <div class="row gy-4">
-            <div class="col-lg-6">
+                        <!-- Top Course Start -->
+                        <div class="card mt-24">
+                            <div class="card-body">
+                                <div class="mb-20 flex-between flex-wrap gap-8">
+                                    <h4 class="mb-0">Recently Updated Application</h4>
+
+                                </div>
+
+                                <table id="updatedApplication" class="uk-table uk-table-hover uk-table-striped"
+                                    style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Image</th>
+                                            <th>Name & Email</th>
+                                            <th>Country & Phone</th>
+
+                                            <th>Agent & Applied Position</th>
+
+                                            <th>Updated Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($applications as $application)
+                                            <tr>
+                                                <td>{{ $application->id }}</td>
+                                                <td><img src="{{ $application->user->profile_image ? asset('storage/' . $application->user->profile_image) : asset('backend/images/thumbs/setting-profile-img.webp') }}"
+                                                        alt="Profile Image" width="50px" class="rounded-circle round-profile"
+                                                        height="50px">
+                                                </td>
+                                                <td>{{ $application->name }} <br> {{ $application->email }}
+
+                                                    @if ($application->application_number)
+                                                        <br>
+                                                        <span
+                                                            class="text-13 py-2 px-8 bg-success-50 text-success-600 d-inline-flex align-items-center gap-8 rounded-pill">
+                                                            <span
+                                                                class="w-6 h-6 bg-success-600 rounded-circle flex-shrink-0"></span>
+                                                            {{ $application->application_number }}
+                                                    @endif
+                                                    </span>
+
+                                                </td>
+                                                <td>{{ $application->country }} <br> {{ $application->phone }}</td>
 
 
-                <!-- Top Course Start -->
-                <div class="card mt-24">
-                    <div class="card-body">
-                        <div class="mb-20 flex-between flex-wrap gap-8">
-                            <h4 class="mb-0">Users Registered in the Last 7 Days</h4>
+                                                <td><b>{{ $application->agent->name ?? 'N/A' }}</b> <br>
+                                                    @if ($application->vacancies->isNotEmpty())
+                                                        {{ $application->vacancies->pluck('title')->implode(', ') }}
+                                                    @else
+                                                        No vacancies assigned.
+                                                    @endif
+                                                </td>
 
+                                                <td>{{ $application->updated_at->format('Y-m-d') }} <br>
+                                                    @if ($application->status == 1)
+                                                        <span
+                                                            class="text-13 py-2 px-8 bg-success-50 text-success-600 d-inline-flex align-items-center gap-8 rounded-pill">
+                                                            <span
+                                                                class="w-6 h-6 bg-success-600 rounded-circle flex-shrink-0"></span>
+                                                            Approved
+                                                        </span>
+                                                    @elseif($application->status == 0)
+                                                        <span
+                                                            class="text-13 py-2 px-8 bg-pink-50 text-pink-600 d-inline-flex align-items-center gap-8 rounded-pill">
+                                                            <span
+                                                                class="w-6 h-6 bg-pink-600 rounded-circle flex-shrink-0"></span>
+                                                            Rejected
+                                                        </span>
+                                                    @else
+                                                        <span
+                                                            class="text-13 py-2 px-8 bg-warning-100 text-warning-600 d-inline-flex align-items-center gap-8 rounded-pill">
+                                                            <span
+                                                                class="w-6 h-6 bg-warning-600 rounded-circle flex-shrink-0"></span>
+                                                            Pending
+                                                        </span>
+                                                    @endif
+
+                                                    <br>
+                                                    @if ($application->certificate)
+                                                        <span
+                                                            class="text-13 py-2 px-10 rounded-pill bg-purple-50 text-purple-600 mt-4">
+                                                            <span
+                                                                class="w-6 h-6 bg-purple-600 rounded-circle flex-shrink-0"></span>
+                                                            Certified</span>
+                                                        {{-- @else
+                            <span class="text-13 py-2 px-10 rounded-pill bg-purple-50 text-purple-600 mt-4"> <span
+                                class="w-6 h-6 bg-purple-600 rounded-circle flex-shrink-0"></span> N/A</span> --}}
+                                                    @endif
+                                                </td>
+                                                <td>
+
+
+                                                    @if ($application->status == 1)
+                                                        <a href="{{ route('application.reject', $application->id) }}"
+                                                            class="btn btn-danger btn-sm"><i class="ph ph-x"></i></a>
+                                                    @else
+                                                        <a href="{{ route('application.approve', $application->id) }}"
+                                                            class="btn btn-success btn-sm"><i class="ph ph-check"></i></a>
+                                                    @endif
+
+                                                    <a href="javascript:void(0)" class="btn btn-warning btn-sm view-enquiry"
+                                                        data-id="{{ $application->id }}">
+                                                        <i class="ph ph-eye"></i>
+                                                    </a>
+                                                    <a href=" {{ route('user.settings.application', $application->user_id) }}"
+                                                        class="btn btn-info btn-sm">
+                                                        <i class="ph ph-arrow-right"></i>
+                                                    </a>
+
+
+
+
+
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Image</th>
+
+                                            <th>Name & Email</th>
+                                            <th>Country & Phone</th>
+
+                                            <th>Agent & Applied Position</th>
+
+                                            <th>Updated Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+
+                            </div>
                         </div>
-                        <table id="recentuser" class="uk-table uk-table-hover uk-table-striped" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Image</th>
-                                    <th>Name</th>
-                                    <th>Country</th>
-                                    <th>Join date</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($users as $user)
-                                    <tr>
-                                        <td><img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('backend/images/thumbs/setting-profile-img.webp') }}"
-                                                alt="Profile Image" width="50px" class="rounded-circle round-profile"
-                                                height="50px"></td>
-                                        <td>{{ $user->name }}</td>
 
-                                        <td>{{ $user->country ?? 'N/A' }}</td>
-
-                                        <td>{{ $user->created_at->format('Y-m-d') }}</td>
-                                        <td>
-
-
-
-                                            <a href="{{ route('user.settings', $user->id) }}"
-                                                class="btn btn-warning btn-sm"><i class="ph ph-eye"></i></a>
-
-
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Image</th>
-                                    <th>Name</th>
-                                    <th>Country</th>
-                                    <th>Join date</th>
-                                    <th>Action</th>
-                                </tr>
-                            </tfoot>
-                        </table>
 
                     </div>
+
+
+
                 </div>
 
 
-            </div>
+                <div class="row gy-4">
+                    <div class="col-lg-6">
+                        <!-- Top Course Start -->
+                        <div class="card mt-24">
+                            <div class="card-body">
+                                <div class="mb-20 flex-between flex-wrap gap-8">
+                                    <h4 class="mb-0">Users Registered in the Last 7 Days</h4>
+
+                                </div>
+                                <table id="recentuser" class="uk-table uk-table-hover uk-table-striped" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>Name</th>
+                                            <th>Country</th>
+                                            <th>Join date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($users as $user)
+                                            <tr>
+                                                <td><img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('backend/images/thumbs/setting-profile-img.webp') }}"
+                                                        alt="Profile Image" width="50px"
+                                                        class="rounded-circle round-profile" height="50px"></td>
+                                                <td>{{ $user->name }}</td>
+
+                                                <td>{{ $user->country ?? 'N/A' }}</td>
+
+                                                <td>{{ $user->created_at->format('Y-m-d') }}</td>
+                                                <td>
 
 
 
-        </div>
+                                                    <a href="{{ route('user.settings', $user->id) }}"
+                                                        class="btn btn-warning btn-sm"><i class="ph ph-eye"></i></a>
+
+
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>Name</th>
+                                            <th>Country</th>
+                                            <th>Join date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+
+
+
+                </div>
+            @endif
+        @endauth
     </div>
 @endsection
 
@@ -216,8 +395,69 @@
     <script>
         $(document).ready(function() {
             $('#recentuser').DataTable({
-                // Sixth column
+                "pageLength": 5,
+                columnDefs: [{
+                        width: "15%",
+                        targets: 0
+                    }, // Sets the width for the first column
+                    {
+                        width: "35%",
+                        targets: 1
+                    }, // Second column
+                    {
+                        width: "20%",
+                        targets: 2
+                    }, // Third column
+                    {
+                        width: "20%",
+                        targets: 3
+                    }, // Fourth column
+                    {
+                        width: "10%",
+                        targets: 4
+                    }, // Fifth column
+                ], // Sixth column
                 autoWidth: true // Disable automatic column width calculation
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#updatedApplication').DataTable({
+                "pageLength": 5,
+                "order": [
+                    [0, "desc"]
+                ],
+                columnDefs: [{
+                        width: "4%",
+                        targets: 0
+                    }, {
+                        width: "8%",
+                        targets: 1
+                    }, // Sets the width for the first column
+                    {
+                        width: "20%",
+                        targets: 2
+                    }, // Second column
+                    {
+                        width: "13%",
+                        targets: 3
+                    }, // Third column
+                    {
+                        width: "25%",
+                        targets: 4
+                    }, // Fourth column
+                    {
+                        width: "10%",
+                        targets: 5
+                    }, // Fifth column
+                    {
+                        width: "20%",
+                        targets: 6
+                    }, // Sixth column
+
+                ],
+                autoWidth: false // Disable automatic column width calculation
             });
         });
     </script>
