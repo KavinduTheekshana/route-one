@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use App\Models\Document;
 use App\Models\User;
 use App\Models\Vacancies;
 use Carbon\Carbon;
@@ -31,7 +32,12 @@ class DashboardController extends Controller
                 ->whereBetween('updated_at', [Carbon::now()->startOfDay()->subDays(2), Carbon::now()->endOfDay()])
                 ->orderBy('updated_at', 'desc')
                 ->get();
-            return view('backend.index', compact('userCount', 'agentCount', 'activeVacancies', 'approvedApplications', 'users', 'applications'));
+            $recentDocuments = Document::with('user') // Include user details
+                ->where('updated_at', '>=', Carbon::now()->subDays(3))
+                ->orderBy('updated_at', 'desc')
+                ->get();
+
+            return view('backend.index', compact('userCount', 'agentCount', 'activeVacancies', 'approvedApplications', 'users', 'applications','recentDocuments'));
         }
     }
 

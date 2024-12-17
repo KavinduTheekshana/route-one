@@ -256,7 +256,8 @@
                                                         <span
                                                             class="text-13 py-2 px-10 rounded-pill bg-purple-50 text-purple-600 mt-4">
                                                             <span
-                                                                class="w-6 h-6 bg-purple-600 rounded-circle flex-shrink-0"></span> Certified</span>
+                                                                class="w-6 h-6 bg-purple-600 rounded-circle flex-shrink-0"></span>
+                                                            Certified</span>
                                                         {{-- @else
                             <span class="text-13 py-2 px-10 rounded-pill bg-purple-50 text-purple-600 mt-4"> <span
                                 class="w-6 h-6 bg-purple-600 rounded-circle flex-shrink-0"></span> N/A</span> --}}
@@ -382,8 +383,51 @@
                                     <h4 class="mb-0">Recently Updated Documents</h4>
 
                                 </div>
+                                @if ($recentDocuments->isEmpty())
+                                    <p>No documents have been added or updated in the last 3 days.</p>
+                                @else
+                                    <table id="recentDocuments" class="uk-table uk-table-hover uk-table-striped"
+                                        style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>User Name</th>
+                                                <th>Document Type</th>
+
+                                                <th>Added Date</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($recentDocuments as $document)
+                                                <tr>
+                                                    <td>{{ $document->user->name ?? 'N/A' }}</td>
+
+                                                    <td>{{ $document->document_type }}</td>
+
+                                                    <td>{{ $document->created_at->format('Y-m-d') }}</td>
+                                                    <td>
 
 
+
+                                                        <a href="{{ route('user.settings', $document->user_id) }}"
+                                                            class="btn btn-warning btn-sm"><i class="ph ph-eye"></i></a>
+
+
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Image</th>
+                                                <th>Name</th>
+
+                                                <th>Join date</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                @endif
                             </div>
                         </div>
 
@@ -428,6 +472,31 @@
                         width: "10%",
                         targets: 4
                     }, // Fifth column
+                ], // Sixth column
+                autoWidth: true // Disable automatic column width calculation
+            });
+        });
+
+        $(document).ready(function() {
+            $('#recentDocuments').DataTable({
+                "pageLength": 5,
+                columnDefs: [{
+                        width: "35%",
+                        targets: 0
+                    }, // Sets the width for the first column
+                    {
+                        width: "35%",
+                        targets: 1
+                    }, // Second column
+                    {
+                        width: "20%",
+                        targets: 2
+                    }, // Third column
+                    {
+                        width: "10%",
+                        targets: 3
+                    }, // Fourth column
+
                 ], // Sixth column
                 autoWidth: true // Disable automatic column width calculation
             });
