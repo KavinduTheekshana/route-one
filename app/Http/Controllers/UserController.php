@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use App\Models\Certificate;
 use App\Models\Document;
 use App\Models\JobApplication;
 use Illuminate\Http\Request;
