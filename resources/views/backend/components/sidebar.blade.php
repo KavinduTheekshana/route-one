@@ -163,6 +163,15 @@
                 @auth
                     @if (Auth::user()->user_type === 'superadmin')
                         <li class="sidebar-menu__item">
+                            <a href="{{ route('admin.certificate') }}"
+                                class="sidebar-menu__link {{ request()->segment(2) === 'certificate' ? 'activePage' : '' }}">
+                                <span class="icon"><i class="ph ph-certificate"></i></span>
+                                <span class="text">Certificates</span>
+                            </a>
+                        </li>
+
+
+                        <li class="sidebar-menu__item">
                             <a href="{{ route('admin.calander') }}"
                                 class="sidebar-menu__link {{ request()->segment(2) === 'calander' ? 'activePage' : '' }}">
                                 <span class="icon"><i class="ph ph-calendar-dots"></i></span>

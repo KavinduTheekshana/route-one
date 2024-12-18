@@ -15,7 +15,14 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class CertificateController extends Controller
 {
+    public function certificate()
+    {
+        $certificates = Certificate::orderBy('created_at', 'desc')
+            ->get();
 
+        // $applications = Application::with('agent')->get();
+        return view('backend.certificate.index', compact('certificates'));
+    }
 
     public function sendCertificateEmail(Request $request)
     {
