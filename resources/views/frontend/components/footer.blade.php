@@ -86,7 +86,7 @@
                                     <img src="{{ asset('frontend/img/icons/location-pin-svgrepo-com.svg')}}" alt="">
                                   </div>
                                   <div class="pera">
-                                    <a>24 Colston Rise, Ampthill, <br> Bedford, England MK45 2GN</a>
+                                    <a>464 Alexandra Ave, <br> Rayners Lane, Harrow HA2 9TL</a>
                                   </div>
                                 </div>
 
