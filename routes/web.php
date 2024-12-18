@@ -125,6 +125,7 @@ Route::middleware([
         Route::post('/certificate/store', [CertificateController::class, 'store'])->name('certificates.store')->middleware(['auth', 'superadmin']);
         Route::put('/certificates/update/{id}', [CertificateController::class, 'update'])->name('certificates.update');
         Route::Post('/certificates/send-email', [CertificateController::class, 'sendCertificateEmail'])->name('certificates.sendEmail');
+        Route::get('/certificates/download', [CertificateController::class, 'downloadCertificate'])->name('certificates.download');
         Route::post('/assign-position', [JobApplicationController::class, 'assignPosition'])->name('assign.position');
 
 

@@ -255,6 +255,16 @@
                     Email Certificate
                 </button>
             </form>
+
+            <!-- New button for downloading the certificate -->
+            <form action="{{ route('certificates.download') }}" method="GET">
+                <input type="hidden" name="certificate_id"
+                    value="{{ isset($certificate) ? $certificate->id : '' }}">
+                <button type="submit" class="btn btn-warning w-100 mt-2"
+                    {{ isset($certificate) && $certificate->id ? '' : 'disabled' }}>
+                    Download Certificate
+                </button>
+            </form>
         </div>
     </div>
 

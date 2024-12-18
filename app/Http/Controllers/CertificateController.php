@@ -50,6 +50,19 @@ class CertificateController extends Controller
         return back()->with('success', 'Certificate emailed successfully.');
     }
 
+    public function downloadCertificate(Request $request)
+    {
+        // Find the certificate using the certificate_id
+        $id = $request->input('certificate_id');
+        $certificate = Certificate::findOrFail($id);
+
+        // Generate the PDF using DomPDF
+        $pdf = Pdf::loadView('certificates.certificate', compact('certificate'));
+
+        // Return the PDF for download
+        return $pdf->download("Certificate($certificate->confirmation_code).pdf");
+    }
+
 
     public function issueCertificate($id)
     {

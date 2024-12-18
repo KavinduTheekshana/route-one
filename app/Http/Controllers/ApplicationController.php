@@ -12,6 +12,7 @@ use App\Models\Vacancies;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NewMessageNotification;
+use App\Models\Certificate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -251,7 +252,7 @@ class ApplicationController extends Controller
         $agent = User::where('id', $user->agent_id)->first();
         $notes = UserNotes::with('admin')->where('user_id', $id)->get();
         // dd($user->agent_id);
-
+        $certificate = Certificate::where('user_id', $id)->first();
         $vacancies = JobApplication::where('user_id', $user->id)
             ->with('job') // Assuming you have a relationship defined
             ->get();
@@ -261,6 +262,6 @@ class ApplicationController extends Controller
         // Flash the session variable to indicate the application tab should be shown
         session()->flash('showApplicationTab', true);
 
-        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs', 'agent', 'notes'));
+        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs', 'agent', 'notes','certificate'));
     }
 }

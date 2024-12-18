@@ -99,11 +99,15 @@
 
                             <br>
                             @if ($application->certificate)
-                                <span class="text-13 py-2 px-10 rounded-pill bg-purple-50 text-purple-600 mt-4"> <span
-                                        class="w-6 h-6 bg-purple-600 rounded-circle flex-shrink-0"></span> Certified</span>
-                                {{-- @else
-                            <span class="text-13 py-2 px-10 rounded-pill bg-purple-50 text-purple-600 mt-4"> <span
-                                class="w-6 h-6 bg-purple-600 rounded-circle flex-shrink-0"></span> N/A</span> --}}
+                                @if ($application->certificate->result == 'pass')
+                                    <span
+                                        class="text-13 py-2 px-10 rounded-pill bg-purple-50 text-purple-600 mt-4">English
+                                        : {{ ucfirst($application->certificate->result) }}
+                                    </span>
+                                @else
+                                    <span class="text-13 py-2 px-10 rounded-pill bg-pink-50 text-pink-600 mt-4">English
+                                        : {{ ucfirst($application->certificate->result) }}</span>
+                                @endif
                             @endif
                         </td>
                         <td>
@@ -180,7 +184,7 @@
                 }, {
                     width: "8%",
                     targets: 1
-                },// Sets the width for the first column
+                }, // Sets the width for the first column
                 {
                     width: "20%",
                     targets: 2
