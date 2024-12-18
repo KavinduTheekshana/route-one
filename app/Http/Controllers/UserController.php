@@ -133,7 +133,7 @@ class UserController extends Controller
         $agents = User::where('user_type', 'agent')->get();
 
         $notes = UserNotes::with('admin')->where('user_id', $id)->get();
-
+        $certificate = Certificate::where('user_id', $id)->first();
 
         // Fetch the jobs that the user has applied for
         $vacancies = JobApplication::where('user_id', $user->id)
@@ -141,7 +141,7 @@ class UserController extends Controller
             ->get();
 
         $jobs = Vacancies::get();
-        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs', 'notes', 'agent'));
+        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs', 'notes', 'agent','certificate'));
     }
 
     public function user_update(Request $request, $id)
