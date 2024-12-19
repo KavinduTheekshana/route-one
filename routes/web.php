@@ -26,7 +26,7 @@ Route::get('about', [HomeController::class, 'about'])->name('about');
 Route::get('contact', [HomeController::class, 'contact'])->name('contact');
 Route::post('/contact/store', [EnquiryController::class, 'store'])->name('contact.store');
 Route::get('jobs', [HomeController::class, 'jobs'])->name('jobs');
-Route::get('/vacancies/{id}', [HomeController::class, 'vacancy'])->name('vacancies.show');
+Route::get('/vacancies/{slug}', [HomeController::class, 'vacancy'])->name('vacancies.show');
 Route::get('services', [HomeController::class, 'services'])->name('services');
 Route::get('user/login', [HomeController::class, 'login'])->name('user.login');
 Route::get('user/register', [HomeController::class, 'register'])->name('user.register');
@@ -37,7 +37,8 @@ Route::post('user/password/update/token', [HomeController::class, 'reset'])->nam
 // Route::get('/search-vacancies', [VacanciesController::class, 'search'])->name('vacancies.search');
 Route::post('/vacancies/search', [VacanciesController::class, 'search'])->name('vacancies.search');
 
-Route::get('/generate-application-numbers', [ApplicationController::class, 'generateApplicationNumbers']);
+// Route::get('/generate-application-numbers', [ApplicationController::class, 'generateApplicationNumbers']);
+Route::get('/generate-slugs', [HomeController::class, 'generateSlugs']);
 
 
 

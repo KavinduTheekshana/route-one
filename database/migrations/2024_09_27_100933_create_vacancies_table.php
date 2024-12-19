@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('company')->default('-');
             $table->string('title');
             $table->string('slug')->nullable();
+            $table->string('slug')->nullable();
             $table->string('location');
             $table->string('job_type');
             $table->longText('meta_description');

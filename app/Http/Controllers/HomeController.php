@@ -18,6 +18,31 @@ use Illuminate\Support\Facades\Password;
 class HomeController extends Controller
 {
 
+    public function generateSlugs()
+    {
+        // Fetch all vacancies without a slug
+        $vacancies = Vacancies::whereNull('slug')->get();
+
+        foreach ($vacancies as $vacancy) {
+            $slug = Str::slug($vacancy->title);
+
+            // Ensure the slug is unique
+            $existingSlugCount = Vacancies::where('slug', 'like', $slug . '%')->count();
+            if ($existingSlugCount > 0) {
+                $slug .= '-' . ($existingSlugCount + 1);
+            }
+
+            // Update the vacancy
+            $vacancy->slug = $slug;
+            $vacancy->save();
+        }
+
+        return response()->json([
+            'message' => 'Slugs generated successfully!',
+            'count' => $vacancies->count()
+        ]);
+    }
+
     public function reset(Request $request)
     {
         // Validate the request
@@ -163,10 +188,10 @@ class HomeController extends Controller
         // Return the jobs index view with vacancies and applied job IDs
         return view('frontend.jobs.index', compact('vacancies', 'appliedJobIds'));
     }
-    public function vacancy($id)
+    public function vacancy($slug)
     {
-        // Fetch the vacancy by ID
-        $vacancy = Vacancies::findOrFail($id);
+        // Fetch the vacancy by slug
+        $vacancy = Vacancies::where('slug', $slug)->firstOrFail();
 
         // Get the currently authenticated user
         $user = auth()->user();
@@ -184,6 +209,7 @@ class HomeController extends Controller
         // Pass the vacancy data and application status to the view
         return view('frontend.jobs.single', compact('vacancy', 'hasApplied'));
     }
+
 
 
     public function services()

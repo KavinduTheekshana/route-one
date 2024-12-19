@@ -23,6 +23,7 @@ class Vacancies extends Model
         'file_path',
         'featured',
         'urgent',
+        'slug'
     ];
     public function applications()
     {

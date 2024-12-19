@@ -8,6 +8,8 @@ use App\Models\Vacancies;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+
 
 class VacanciesController extends Controller
 {
@@ -34,10 +36,10 @@ class VacanciesController extends Controller
         // ->get();
 
         $vacancies = Vacancies::where('title', 'like', "%$keyword%")
-        ->orWhere('company', 'like', "%$keyword%")
-        ->orWhere('location', 'like', "%$keyword%")
-        ->orderBy('created_at', 'desc')
-        ->get();
+            ->orWhere('company', 'like', "%$keyword%")
+            ->orWhere('location', 'like', "%$keyword%")
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         // Return the result to the view
         return view('frontend.jobs.index', compact('vacancies', 'appliedJobIds'));
@@ -231,11 +233,21 @@ class VacanciesController extends Controller
             $imagePath = $request->file('profile_image')->store('vacancy_images', 'public');
         }
 
+        // Generate a unique slug from the title
+        $slug = Str::slug($validatedData['title']);
+
+        // Ensure the slug is unique
+        $existingSlugCount = Vacancies::where('slug', 'like', $slug . '%')->count();
+        if ($existingSlugCount > 0) {
+            $slug .= '-' . ($existingSlugCount + 1);
+        }
+
         // Create the vacancy
         Vacancies::create([
             'user_id' => auth()->id(), // Set user_id from authenticated user
             'company' => $validatedData['company'],
             'title' => $validatedData['title'],
+            'slug' => $slug, // Save the generated slug
             'location' => $validatedData['location'],
             'job_type' => $validatedData['job_type'],
             'meta_description' => $validatedData['meta_description'],

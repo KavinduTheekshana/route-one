@@ -47,7 +47,7 @@
                             @endif
                         </div>
                         <div class="jbs-grid-emp-head">
-                            <div class="jbs-grid-emp-thumb"><a href="job-detail.html">
+                            <div class="jbs-grid-emp-thumb"><a href="{{ route('vacancies.show', $vacancy->slug) }}">
                                     <figure><img
                                             src="{{ $vacancy->file_path ? asset('storage/' . $vacancy->file_path) : asset('backend/images/bg/default.png') }}"
                                             class="img-fluid" alt=""></figure>
@@ -56,7 +56,7 @@
                         <div class="jbs-grid-job-caption">
                             <div class="jbs-job-employer-wrap"><span>{{ $vacancy->company }}</span></div>
                             <div class="jbs-job-title-wrap">
-                                <h4><a href="{{ route('vacancies.show', $vacancy->id) }}"
+                                <h4><a href="{{ route('vacancies.show', $vacancy->slug) }}"
                                         class="jbs-job-title">{{ $vacancy->title }}</a></h4>
                             </div>
                         </div>
@@ -100,7 +100,7 @@
                         </div>
                         <div class="jbs-grid-job-apply-btns mt-2">
                             <div class="jbs-btn-groups">
-                                <a href="{{ route('vacancies.show', $vacancy->id) }}"
+                                <a href="{{ route('vacancies.show', $vacancy->slug) }}"
                                     class="btn-md btn-light-primary px-4">View Detail</a>
 
                                 @if (in_array($vacancy->id, $appliedJobIds))
