@@ -75,8 +75,9 @@
                                         <br>
                                         <p><strong>Applicant Name:</strong> <span id="applicant-name"></span></p>
                                         <p><strong>Date of Birth:</strong> <span id="dob"></span></p>
-                                        <p><strong>Result:</strong> <span id="result"></span></p>
+                                        <p><strong>Result:</strong> English Language Proficiency Result - <span id="result"></span></p>
                                         <p><strong>Assessment Date:</strong> <span id="assessment-date"></span></p>
+                                        <p><strong>Expire Date:</strong> <span id="expire-date"></span></p>
                                     </div>
                                 </div>
                             </div>
@@ -139,6 +140,7 @@
                         $('#dob').text(response.data.dob);
                         $('#result').text(response.data.result.toUpperCase());
                         $('#assessment-date').text(response.data.assessment_date);
+                        $('#expire-date').text(response.data.expiry_date);
                     } else {
                         $('#certificate-result').hide();
                         $('#certificate-error').show().text(response.message);

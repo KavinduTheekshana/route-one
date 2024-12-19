@@ -23,7 +23,8 @@ class CertificateController extends Controller
 
         $certificate = Certificate::where('confirmation_code', $request->certificate_number)->first();
 
-        // if ($certificate) {
+        if ($certificate) {
+            $expiry_date = Carbon::createFromFormat('Y-m-d', $certificate->assessment_date)->addYears(2);
             return response()->json([
                 'status' => 'success',
                 'data' => [
@@ -31,9 +32,10 @@ class CertificateController extends Controller
                     'dob' => $certificate->dob,
                     'result' => $certificate->result,
                     'assessment_date' => $certificate->assessment_date,
+                    'expiry_date' => $expiry_date->format('Y-m-d'), // Format expiry date as YYYY-MM-DD
                 ],
             ]);
-        // }
+        }
 
         return response()->json([
             'status' => 'error',
