@@ -22,23 +22,26 @@
                     <form method="POST" action="{{ route('user.application.store') }}" enctype="multipart/form-data">
                         @csrf
 
-                        @if (isset($application) && $application->status==1)
+                        @if (isset($application) && $application->status == 1)
                             <div class="alert alert-info" role="alert">
                                 Your application was approved, you can't change your application.
                             </div>
                         @endif
 
                         <div class="mb-3">
-                            <label class="small mb-1" for="inputUsername">Full Name <span class="text-danger">*</span></label>
+                            <label class="small mb-1" for="inputUsername">Full Name <span
+                                    class="text-danger">*</span></label>
                             <input class="form-control" name="name" type="text" placeholder="Enter your full name"
                                 value="{{ $application->name ?? '' }}" required
-                                {{ isset($application) && $application->status==1 ? 'disabled' : '' }}>
+                                {{ isset($application) && $application->status == 1 ? 'disabled' : '' }}>
                         </div>
 
                         <div class="row gx-3 mb-3">
                             <div class="col-md-6">
-                                <label class="small mb-1" for="inputCountry">Country <span class="text-danger">*</span></label>
-                                <select id="countrySelect" class="form-control" name="country" style="width: 100%;"  {{ isset($application) && $application->status==1 ? 'disabled' : '' }}>
+                                <label class="small mb-1" for="inputCountry">Country <span
+                                        class="text-danger">*</span></label>
+                                <select id="countrySelect" class="form-control" name="country" style="width: 100%;"
+                                    {{ isset($application) && $application->status == 1 ? 'disabled' : '' }}>
                                     <option value="" disabled selected>Loading countries...</option>
                                 </select>
                                 {{-- <input class="form-control" name="country" type="text"
@@ -47,25 +50,27 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label class="small mb-1" for="inputPhone">Phone Number <span class="text-danger">*</span></label>
+                                <label class="small mb-1" for="inputPhone">Phone Number <span
+                                        class="text-danger">*</span></label>
                                 <input class="form-control" name="phone" type="text"
                                     placeholder="Enter your phone number" value="{{ $application->phone ?? '' }}"
-                                    {{ isset($application) && $application->status==1 ? 'disabled' : '' }}>
+                                    {{ isset($application) && $application->status == 1 ? 'disabled' : '' }}>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="small mb-1" for="inputEmailAddress">Email address <span class="text-danger">*</span></label>
+                            <label class="small mb-1" for="inputEmailAddress">Email address <span
+                                    class="text-danger">*</span></label>
                             <input class="form-control" name="email" type="email"
                                 placeholder="Enter your email address" value="{{ $application->email ?? '' }}" required
-                                {{ isset($application) && $application->status==1 ? 'disabled' : '' }}>
+                                {{ isset($application) && $application->status == 1 ? 'disabled' : '' }}>
                         </div>
 
                         <div class="mb-3">
                             <label class="small mb-1">Address <span class="text-danger">*</span></label>
                             <input class="form-control" name="address" type="text" placeholder="Enter your address"
                                 value="{{ $application->address ?? '' }}"
-                                {{ isset($application) && $application->status==1 ? 'disabled' : '' }}>
+                                {{ isset($application) && $application->status == 1 ? 'disabled' : '' }}>
                         </div>
 
                         <div class="row gx-3 mb-3">
@@ -73,33 +78,43 @@
                                 <label class="small mb-1">Date of Birth <span class="text-danger">*</span></label>
                                 <input class="form-control" name="dob" type="date"
                                     value="{{ $application->dob ?? '' }}"
-                                    {{ isset($application) && $application->status==1 ? 'disabled' : '' }}>
+                                    {{ isset($application) && $application->status == 1 ? 'disabled' : '' }}>
                             </div>
 
                             <div class="col-md-6">
                                 <label class="small mb-1">Passport Number <span class="text-danger">*</span></label>
                                 <input class="form-control" name="passport" type="text"
                                     placeholder="Enter your passport number" value="{{ $application->passport ?? '' }}"
-                                    {{ isset($application) && $application->status==1 ? 'disabled' : '' }}>
+                                    {{ isset($application) && $application->status == 1 ? 'disabled' : '' }}>
                             </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="small mb-1">Agent</label>
-                            <select name="agent_id" class="form-control"
-                                {{ isset($application) && $application->status==1 ? 'disabled' : '' }}>
-                                <option value="">-- Select Agent --</option>
-                                @foreach ($agents as $agent)
-                                    <option value="{{ $agent->id }}"
-                                        {{ isset($application) && $application->agent_id == $agent->id ? 'selected' : '' }}>
-                                        {{ $agent->name }}
-                                    </option>
-                                @endforeach
-                            </select>
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="small mb-1">Agent</label>
+                                <select name="agent_id" class="form-control"
+                                    {{ isset($application) && $application->status == 1 ? 'disabled' : '' }}>
+                                    <option value="">-- Select Agent --</option>
+                                    @foreach ($agents as $agent)
+                                        <option value="{{ $agent->id }}"
+                                            {{ isset($application) && $application->agent_id == $agent->id ? 'selected' : '' }}>
+                                            {{ $agent->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="small mb-1">Application Number <span class="text-danger"></span></label>
+                                <input class="form-control" type="text" readonly
+                                     value="{{ $application->application_number ?? '' }}"
+                                    {{ isset($application) && $application->status == 1 ? 'disabled' : '' }}>
+                            </div>
+
                         </div>
 
                         <button class="btn btn-primary" type="submit"
-                            {{ isset($application) && $application->status==1 ? 'disabled' : '' }}>
+                            {{ isset($application) && $application->status == 1 ? 'disabled' : '' }}>
                             Save Application
                         </button>
                     </form>
