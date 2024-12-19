@@ -15,6 +15,33 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class CertificateController extends Controller
 {
+    public function verify(Request $request)
+    {
+        $request->validate([
+            'certificate_number' => 'required|string',
+        ]);
+
+        $certificate = Certificate::where('confirmation_code', $request->certificate_number)->first();
+
+        // if ($certificate) {
+            return response()->json([
+                'status' => 'success',
+                'data' => [
+                    'applicant_name' => $certificate->applicant_name,
+                    'dob' => $certificate->dob,
+                    'result' => $certificate->result,
+                    'assessment_date' => $certificate->assessment_date,
+                ],
+            ]);
+        // }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Certificate not found or invalid.',
+        ]);
+    }
+
+
     public function certificate()
     {
         $certificates = Certificate::orderBy('created_at', 'desc')

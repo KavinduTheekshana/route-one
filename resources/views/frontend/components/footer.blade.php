@@ -31,6 +31,7 @@
                                      <li><a href="#">Terms & Condetions</a></li>
                                      <li><a href="#">Q&A</a></li>
                                      <li><a href="#">Testimonial</a></li>
+                                     <li><a href="{{ route('verify') }}">Verify Certificates</a></li>
                                 </ul>
                            </div>
                       </div>

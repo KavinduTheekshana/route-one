@@ -156,6 +156,10 @@ class HomeController extends Controller
 
         return view('frontend.home.index', compact('testimonials'));
     }
+    public function verify()
+    {
+        return view('frontend.verify.index');
+    }
     public function about()
     {
         $testimonials = Testimonial::where('status', 1)

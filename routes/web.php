@@ -24,6 +24,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 Route::get('/', [HomeController::class, 'index'])->name('/');
 Route::get('about', [HomeController::class, 'about'])->name('about');
 Route::get('contact', [HomeController::class, 'contact'])->name('contact');
+Route::get('verify', [HomeController::class, 'verify'])->name('verify');
 Route::post('/contact/store', [EnquiryController::class, 'store'])->name('contact.store');
 Route::get('jobs', [HomeController::class, 'jobs'])->name('jobs');
 Route::get('/vacancies/{slug}', [HomeController::class, 'vacancy'])->name('vacancies.show');
@@ -36,9 +37,11 @@ Route::get('password/reset/{token}', [HomeController::class, 'showResetForm'])->
 Route::post('user/password/update/token', [HomeController::class, 'reset'])->name('user.password.update.token');
 // Route::get('/search-vacancies', [VacanciesController::class, 'search'])->name('vacancies.search');
 Route::post('/vacancies/search', [VacanciesController::class, 'search'])->name('vacancies.search');
+Route::post('/verify-certificate', [CertificateController::class, 'verify'])->name('certificate.verify');
+
 
 // Route::get('/generate-application-numbers', [ApplicationController::class, 'generateApplicationNumbers']);
-Route::get('/generate-slugs', [HomeController::class, 'generateSlugs']);
+// Route::get('/generate-slugs', [HomeController::class, 'generateSlugs']);
 
 
 
