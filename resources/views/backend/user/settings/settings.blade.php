@@ -27,7 +27,12 @@
 
 
                     <div>
-                        <h4 class="mb-8">{{ $user->name }}</h4>
+                        <h4 class="mb-8">{{ $user->name }}
+                            @if($application)
+                                <small
+                                    style="font-weight: 100; letter-spacing: 4px;"> - ({{ $application->application_number }})</small>
+                            @endif
+                        </h4>
                         <div class="setting-profile__infos flex-align flex-wrap gap-16">
                             <div class="flex-align gap-6">
                                 <span class="text-gray-600 d-flex text-lg"><i class="ph ph-swatches"></i></span>
@@ -48,83 +53,53 @@
             </div>
             <ul class="nav common-tab style-two nav-pills mb-0" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link {{ session('showApplicationTab') ? '' : 'active' }}"
-                            id="pills-details-tab"
-                            data-bs-toggle="pill"
-                            data-bs-target="#pills-details"
-                            type="button"
-                            role="tab"
-                            aria-controls="pills-details"
-                            aria-selected="{{ session('showApplicationTab') ? 'false' : 'true' }}">
+                    <button class="nav-link {{ session('showApplicationTab') ? '' : 'active' }}" id="pills-details-tab"
+                        data-bs-toggle="pill" data-bs-target="#pills-details" type="button" role="tab"
+                        aria-controls="pills-details"
+                        aria-selected="{{ session('showApplicationTab') ? 'false' : 'true' }}">
                         User Details
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-password-tab"
-                            data-bs-toggle="pill"
-                            data-bs-target="#pills-password"
-                            type="button"
-                            role="tab"
-                            aria-controls="pills-password"
-                            aria-selected="false">
+                    <button class="nav-link" id="pills-password-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-password" type="button" role="tab" aria-controls="pills-password"
+                        aria-selected="false">
                         Password
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-documents-tab"
-                            data-bs-toggle="pill"
-                            data-bs-target="#pills-documents"
-                            type="button"
-                            role="tab"
-                            aria-controls="pills-documents"
-                            aria-selected="false">
+                    <button class="nav-link" id="pills-documents-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-documents" type="button" role="tab" aria-controls="pills-documents"
+                        aria-selected="false">
                         Documents
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-jobs-tab"
-                            data-bs-toggle="pill"
-                            data-bs-target="#pills-jobs"
-                            type="button"
-                            role="tab"
-                            aria-controls="pills-jobs"
-                            aria-selected="false">
-                            Applied Positions
+                    <button class="nav-link" id="pills-jobs-tab" data-bs-toggle="pill" data-bs-target="#pills-jobs"
+                        type="button" role="tab" aria-controls="pills-jobs" aria-selected="false">
+                        Applied Positions
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link {{ session('showApplicationTab') ? 'active' : '' }}"
-                            id="pills-application-tab"
-                            data-bs-toggle="pill"
-                            data-bs-target="#pills-application"
-                            type="button"
-                            role="tab"
-                            aria-controls="pills-application"
-                            aria-selected="{{ session('showApplicationTab') ? 'true' : 'false' }}">
+                        id="pills-application-tab" data-bs-toggle="pill" data-bs-target="#pills-application"
+                        type="button" role="tab" aria-controls="pills-application"
+                        aria-selected="{{ session('showApplicationTab') ? 'true' : 'false' }}">
                         Application
                     </button>
                 </li>
 
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-message-tab"
-                            data-bs-toggle="pill"
-                            data-bs-target="#pills-message"
-                            type="button"
-                            role="tab"
-                            aria-controls="pills-message"
-                            aria-selected="true">
+                    <button class="nav-link" id="pills-message-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-message" type="button" role="tab" aria-controls="pills-message"
+                        aria-selected="true">
                         Message
                     </button>
                 </li>
 
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-notes-tab"
-                            data-bs-toggle="pill"
-                            data-bs-target="#pills-notes"
-                            type="button"
-                            role="tab"
-                            aria-controls="pills-notes"
-                            aria-selected="true">
+                    <button class="nav-link" id="pills-notes-tab" data-bs-toggle="pill" data-bs-target="#pills-notes"
+                        type="button" role="tab" aria-controls="pills-notes" aria-selected="true">
                         Notes
                     </button>
                 </li>
