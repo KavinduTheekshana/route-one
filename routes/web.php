@@ -109,6 +109,7 @@ Route::middleware([
         Route::delete('/testimonial/{testimonial}', [TestimonialController::class, 'destroy'])->name('testimonial.destroy')->middleware(['auth', 'superadmin']);
 
         Route::resource('documents', DocumentController::class);
+        Route::get('/users/{user}/documents/download', [DocumentController::class, 'downloadAll'])->name('documents.downloadAll');
 
 
         // Contact Messagers

@@ -4,6 +4,10 @@
           <div class="card-header border-bottom">
               <h4 class="mb-4">Documents</h4>
               <p class="text-gray-600 text-15">Please fill full documents about your user</p>
+
+              @if($documents->isNotEmpty())
+    <a href="{{ route('documents.downloadAll', $user->id) }}" class="btn btn-primary">Download All Documents</a>
+@endif
           </div>
           <div class="card-body">
 
