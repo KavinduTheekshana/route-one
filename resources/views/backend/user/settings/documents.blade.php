@@ -6,7 +6,11 @@
               <p class="text-gray-600 text-15">Please fill full documents about your user</p>
 
               @if($documents->isNotEmpty())
-    <a href="{{ route('documents.downloadAll', $user->id) }}" class="btn btn-primary">Download All Documents</a>
+    <a href="{{ route('documents.downloadAll', $user->id) }}" class="btn btn-warning">Download All Documents as One ZIP</a>
+
+    <a href="{{ route('documents.pdf', $user->id) }}" class="btn btn-dark">Download Documents Checklist</a>
+    <a href="{{ route('documents.merge-pdf', $user->id) }}" class="btn btn-success">Download All Documents as One PDF</a>
+
 @endif
           </div>
           <div class="card-body">

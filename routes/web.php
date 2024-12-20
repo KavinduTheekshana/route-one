@@ -110,6 +110,8 @@ Route::middleware([
 
         Route::resource('documents', DocumentController::class);
         Route::get('/users/{user}/documents/download', [DocumentController::class, 'downloadAll'])->name('documents.downloadAll');
+        Route::get('/users/{user}/documents/pdf', [DocumentController::class, 'generatePDF'])->name('documents.pdf');
+        Route::get('/users/{user}/documents/merge-pdf', [DocumentController::class, 'generateMergedPDF'])->name('documents.merge-pdf');
 
 
         // Contact Messagers

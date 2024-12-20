@@ -16,6 +16,7 @@
     "require": {
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^3.0",
+        "fpdf/fpdf": "^1.86",
         "guzzlehttp/guzzle": "^7.9",
         "laravel/framework": "^11.9",
         "laravel/jetstream": "^5.2",
@@ -23,6 +24,7 @@
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.0",
         "notifylk/notify-php": "*@dev",
+        "setasign/fpdi": "^2.6",
         "symfony/mailer": "~7.1.0"
     },
     "require-dev": {
