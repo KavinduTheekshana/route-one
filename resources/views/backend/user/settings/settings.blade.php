@@ -60,6 +60,7 @@
                         User Details
                     </button>
                 </li>
+                @if (Auth::user()->user_type === 'superadmin' or Auth::user()->user_type === 'agent')
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-password-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-password" type="button" role="tab" aria-controls="pills-password"
@@ -67,6 +68,7 @@
                         Password
                     </button>
                 </li>
+                @endif
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-documents-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-documents" type="button" role="tab" aria-controls="pills-documents"

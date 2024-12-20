@@ -5,78 +5,81 @@
               <h4 class="mb-4">Documents</h4>
               <p class="text-gray-600 text-15">Please fill full documents about your user</p>
 
-              @if($documents->isNotEmpty())
-    <a href="{{ route('documents.downloadAll', $user->id) }}" class="btn btn-warning">Download All Documents as One ZIP</a>
+              @if ($documents->isNotEmpty())
+                  <a href="{{ route('documents.downloadAll', $user->id) }}" class="btn btn-warning">Download All
+                      Documents as One ZIP</a>
 
-    <a href="{{ route('documents.pdf', $user->id) }}" class="btn btn-dark">Download Documents Checklist</a>
-    <a href="{{ route('documents.merge-pdf', $user->id) }}" class="btn btn-success">Download All Documents as One PDF</a>
-
-@endif
+                  <a href="{{ route('documents.pdf', $user->id) }}" class="btn btn-dark">Download Documents
+                      Checklist</a>
+                  <a href="{{ route('documents.merge-pdf', $user->id) }}" class="btn btn-success">Download All Documents
+                      as One PDF</a>
+              @endif
           </div>
           <div class="card-body">
 
               <div class="row">
                   <div class="col-6">
-                      <div class="col-12 mt-16">
-                          <label for="documentType" class="h5 mb-8 fw-semibold font-heading">Select Document
-                              Type</label>
-                          <div class="position-relative">
-                              <select id="documentType" onchange="showFields()"
-                                  class="form-select py-9 placeholder-13 text-15">
+                      @if (Auth::user()->user_type === 'superadmin' or Auth::user()->user_type === 'agent')
+                          <div class="col-12 mt-16">
+                              <label for="documentType" class="h5 mb-8 fw-semibold font-heading">Select Document
+                                  Type</label>
+                              <div class="position-relative">
+                                  <select id="documentType" onchange="showFields()"
+                                      class="form-select py-9 placeholder-13 text-15">
 
 
 
-                                  <!-- Proof of Identity -->
-                                  <optgroup label="Proof of Identity">
-                                      <option value="passport">Passport</option>
-                                      <option value="national_id_card">National ID Card (NIC)</option>
-                                      <option value="drivers_license">Driver's License</option>
-                                  </optgroup>
+                                      <!-- Proof of Identity -->
+                                      <optgroup label="Proof of Identity">
+                                          <option value="passport">Passport</option>
+                                          <option value="national_id_card">National ID Card (NIC)</option>
+                                          <option value="drivers_license">Driver's License</option>
+                                      </optgroup>
 
-                                    <!-- Curriculum vitae -->
-                                    <optgroup label="Curriculum vitae">
-                                        <option value="curriculum_vitae">Curriculum vitae (CV)</option>
-                                    </optgroup>
+                                      <!-- Curriculum vitae -->
+                                      <optgroup label="Curriculum vitae">
+                                          <option value="curriculum_vitae">Curriculum vitae (CV)</option>
+                                      </optgroup>
 
-                                  <!-- Proof of Address -->
-                                  <optgroup label="Proof of Address">
-                                      <option value="proof_of_address">Proof Of Address</option>
-                                  </optgroup>
+                                      <!-- Proof of Address -->
+                                      <optgroup label="Proof of Address">
+                                          <option value="proof_of_address">Proof Of Address</option>
+                                      </optgroup>
 
-                                  <!-- Qualifications and Certifications -->
-                                  <optgroup label="Qualifications and Certifications">
-                                      <option value="educational_certificates">Educational Certificates</option>
-                                  </optgroup>
+                                      <!-- Qualifications and Certifications -->
+                                      <optgroup label="Qualifications and Certifications">
+                                          <option value="educational_certificates">Educational Certificates</option>
+                                      </optgroup>
 
-                                  <!-- Employment History -->
-                                  <optgroup label="Employment History">
-                                      <option value="reference_letters">Reference Letters</option>
-                                      <option value="employment_contracts">Employment Contracts</option>
-                                  </optgroup>
+                                      <!-- Employment History -->
+                                      <optgroup label="Employment History">
+                                          <option value="reference_letters">Reference Letters</option>
+                                          <option value="employment_contracts">Employment Contracts</option>
+                                      </optgroup>
 
-                                  <!-- Criminal Record -->
-                                  <optgroup label="Criminal Record">
-                                      <option value="police_clearance">Police Clearance Certificate</option>
-                                  </optgroup>
+                                      <!-- Criminal Record -->
+                                      <optgroup label="Criminal Record">
+                                          <option value="police_clearance">Police Clearance Certificate</option>
+                                      </optgroup>
 
-                                  <!-- Health Documents -->
-                                  <optgroup label="Health Documents">
-                                      <option value="medical_certificate">Medical Certificate</option>
-                                  </optgroup>
+                                      <!-- Health Documents -->
+                                      <optgroup label="Health Documents">
+                                          <option value="medical_certificate">Medical Certificate</option>
+                                      </optgroup>
 
-                                   <!-- Other Documents -->
-                                   <optgroup label="Other Documents">
-                                    <option value="other_documents">Other Documents</option>
-                                </optgroup>
-
-
+                                      <!-- Other Documents -->
+                                      <optgroup label="Other Documents">
+                                          <option value="other_documents">Other Documents</option>
+                                      </optgroup>
 
 
 
-                              </select>
+
+
+                                  </select>
+                              </div>
                           </div>
-                      </div>
-
+                      @endif
 
                       @include('backend.user.settings.form.passport')
                       @include('backend.user.settings.form.id')
@@ -129,9 +132,9 @@
                   document.getElementById('nationalIdCardFields').style.display = 'block';
               } else if (documentType === 'drivers_license') {
                   document.getElementById('licenseFields').style.display = 'block';
-              }else if (documentType === 'other_documents') {
+              } else if (documentType === 'other_documents') {
                   document.getElementById('otherFields').style.display = 'block';
-              }else if (documentType === 'curriculum_vitae') {
+              } else if (documentType === 'curriculum_vitae') {
                   document.getElementById('cvFields').style.display = 'block';
               } else if (documentType === 'proof_of_address') {
                   document.getElementById('proofOfAddressFields').style.display = 'block';

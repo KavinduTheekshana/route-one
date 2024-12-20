@@ -35,62 +35,64 @@
                         @endif
                     @endauth
 
+                    @if (Auth::user()->user_type === 'superadmin' or Auth::user()->user_type === 'agent')
+                        <li class="sidebar-menu__item has-dropdown">
+                            <a href="javascript:void(0)"
+                                class="sidebar-menu__link {{ request()->segment(1) === 'user' ? 'activePage' : '' }}">
+                                <span class="icon"><i class="ph ph-users"></i></span>
+                                <span class="text">Users</span>
+                            </a>
+                            <!-- Submenu start -->
+                            <ul class="sidebar-submenu">
+                                <li class="sidebar-submenu__item">
+                                <li class="sidebar-submenu__item">
+                                    <a href="{{ route('user.manage') }}"
+                                        class="sidebar-submenu__link {{ request()->is('user/manage') ? 'active-sub-menu' : '' }}">
+                                        Manage Users </a>
+                                </li>
+                        </li>
+                        <li class="sidebar-submenu__item">
+                            <a href="{{ route('user.create') }}"
+                                class="sidebar-submenu__link {{ request()->is('user/create') ? 'active-sub-menu' : '' }}">
+                                Create User </a>
+                        </li>
+                </ul>
+                </li>
+                @endif
+                @if (Auth::user()->user_type === 'superadmin' or Auth::user()->user_type === 'agent')
+                    <li class="sidebar-menu__item">
+                        <a href="{{ route('admin.message') }}"
+                            class="sidebar-menu__link {{ request()->segment(2) === 'message' ? 'activePage' : '' }}">
+                            <span class="icon"><i class="ph ph-chat-dots"></i></span>
+                            <span class="text">Messages</span>
+                        </a>
+                    </li>
+                @endif
+                @if (Auth::user()->user_type === 'superadmin' or Auth::user()->user_type === 'agent')
                     <li class="sidebar-menu__item has-dropdown">
                         <a href="javascript:void(0)"
-                            class="sidebar-menu__link {{ request()->segment(1) === 'user' ? 'activePage' : '' }}">
-                            <span class="icon"><i class="ph ph-users"></i></span>
-                            <span class="text">Users</span>
+                            class="sidebar-menu__link {{ request()->segment(1) === 'invoice' ? 'activePage' : '' }}">
+                            <span class="icon"><i class="ph ph-invoice"></i></span>
+                            <span class="text">Invoice</span>
                         </a>
                         <!-- Submenu start -->
                         <ul class="sidebar-submenu">
                             <li class="sidebar-submenu__item">
                             <li class="sidebar-submenu__item">
-                                <a href="{{ route('user.manage') }}"
-                                    class="sidebar-submenu__link {{ request()->is('user/manage') ? 'active-sub-menu' : '' }}">
-                                    Manage Users </a>
+                                <a href="{{ route('admin.invoice.index') }}"
+                                    class="sidebar-submenu__link {{ request()->is('invoice') ? 'active-sub-menu' : '' }}">
+                                    Invoice List </a>
                             </li>
                     </li>
                     <li class="sidebar-submenu__item">
-                        <a href="{{ route('user.create') }}"
-                            class="sidebar-submenu__link {{ request()->is('user/create') ? 'active-sub-menu' : '' }}">
-                            Create User </a>
+                        <a href="{{ route('admin.invoice.create') }}"
+                            class="sidebar-submenu__link {{ request()->is('invoice/create') ? 'active-sub-menu' : '' }}">
+                            Create Invoice </a>
                     </li>
-                </ul>
-                <!-- Submenu End -->
-                </li>
-
-                <li class="sidebar-menu__item">
-                    <a href="{{ route('admin.message') }}"
-                        class="sidebar-menu__link {{ request()->segment(2) === 'message' ? 'activePage' : '' }}">
-                        <span class="icon"><i class="ph ph-chat-dots"></i></span>
-                        <span class="text">Messages</span>
-                    </a>
-                </li>
-
-                <li class="sidebar-menu__item has-dropdown">
-                    <a href="javascript:void(0)"
-                        class="sidebar-menu__link {{ request()->segment(1) === 'invoice' ? 'activePage' : '' }}">
-                        <span class="icon"><i class="ph ph-invoice"></i></span>
-                        <span class="text">Invoice</span>
-                    </a>
-                    <!-- Submenu start -->
-                    <ul class="sidebar-submenu">
-                        <li class="sidebar-submenu__item">
-                        <li class="sidebar-submenu__item">
-                            <a href="{{ route('admin.invoice.index') }}"
-                                class="sidebar-submenu__link {{ request()->is('invoice') ? 'active-sub-menu' : '' }}">
-                                Invoice List </a>
-                        </li>
-                </li>
-                <li class="sidebar-submenu__item">
-                    <a href="{{ route('admin.invoice.create') }}"
-                        class="sidebar-submenu__link {{ request()->is('invoice/create') ? 'active-sub-menu' : '' }}">
-                        Create Invoice </a>
-                </li>
-                </ul>
-                <!-- Submenu End -->
-                </li>
-
+                    </ul>
+                    <!-- Submenu End -->
+                    </li>
+                @endif
 
 
                 @auth
@@ -161,7 +163,7 @@
                 </li>
 
                 @auth
-                    @if (Auth::user()->user_type === 'superadmin')
+                    @if (Auth::user()->user_type === 'superadmin' or Auth::user()->user_type === 'teacher')
                         <li class="sidebar-menu__item">
                             <a href="{{ route('admin.certificate') }}"
                                 class="sidebar-menu__link {{ request()->segment(2) === 'certificate' ? 'activePage' : '' }}">
@@ -169,16 +171,16 @@
                                 <span class="text">Certificates</span>
                             </a>
                         </li>
-
-
-                        <li class="sidebar-menu__item">
-                            <a href="{{ route('admin.calander') }}"
-                                class="sidebar-menu__link {{ request()->segment(2) === 'calander' ? 'activePage' : '' }}">
-                                <span class="icon"><i class="ph ph-calendar-dots"></i></span>
-                                <span class="text">Calander</span>
-                            </a>
-                        </li>
                     @endif
+                    {{-- @if (Auth::user()->user_type === 'superadmin') --}}
+                    <li class="sidebar-menu__item">
+                        <a href="{{ route('admin.calander') }}"
+                            class="sidebar-menu__link {{ request()->segment(2) === 'calander' ? 'activePage' : '' }}">
+                            <span class="icon"><i class="ph ph-calendar-dots"></i></span>
+                            <span class="text">Calander</span>
+                        </a>
+                    </li>
+                    {{-- @endif --}}
                 @endauth
 
 
@@ -249,30 +251,32 @@
                         </a>
                     </li> --}}
 
+
                 <li class="sidebar-menu__item">
                     <span
                         class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase">Settings</span>
                 </li>
 
-                <li class="sidebar-menu__item has-dropdown">
-                    <a href="javascript:void(0)"
-                        class="sidebar-menu__link {{ request()->segment(2) === 'services' ? 'activePage' : '' }}">
-                        <span class="icon"><i class="ph ph-sliders"></i></span>
-                        <span class="text">Settings</span>
-                    </a>
-                    <!-- Submenu start -->
-                    <ul class="sidebar-submenu">
-                        <li class="sidebar-submenu__item">
-                        <li class="sidebar-submenu__item">
-                            <a href="{{ route('admin.services.index') }}"
-                                class="sidebar-submenu__link {{ request()->is('admin/services') ? 'active-sub-menu' : '' }}">Services</a>
+                @auth
+                    @if (Auth::user()->user_type === 'superadmin')
+                        <li class="sidebar-menu__item has-dropdown">
+                            <a href="javascript:void(0)"
+                                class="sidebar-menu__link {{ request()->segment(2) === 'services' ? 'activePage' : '' }}">
+                                <span class="icon"><i class="ph ph-sliders"></i></span>
+                                <span class="text">Settings</span>
+                            </a>
+                            <!-- Submenu start -->
+                            <ul class="sidebar-submenu">
+                                <li class="sidebar-submenu__item">
+                                <li class="sidebar-submenu__item">
+                                    <a href="{{ route('admin.services.index') }}"
+                                        class="sidebar-submenu__link {{ request()->is('admin/services') ? 'active-sub-menu' : '' }}">Services</a>
+                                </li>
                         </li>
-                </li>
-
-                </ul>
-                <!-- Submenu End -->
-                </li>
-
+                        </ul>
+                        </li>
+                    @endif
+                @endauth
 
 
 

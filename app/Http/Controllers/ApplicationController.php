@@ -237,6 +237,9 @@ class ApplicationController extends Controller
         } elseif ($authUser->user_type === 'agent') {
             $applications = Application::with('agent')->where('agent_id', Auth::id())->orderBy('created_at', 'desc')
                 ->get();
+        } elseif ($authUser->user_type === 'teacher') {
+            $applications = Application::with(['user', 'certificate', 'agent', 'vacancies'])->where('status', '1')
+            ->orderBy('created_at', 'desc')->get();
         } else {
             abort(403, 'Unauthorized access');
         }
@@ -262,6 +265,6 @@ class ApplicationController extends Controller
         // Flash the session variable to indicate the application tab should be shown
         session()->flash('showApplicationTab', true);
 
-        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs', 'agent', 'notes','certificate'));
+        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs', 'agent', 'notes', 'certificate'));
     }
 }

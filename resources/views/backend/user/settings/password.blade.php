@@ -1,4 +1,5 @@
-  <!-- Password Tab Start -->
+@if (Auth::user()->user_type === 'superadmin' or Auth::user()->user_type === 'agent')
+ <!-- Password Tab Start -->
   <div class="tab-pane fade" id="pills-password" role="tabpanel" aria-labelledby="pills-password-tab" tabindex="0">
     <div class="card mt-24">
         <div class="card-header border-bottom">
@@ -58,3 +59,4 @@
     </div>
 </div>
 <!-- Password Tab End -->
+@endif

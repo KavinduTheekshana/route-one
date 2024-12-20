@@ -86,25 +86,35 @@
                       </div>
 
                       <br>
-                      <button class="btn btn-primary" type="submit"
-                          {{ isset($application) && $application->statu == 1 ? 'disabled' : '' }}>
-                          Update Application
-                      </button>
+
+                      @if (Auth::user()->user_type === 'superadmin' or Auth::user()->user_type === 'agent')
+                          <button class="btn btn-primary" type="submit"
+                              {{ isset($application) && $application->statu == 1 ? 'disabled' : '' }}>
+                              Update Application
+                          </button>
+                      @endif
 
                       @if ($application)
+
                           @if ($application->status == 1)
                               <!-- Reject button for approved applications -->
-                              <a href="{{ route('application.reject', $application->id) }}" class="btn btn-danger">
-                                  Reject Application
-                              </a>
-                              @if ($certificate)
-                                  <a href="{{ route('certificate.issue', $application->id) }}" class="btn btn-warning">
-                                      View English Certificate
+                              @if (Auth::user()->user_type === 'superadmin' or Auth::user()->user_type === 'agent')
+                                  <a href="{{ route('application.reject', $application->id) }}" class="btn btn-danger">
+                                      Reject Application
                                   </a>
-                              @else
-                                  <a href="{{ route('certificate.issue', $application->id) }}" class="btn btn-warning">
-                                      Issue English Certificate
-                                  </a>
+                              @endif
+                              @if (Auth::user()->user_type === 'superadmin' or Auth::user()->user_type === 'teacher')
+                                  @if ($certificate)
+                                      <a href="{{ route('certificate.issue', $application->id) }}"
+                                          class="btn btn-warning">
+                                          View English Certificate
+                                      </a>
+                                  @else
+                                      <a href="{{ route('certificate.issue', $application->id) }}"
+                                          class="btn btn-warning">
+                                          Issue English Certificate
+                                      </a>
+                                  @endif
                               @endif
                           @else
                               <!-- Application is not approved -->

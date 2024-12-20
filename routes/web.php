@@ -122,14 +122,14 @@ Route::middleware([
         Route::get('/enquiries/{id}', [EnquiryController::class, 'show'])->middleware(['auth', 'superadmin']);
 
         // Application
-        Route::get('/admin/applications', [ApplicationController::class, 'applications'])->name('admin.applications')->middleware(['auth', 'role:superadmin|agent']);
+        Route::get('/admin/applications', [ApplicationController::class, 'applications'])->name('admin.applications')->middleware(['auth', 'role:superadmin|agent|teacher']);
         Route::post('/user/application/update', [ApplicationController::class, 'update'])->name('user.application.update')->middleware(['auth', 'superadmin']);
         Route::get('/application/approve/{id}', [ApplicationController::class, 'approve'])->name('application.approve')->middleware(['auth', 'superadmin']);
         Route::get('/application/reject/{id}', [ApplicationController::class, 'reject'])->name('application.reject')->middleware(['auth', 'superadmin']);
-        Route::get('/applications/{id}', [ApplicationController::class, 'show'])->name('applications.show')->middleware(['auth', 'superadmin']);
-        Route::get('/user/settings/application/{user}', [ApplicationController::class, 'user_settings_application'])->name('user.settings.application')->middleware(['auth', 'role:superadmin|agent']);
-        Route::get('/issue/certificate/{user}', [CertificateController::class, 'issueCertificate'])->name('certificate.issue')->middleware(['auth', 'superadmin']);
-        Route::post('/certificate/store', [CertificateController::class, 'store'])->name('certificates.store')->middleware(['auth', 'superadmin']);
+        Route::get('/applications/{id}', [ApplicationController::class, 'show'])->name('applications.show')->middleware(['auth', 'role:superadmin|agent|teacher']);
+        Route::get('/user/settings/application/{user}', [ApplicationController::class, 'user_settings_application'])->name('user.settings.application')->middleware(['auth', 'role:superadmin|agent|teacher']);
+        Route::get('/issue/certificate/{user}', [CertificateController::class, 'issueCertificate'])->name('certificate.issue')->middleware(['auth', 'role:superadmin|teacher']);
+        Route::post('/certificate/store', [CertificateController::class, 'store'])->name('certificates.store')->middleware(['auth', 'role:superadmin|teacher']);
         Route::put('/certificates/update/{id}', [CertificateController::class, 'update'])->name('certificates.update');
         Route::Post('/certificates/send-email', [CertificateController::class, 'sendCertificateEmail'])->name('certificates.sendEmail');
         Route::get('/certificates/download', [CertificateController::class, 'downloadCertificate'])->name('certificates.download');
@@ -138,14 +138,14 @@ Route::middleware([
 
 
         //  Calander application
-        Route::get('/admin/calander', [CalanderController::class, 'index'])->name('admin.calander')->middleware(['auth', 'superadmin']);
+        Route::get('/admin/calander', [CalanderController::class, 'index'])->name('admin.calander')->middleware(['auth', 'role:superadmin|teacher']);
         Route::post('/admin/calander', [CalanderController::class, 'store'])->name('calander.store');
         Route::get('/admin/calander/data', [CalanderController::class, 'getData'])->name('calander.data');
         Route::get('/admin/calander/events/{id}', [CalanderController::class, 'show'])->name('admin.calander.events');
         Route::get('/search-users-calander', [CalanderController::class, 'search'])->name('users.search.calander');
 
         //  Message management
-        Route::get('/admin/message', [MessageController::class, 'index'])->name('admin.message')->middleware(['auth', 'role:superadmin|agent']);
+        Route::get('/admin/message', [MessageController::class, 'index'])->name('admin.message')->middleware(['auth', 'role:superadmin|agent|teacher']);
         Route::get('/search-users', [MessageController::class, 'searchUsers'])->name('search.users');
         Route::get('/messages/{userId}', [MessageController::class, 'getMessages']);
         Route::post('/messages/store', [MessageController::class, 'sendMessage'])->name('messages.store');

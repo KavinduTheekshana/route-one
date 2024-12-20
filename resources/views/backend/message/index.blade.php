@@ -262,6 +262,7 @@ tinymce.init({
             .then(data => {
                 // Log the fetched messages directly
                 console.log('Fetched messages:', data);
+                console.log('USERID:', userId);
 
                 // Render the messages (pass the array directly)
                 renderMessages(data, userId);
@@ -290,7 +291,7 @@ tinymce.init({
 
                 messageItem.innerHTML = `
             <div class="pb-20">
-                <img src="${msg.receiver_id === userId ? senderProfileImage : receiverProfileImage}" alt="Profile Image" class="w-40 h-40 rounded-circle object-fit-cover flex-shrink-0">
+                <img src="${msg.receiver_id === userId ? receiverProfileImage : senderProfileImage}" alt="Profile Image" class="w-40 h-40 rounded-circle object-fit-cover flex-shrink-0">
             </div>
             <div class="chat-box-item__content">
                 <div class="chat-box-item__text py-16 px-16 px-lg-4 text-left">${msg.message}</div>

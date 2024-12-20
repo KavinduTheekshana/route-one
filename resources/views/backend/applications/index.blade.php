@@ -112,13 +112,14 @@
                         </td>
                         <td>
 
-
-                            @if ($application->status == 1)
-                                <a href="{{ route('application.reject', $application->id) }}"
-                                    class="btn btn-danger btn-sm"><i class="ph ph-x"></i></a>
-                            @else
-                                <a href="{{ route('application.approve', $application->id) }}"
-                                    class="btn btn-success btn-sm"><i class="ph ph-check"></i></a>
+                            @if (Auth::user()->user_type === 'superadmin' or Auth::user()->user_type === 'agent')
+                                @if ($application->status == 1)
+                                    <a href="{{ route('application.reject', $application->id) }}"
+                                        class="btn btn-danger btn-sm"><i class="ph ph-x"></i></a>
+                                @else
+                                    <a href="{{ route('application.approve', $application->id) }}"
+                                        class="btn btn-success btn-sm"><i class="ph ph-check"></i></a>
+                                @endif
                             @endif
 
                             <a href="javascript:void(0)" class="btn btn-warning btn-sm view-enquiry"

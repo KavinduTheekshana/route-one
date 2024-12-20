@@ -62,6 +62,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                @if (Auth::user()->user_type === 'superadmin' or Auth::user()->user_type === 'agent')
                                 <div
                                     class="avatar-upload-box text-center position-relative flex-grow-1 py-24 px-4 rounded-16 border border-main-300 border-dashed bg-main-50 hover-bg-main-100 hover-border-main-400 transition-2 cursor-pointer">
                                     <label for="imageUpload"
@@ -73,8 +74,10 @@
                                     <span class="text-13 d-block text-main-600">SVG, PNG, JPEG OR GIF (max
                                         1080px1200px)</span>
                                 </div>
+                                @endif
                             </div>
                         </div>
+                        @if (Auth::user()->user_type === 'superadmin' or Auth::user()->user_type === 'agent')
                         <div class="col-12">
                             <div class="flex-align justify-content-end gap-8">
                                 <button type="reset"
@@ -82,6 +85,7 @@
                                 <button type="submit" class="btn btn-main rounded-pill py-9">Save Changes</button>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </form>
             </div>

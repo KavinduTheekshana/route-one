@@ -53,10 +53,12 @@
                 </div>
                 <!-- Upload Card item End -->
             @endforeach
-            <div class="flex-align justify-content-end gap-8 mt-20">
-                <a href="javascript:void(0);" class="btn btn-main rounded-pill py-9" data-bs-toggle="modal"
-                    data-bs-target="#assignPositionModal">Assign Position</a>
-            </div>
+            @if (Auth::user()->user_type === 'superadmin' or Auth::user()->user_type === 'agent')
+                <div class="flex-align justify-content-end gap-8 mt-20">
+                    <a href="javascript:void(0);" class="btn btn-main rounded-pill py-9" data-bs-toggle="modal"
+                        data-bs-target="#assignPositionModal">Assign Position</a>
+                </div>
+            @endif
         </div>
 
 

@@ -8,6 +8,7 @@ use App\Models\Services;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class CalanderController extends Controller
@@ -25,7 +26,7 @@ class CalanderController extends Controller
     {
         $query = $request->input('q');
         $users = User::where('name', 'LIKE', "%$query%")
-            ->select('id', 'name', 'email','country')
+            ->select('id', 'name', 'email', 'country')
             ->get();
 
         $results = $users->map(function ($user) {
@@ -45,7 +46,14 @@ class CalanderController extends Controller
      */
     public function getData()
     {
-        return response()->json(Calander::all());
+        $authUser = auth()->user();
+
+        if ($authUser->user_type === 'superadmin') {
+            return response()->json(Calander::all());
+        } else {
+            return response()->json(Calander::where('user_id', Auth::id())->get());
+
+        }
     }
 
     public function store(Request $request)
@@ -87,15 +95,15 @@ class CalanderController extends Controller
      * Display the specified resource.
      */
     public function show($id)
-{
-    $event = Calander::with('service')->findOrFail($id);
-    $user = User::where('id', $event->user_id)->first();
-    $startMonth = Carbon::parse($event->start_date)->format('F');
-    $eventDate = Carbon::parse($event->start_date)->format('d');
-    $eventDateTime = Carbon::parse($event->start_date)->format('D, F j, g:i A'); // Start date and time
-    $eventEndTime = Carbon::parse($event->end_date)->format('g:i A'); // End time with AM/PM
-    return view('backend.calander.show', compact('event','startMonth','eventDate','eventDateTime','eventEndTime','user'));
-}
+    {
+        $event = Calander::with('service')->findOrFail($id);
+        $user = User::where('id', $event->user_id)->first();
+        $startMonth = Carbon::parse($event->start_date)->format('F');
+        $eventDate = Carbon::parse($event->start_date)->format('d');
+        $eventDateTime = Carbon::parse($event->start_date)->format('D, F j, g:i A'); // Start date and time
+        $eventEndTime = Carbon::parse($event->end_date)->format('g:i A'); // End time with AM/PM
+        return view('backend.calander.show', compact('event', 'startMonth', 'eventDate', 'eventDateTime', 'eventEndTime', 'user'));
+    }
 
     /**
      * Show the form for editing the specified resource.

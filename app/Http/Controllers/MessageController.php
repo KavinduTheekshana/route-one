@@ -81,25 +81,41 @@ class MessageController extends Controller
 
     public function getMessages($userId)
     {
-        // Get the authenticated user's ID
-        $authUserId = Auth::id();
 
-        // Retrieve messages where the authenticated user is either the sender or receiver
-        $messages = Message::where(function ($query) use ($authUserId, $userId) {
-            $query->where('sender_id', $authUserId)
-                ->where('receiver_id', $userId);
-        })
-            ->orWhere(function ($query) use ($authUserId, $userId) {
+        $authUser = auth()->user();
+
+        if ($authUser->user_type === 'superadmin') {
+            // Retrieve all messages for the selected userId
+            $messages = Message::where(function ($query) use ($userId) {
                 $query->where('sender_id', $userId)
-                    ->where('receiver_id', $authUserId);
+                    ->orWhere('receiver_id', $userId);
             })
-            ->with([
-                'sender:id,name,profile_image',    // Load sender details (name, profile image)
-                'receiver:id,name,profile_image'   // Load receiver details (name, profile image)
-            ])
-            ->orderBy('created_at', 'asc') // Order messages by creation date (ascending or descending based on preference)
-            ->get();
+                ->with([
+                    'sender:id,name,profile_image',    // Load sender details (name, profile image)
+                    'receiver:id,name,profile_image'  // Load receiver details (name, profile image)
+                ])
+                ->orderBy('created_at', 'asc') // Order messages by creation date
+                ->get();
+        } else {
+            // Get the authenticated user's ID
+            $authUserId = Auth::id();
 
+            // Retrieve messages where the authenticated user is either the sender or receiver
+            $messages = Message::where(function ($query) use ($authUserId, $userId) {
+                $query->where('sender_id', $authUserId)
+                    ->where('receiver_id', $userId);
+            })
+                ->orWhere(function ($query) use ($authUserId, $userId) {
+                    $query->where('sender_id', $userId)
+                        ->where('receiver_id', $authUserId);
+                })
+                ->with([
+                    'sender:id,name,profile_image',    // Load sender details (name, profile image)
+                    'receiver:id,name,profile_image'   // Load receiver details (name, profile image)
+                ])
+                ->orderBy('created_at', 'asc') // Order messages by creation date (ascending or descending based on preference)
+                ->get();
+        }
         return response()->json($messages); // Return messages with sender and receiver details as JSON
     }
 
@@ -136,7 +152,7 @@ class MessageController extends Controller
             // Simulate a long message
             Mail::to($receiver->email)->send(new NewMessageNotification($messagecontent, auth()->user()));
         } else {
-            Log::error('User not found with ID: '. $request->receiver_id);
+            Log::error('User not found with ID: ' . $request->receiver_id);
         }
 
         // Return a JSON response for AJAX
