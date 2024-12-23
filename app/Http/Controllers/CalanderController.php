@@ -67,7 +67,7 @@ class CalanderController extends Controller
         if ($authUser->user_type === 'superadmin') {
             return response()->json(Calander::all());
         } else {
-            return response()->json(Calander::where('user_id', Auth::id())->get());
+            return response()->json(Calander::where('user_id', $authUser->id)->get());
 
         }
     }
