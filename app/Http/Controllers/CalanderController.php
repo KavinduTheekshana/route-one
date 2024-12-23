@@ -66,8 +66,9 @@ class CalanderController extends Controller
 
         if ($authUser->user_type === 'superadmin') {
             return response()->json(Calander::all());
+            // return response()->json(Calander::where('user_id', Auth::id())->get());
         } else {
-            return response()->json(Calander::where('user_id', $authUser->id)->get());
+            return response()->json(Calander::where('admin_id', Auth::id())->get());
 
         }
     }
@@ -96,6 +97,7 @@ class CalanderController extends Controller
         $calander->start = $start;
         $calander->end = $end;
         $calander->user_id = $request->input('customer');
+        $calander->admin_id = Auth::id();
         $calander->service_id = $request->input('service');
         $calander->status = 'pending'; // Default status
         $calander->save();
