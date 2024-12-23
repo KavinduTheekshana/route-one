@@ -143,6 +143,7 @@ Route::middleware([
         Route::get('/admin/calander/data', [CalanderController::class, 'getData'])->name('calander.data');
         Route::get('/admin/calander/events/{id}', [CalanderController::class, 'show'])->name('admin.calander.events');
         Route::get('/search-users-calander', [CalanderController::class, 'search'])->name('users.search.calander');
+        Route::post('/event/update-status', [CalanderController::class, 'updateStatus'])->name('event.updateStatus');
 
         //  Message management
         Route::get('/admin/message', [MessageController::class, 'index'])->name('admin.message')->middleware(['auth', 'role:superadmin|agent|teacher']);

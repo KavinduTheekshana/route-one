@@ -104,6 +104,21 @@
                 <div class="card-header border-bottom border-gray-100 flex-between flex-wrap gap-8">
                     <h5 class="mb-0">Appointment Details</h5>
 
+                    @if ($event->status === 'pending')
+                        <span class="text-13 py-2 px-8 bg-warning-100 text-warning-600 d-inline-flex align-items-center gap-8 rounded-pill">
+                            Pending
+                        </span>
+                    @elseif ($event->status === 'complete')
+                        <span class="text-13 py-2 px-8 bg-success-100 text-success-600 d-inline-flex align-items-center gap-8 rounded-pill">
+                            Complete
+                        </span>
+                    @elseif ($event->status === 'cancelled')
+                        <span class="text-13 py-2 px-8 bg-danger-100 text-danger-600 d-inline-flex align-items-center gap-8 rounded-pill">
+                            Cancelled
+                        </span>
+                    @endif
+
+
                 </div>
                 <div class="card-body text-left">
                     <div class="row">
@@ -116,9 +131,12 @@
                                     {{ $eventDate }}
                                 </section>
                             </figure>
+
+
+
                         </div>
                         <div class="col">
-                            <h6 class="fw-300">{{ $event->service->service_name ?? 'Not Assigned' }}</h6>
+                            <h6 class="fw-300">{{ $event->service->service_name ?? 'Not Assigned' }} </h6>
                             <h3>{{ $eventDateTime }} - {{ $eventEndTime }}</h3>
 
 
@@ -127,7 +145,17 @@
                                 <div class="flex-align gap-16">
                                     <span class="w-30 h-30 rounded-8 flex-center text-xl bg-primary-600 text-white"><i
                                             class="ph ph-clock-user"></i></span>
-                                    <h5 class="fw-300">{{ ucfirst($event->status) }}</h5>
+                                    <h5 class="fw-300"> <select id="event-status" class="form-select">
+                                            <option value="pending"
+                                                {{ $event->status === 'pending' ? 'selected' : '' }}>Pending</option>
+                                            <option value="complete"
+                                                {{ $event->status === 'complete' ? 'selected' : '' }}>Complete</option>
+                                            <option value="cancelled"
+                                                {{ $event->status === 'cancelled' ? 'selected' : '' }}>Cancelled
+                                            </option>
+                                        </select></h5>
+                                    {{-- <h5 class="fw-300">{{ ucfirst($event->status) }}</h5> --}}
+
                                 </div>
                             </div>
 
@@ -215,7 +243,7 @@
                     </div>
                     <div class="card-body">
 
-                       <p> {!! $event->description !!} </p>
+                        <p> {!! $event->description !!} </p>
                     </div>
                 </div>
                 <!-- Top Course End -->
@@ -230,4 +258,50 @@
 @endsection
 
 @push('scripts')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const statusSelect = document.getElementById('event-status');
+
+        if (statusSelect) {
+            statusSelect.addEventListener('change', function() {
+                const selectedStatus = this.value;
+                const eventId = {{ $event->id }}; // Pass the event ID dynamically
+
+                // Prepare the data for AJAX
+                const requestData = new FormData();
+                requestData.append('_token', document.querySelector('meta[name="csrf-token"]')
+                    .getAttribute('content'));
+                requestData.append('status', selectedStatus);
+                requestData.append('id', eventId);
+                console.log(eventId);
+                // Perform AJAX request
+                fetch("{{ route('event.updateStatus') }}", {
+                        method: "POST",
+                        body: requestData
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            location.reload(); // Reload the page on success
+                        } else {
+                            alert('Failed to update status.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred. Please try again.');
+                    });
+            });
+        }
+    });
+</script>
 @endpush

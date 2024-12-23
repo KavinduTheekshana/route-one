@@ -286,6 +286,14 @@
                                 event.backgroundColor = '#32CD32'; // Green background
                                 event.borderColor = '#32CD32'; // Green border
                                 event.textColor = '#FFFFFF'; // White text
+                            }  else if (event.status === 'cancelled') {
+                                event.backgroundColor = '#FF0000'; // Red background
+                                event.borderColor = '#FF0000'; // Red border
+                                event.textColor = '#FFFFFF'; // White text
+                            } else {
+                                event.backgroundColor = '#3788d8'; // Blue background
+                                event.borderColor = '#3788d8'; // Blue border
+                                event.textColor = '#FFFFFF'; // White text
                             }
                             return event;
                         });

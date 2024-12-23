@@ -13,6 +13,22 @@ use Illuminate\Support\Facades\Mail;
 
 class CalanderController extends Controller
 {
+    public function updateStatus(Request $request)
+    {
+        $request->validate([
+            'status' => 'required|string',
+            'id' => 'required',
+        ]);
+
+        $event = Calander::find($request->id);
+        $event->status = $request->status;
+
+        if ($event->save()) {
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false], 500);
+    }
     /**
      * Display a listing of the resource.
      */
