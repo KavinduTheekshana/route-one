@@ -56,6 +56,8 @@ Route::middleware([
     Route::get('/user/application', [ApplicationController::class, 'application'])->name('user.application');
     Route::get('/user/documents', [ApplicationController::class, 'documents'])->name('user.documents');
     Route::get('/user/applied/positions', [JobApplicationController::class, 'positions'])->name('user.applied.positions');
+    Route::get('/user/message', [JobApplicationController::class, 'message'])->name('user.message');
+    Route::post('/user/message/save', [JobApplicationController::class, 'save'])->name('user.message.save');
     Route::delete('/user/application/destroy/{id}', [JobApplicationController::class, 'destroy'])->name('user.application.destroy');
     Route::post('/user/application/store', [ApplicationController::class, 'store'])->name('user.application.store');
     Route::post('/user/jobs/apply', [JobApplicationController::class, 'store'])->name('user.jobs.apply');
@@ -138,7 +140,7 @@ Route::middleware([
 
 
         //  Calander application
-        Route::get('/admin/calander', [CalanderController::class, 'index'])->name('admin.calander')->middleware(['auth', 'role:superadmin|teacher']);
+        Route::get('/admin/calander', [CalanderController::class, 'index'])->name('admin.calander')->middleware(['auth', 'role:superadmin|teacher|agent']);
         Route::post('/admin/calander', [CalanderController::class, 'store'])->name('calander.store');
         Route::get('/admin/calander/data', [CalanderController::class, 'getData'])->name('calander.data');
         Route::get('/admin/calander/events/{id}', [CalanderController::class, 'show'])->name('admin.calander.events');

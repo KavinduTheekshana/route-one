@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Application;
 use App\Models\JobApplication;
+use App\Models\Message;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class JobApplicationController extends Controller
 {
@@ -23,6 +27,42 @@ class JobApplicationController extends Controller
         return response()->json(['success' => true]);
     }
 
+    public function message()
+    {
+
+        $user = auth()->user();
+        $agent = Application::where('user_id', $user->id)->value('agent_id');
+
+        if (!$agent) {
+            return redirect()->back()->with('error', 'No agent assigned to you yet. Please Fill Application and select an agent');
+        } else {
+            $agent_name = User::where('id', $agent)->value('name');
+
+            $messages = Message::where('sender_id', Auth::id())
+                ->orWhere('receiver_id', Auth::id())
+                ->with('sender', 'receiver')
+                ->orderBy('created_at', 'asc')
+                ->get();
+
+            return view('frontend.auth.dashboard.message', compact('messages', 'agent', 'agent_name'));
+        }
+    }
+
+    public function save(Request $request)
+    {
+        $request->validate([
+            'message' => 'required|string',
+            'receiver_id' => 'required|string',
+        ]);
+
+        Message::create([
+            'sender_id' => Auth::id(),
+            'receiver_id' => $request->receiver_id, // Pass this as hidden input or default it for single chat
+            'message' => $request->message,
+        ]);
+
+        return back();
+    }
 
 
     public function positions()

@@ -10,7 +10,7 @@
 
     @include('frontend.auth.dashboard.components.nav')
 
-
+    @include('frontend.components.alert')
 
     <div class="container mb-8">
         <div class="row">

@@ -59,7 +59,7 @@
                 </ul>
                 </li>
                 @endif
-                @if (Auth::user()->user_type === 'superadmin' or Auth::user()->user_type === 'agent')
+                @if (Auth::user()->user_type === 'superadmin')
                     <li class="sidebar-menu__item">
                         <a href="{{ route('admin.message') }}"
                             class="sidebar-menu__link {{ request()->segment(2) === 'message' ? 'activePage' : '' }}">
