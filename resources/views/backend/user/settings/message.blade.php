@@ -193,21 +193,26 @@
                 const senderProfileImage = msg.sender.profile_image ?
                     `/storage/${msg.sender.profile_image}` :
                     '/backend/images/thumbs/setting-profile-img.webp';
+                    const senderName = msg.sender.name;
 
                 const receiverProfileImage = msg.receiver.profile_image ?
                     `/storage/${msg.receiver.profile_image}` :
                     '/backend/images/thumbs/setting-profile-img.webp';
+                    const receiverName = msg.receiver.name;
 
                 const messageItem = document.createElement('div');
                 messageItem.className =
-                    `${msg.receiver_id === userId ? 'chat-box-item' : 'chat-box-item right'} d-flex align-items-end gap-8 mb-15`;
+                    `${msg.receiver_id != userId ? 'chat-box-item' : 'chat-box-item right'} d-flex align-items-end gap-8 mb-15`;
 
                 messageItem.innerHTML = `
             <div class="pb-20">
                 <img src="${msg.receiver_id === userId ? receiverProfileImage : senderProfileImage}" alt="Profile Image" class="w-40 h-40 rounded-circle object-fit-cover flex-shrink-0">
+
             </div>
             <div class="chat-box-item__content">
-                <div class="chat-box-item__text py-16 px-16 px-lg-4 text-left">${msg.message}</div>
+
+                <div class="chat-box-item__text py-16 px-16 px-lg-4 text-left"> <b> ${msg.receiver_id === userId? receiverName : senderName}</b> <br>
+                    ${msg.message}</div>
                 <span class="text-gray-200 text-13 mt-2 d-block">${new Date(msg.created_at).toLocaleString()}</span>
             </div>
         `;
