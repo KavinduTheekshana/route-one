@@ -135,7 +135,7 @@
                 class="users arrow-down-icon border border-gray-200 rounded-pill p-4 d-inline-block pe-40 position-relative"
                 type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="position-relative">
-                    <img src="{{ asset('storage/' . auth()->user()->profile_image) }}" alt="Image"
+                    <img src="{{ auth()->user()->profile_image ? asset('storage/' . auth()->user()->profile_image) : asset('backend/images/thumbs/setting-profile-img.webp') }}" alt="Image"
                         class="h-32 w-32 rounded-circle">
                     <span
                         class="activation-badge w-8 h-8 position-absolute inset-block-end-0 inset-inline-end-0"></span>
@@ -145,7 +145,7 @@
                 <div class="card border border-gray-100 rounded-12 box-shadow-custom">
                     <div class="card-body">
                         <div class="flex-align gap-8 mb-20 pb-20 border-bottom border-gray-100">
-                            <img src="{{ asset('storage/' . auth()->user()->profile_image) }}" alt=""
+                            <img src="{{ auth()->user()->profile_image ? asset('storage/' . auth()->user()->profile_image) : asset('backend/images/thumbs/setting-profile-img.webp') }}" alt=""
                                 class="w-54 h-54 rounded-circle">
                             <div class="">
                                 <h4 class="mb-0">{{ auth()->user()->name }}</h4>

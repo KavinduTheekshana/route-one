@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AgentRegisteredMail;
 use App\Models\JobApplication;
 use App\Models\Testimonial;
 use App\Models\User;
@@ -231,5 +232,38 @@ class HomeController extends Controller
     public function forgot()
     {
         return view('frontend.auth.forgot');
+    }
+
+    public function agentRegister()
+    {
+        return view('auth.agent');
+    }
+    public function agentStore(Request $request)
+    {
+        // Validate the request
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email|max:255',
+            'country' => 'required|string|max:255',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        // Create the agent (Assume user_type is used to differentiate agent from others)
+        $agent = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'country' => $validated['country'],
+            'password' => bcrypt($validated['password']),
+            'user_type' => 'agent',
+            // 'status' => true,
+        ]);
+
+        Mail::to($agent->email)->send(new AgentRegisteredMail($agent));
+
+        // Optionally log the user in after registration
+        auth()->login($agent);
+
+        // Redirect to a dashboard or success page
+        return redirect()->route('dashboard')->with('success', 'Registration successful!');
     }
 }

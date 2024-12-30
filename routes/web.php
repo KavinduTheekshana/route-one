@@ -39,6 +39,9 @@ Route::post('user/password/update/token', [HomeController::class, 'reset'])->nam
 Route::post('/vacancies/search', [VacanciesController::class, 'search'])->name('vacancies.search');
 Route::post('/verify-certificate', [CertificateController::class, 'verify'])->name('certificate.verify');
 
+Route::get('/agent/register', [HomeController::class, 'agentRegister'])->name('agent.register');
+Route::post('/agent/register', [HomeController::class, 'agentStore'])->name('agent.store');
+
 
 // Route::get('/generate-application-numbers', [ApplicationController::class, 'generateApplicationNumbers']);
 // Route::get('/generate-slugs', [HomeController::class, 'generateSlugs']);

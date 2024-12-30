@@ -19,7 +19,11 @@ class DashboardController extends Controller
             // $response = Http::get('https://restcountries.com/v3.1/all');
             // $countries = $response->json();
             return view('frontend.auth.dashboard.profile');
-        } else {
+        }
+        // elseif (Auth::user()->user_type === 'agent' && Auth::user()->agent_verification === 0) {
+        //     dd('Agent status 0');
+        // }
+         else {
             $userCount = User::where('user_type', 'user')->count();
             $agentCount = User::where('user_type', 'agent')->count();
             $activeVacancies = Vacancies::where('status', '1')->count();
@@ -37,7 +41,7 @@ class DashboardController extends Controller
                 ->orderBy('updated_at', 'desc')
                 ->get();
 
-            return view('backend.index', compact('userCount', 'agentCount', 'activeVacancies', 'approvedApplications', 'users', 'applications','recentDocuments'));
+            return view('backend.index', compact('userCount', 'agentCount', 'activeVacancies', 'approvedApplications', 'users', 'applications', 'recentDocuments'));
         }
     }
 
