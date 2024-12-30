@@ -187,6 +187,15 @@
                 @auth
                     @if (Auth::user()->user_type === 'superadmin')
                         <li class="sidebar-menu__item">
+                            <a href="{{ route('admin.bulk.mail') }}"
+                                class="sidebar-menu__link {{ request()->segment(2) === 'bulk' ? 'activePage' : '' }}">
+                                <span class="icon"><i class="ph ph-microsoft-outlook-logo"></i></span>
+                                <span class="text">Bulk Mail</span>
+                            </a>
+                        </li>
+
+
+                        <li class="sidebar-menu__item">
                             <a href="{{ route('admin.contact') }}"
                                 class="sidebar-menu__link {{ request()->segment(2) === 'contact' ? 'activePage' : '' }}">
                                 <span class="icon"><i class="ph ph-chats-teardrop"></i></span>

@@ -11,6 +11,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\JobsController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServicesController;
@@ -166,7 +167,8 @@ Route::middleware([
         Route::post('/sendpdf', [InvoiceController::class, 'sendPdf']);
         Route::patch('admin/invoice/{invoice}/toggle-status', [InvoiceController::class, 'toggleStatus'])->name('admin.invoice.toggleStatus');
 
-
+        Route::get('/admin/bulk/mail', [MailController::class, 'index'])->name('admin.bulk.mail')->middleware(['auth', 'superadmin']);
+        Route::POST('/send-bulk-emails', [MailController::class, 'sendBulkEmails'])->middleware(['auth', 'superadmin']);
 
 
         // Route::resource('admin/services', ServicesController::class)->names('admin.services')->middleware(['auth', 'role:superadmin|agent']);
