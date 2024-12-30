@@ -1,5 +1,5 @@
 @push('styles')
-    <style>
+    {{-- <style>
         .chat-box-item-wrapper {
             max-height: 500px !important;
         }
@@ -7,7 +7,7 @@
         .text-left {
             text-align: left !important;
         }
-    </style>
+    </style> --}}
 @endpush
 <!-- Notes Tab Content -->
 <div class="tab-content" id="pills-tabContent">
@@ -92,7 +92,9 @@
             toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | table'
         });
     </script>
-
+    {{-- <script>
+        $('#messageInput').trumbowyg();
+    </script> --}}
 
     <script>
         $(document).ready(function() {

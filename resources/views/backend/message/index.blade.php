@@ -115,17 +115,19 @@
 
 @push('scripts')
 
-<script src="https://cdn.tiny.cloud/1/mc59edcciy0vssoo3ojx1vwpo2jbsemez61eo60xxi6p5wse/tinymce/7/tinymce.min.js"
-referrerpolicy="origin"></script>
+{{-- <script src="https://cdn.tiny.cloud/1/mc59edcciy0vssoo3ojx1vwpo2jbsemez61eo60xxi6p5wse/tinymce/7/tinymce.min.js"
+referrerpolicy="origin"></script> --}}
 
-<script>
+{{-- <script>
 tinymce.init({
     selector: 'textarea#messageInput', // Replace this CSS selector to match the placeholder element for TinyMCE
     plugins: 'code table lists',
     toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | table'
 });
+</script> --}}
+<script>
+    $('#messageInput').trumbowyg();
 </script>
-
 
 <script>
     $(document).ready(function() {
