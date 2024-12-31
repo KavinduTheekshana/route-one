@@ -25,14 +25,23 @@
 
     <!-- Breadcrumb Right Start -->
     <div class="flex-align gap-8 flex-wrap">
+        <div
+            class="flex-align text-gray-500 text-13 border border-gray-100 rounded-4 ps-20 focus-border-main-600 bg-white">
+            <span class="text-lg"><i class="ph ph-check-square"></i></span>
+            <button id="download-btn" class="form-control ps-8 pe-20 py-16 border-0 text-inherit rounded-4 text-center">
+                Download Selected Users CSV
+                </a>
+        </div>
+
 
         <div
-    class="flex-align text-gray-500 text-13 border border-gray-100 rounded-4 ps-20 focus-border-main-600 bg-white">
-    <span class="text-lg"><i class="ph ph-download"></i></span>
-    <a href="{{ route('download.applications.csv') }}" class="form-control ps-8 pe-20 py-16 border-0 text-inherit rounded-4 text-center">
-        Download Application Data CSV
-    </a>
-</div>
+            class="flex-align text-gray-500 text-13 border border-gray-100 rounded-4 ps-20 focus-border-main-600 bg-white">
+            <span class="text-lg"><i class="ph ph-download"></i></span>
+            <a href="{{ route('download.applications.csv') }}"
+                class="form-control ps-8 pe-20 py-16 border-0 text-inherit rounded-4 text-center">
+                Download Application Data CSV
+            </a>
+        </div>
 
 
 
@@ -53,6 +62,7 @@
         <table id="example" class="uk-table uk-table-hover uk-table-striped" style="width:100%">
             <thead>
                 <tr>
+                    <th>#</th>
                     <th>ID</th>
                     <th>Image</th>
                     <th>Name & Email</th>
@@ -67,6 +77,10 @@
             <tbody>
                 @foreach ($applications as $application)
                     <tr>
+                        <td>
+                            <input type="checkbox" class="user-checkbox" data-id="{{ $application->id }}"
+                                data-email="{{ $application->email }}" data-name="{{ $application->name }}">
+                        </td>
                         <td>{{ $application->id }}</td>
                         <td><img src="{{ $application->user->profile_image ? asset('storage/' . $application->user->profile_image) : asset('backend/images/thumbs/setting-profile-img.webp') }}"
                                 alt="Profile Image" width="50px" class="rounded-circle round-profile" height="50px">
@@ -159,7 +173,8 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th>Id</th>
+                    <th>#</th>
+                    <th>ID</th>
                     <th>Image</th>
 
                     <th>Name & Email</th>
@@ -198,31 +213,35 @@
                 [0, "desc"]
             ],
             columnDefs: [{
-                    width: "4%",
+                    width: "2%",
                     targets: 0
+                },
+                {
+                    width: "4%",
+                    targets: 1
                 }, {
                     width: "8%",
-                    targets: 1
+                    targets: 2
                 }, // Sets the width for the first column
                 {
                     width: "20%",
-                    targets: 2
+                    targets: 3
                 }, // Second column
                 {
                     width: "13%",
-                    targets: 3
+                    targets: 4
                 }, // Third column
                 {
                     width: "25%",
-                    targets: 4
+                    targets: 5
                 }, // Fourth column
                 {
                     width: "10%",
-                    targets: 5
+                    targets: 6
                 }, // Fifth column
                 {
-                    width: "20%",
-                    targets: 6
+                    width: "18%",
+                    targets: 7
                 }, // Sixth column
 
             ],
@@ -270,6 +289,51 @@
                 });
             }
         });
+    });
+</script>
+
+<script>
+    document.getElementById('download-btn').addEventListener('click', function() {
+        // Get all selected checkboxes
+        const selectedApplications = document.querySelectorAll('.user-checkbox:checked');
+
+        if (selectedApplications.length === 0) {
+            alert('Please select at least one application.');
+            return;
+        }
+
+        // Create a CSV string
+        let csvContent = "Name,Email\n";
+
+        selectedApplications.forEach(function(checkbox) {
+            const applicationName = checkbox.getAttribute(
+            'data-name'); // Get the name from the data-name attribute
+            const applicationEmail = checkbox.getAttribute(
+            'data-email'); // Get the email from the data-email attribute
+            csvContent += `${applicationName},${applicationEmail}\n`;
+        });
+
+        // Get the current date in YYYY-MM-DD format
+        const currentDate = new Date().toISOString().split('T')[0];
+
+        // Generate the file name with the count of selected applications and the current date
+        const fileName = `selected_applications_${selectedApplications.length}_applications_${currentDate}.csv`;
+
+        // Create a download link
+        const blob = new Blob([csvContent], {
+            type: 'text/csv;charset=utf-8;'
+        });
+        const link = document.createElement('a');
+
+        if (link.download !== undefined) { // Feature detection for browsers
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', fileName);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
     });
 </script>
 @endpush
