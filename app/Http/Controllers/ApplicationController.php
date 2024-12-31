@@ -18,9 +18,61 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use NotifyLk\Api\SmsApi;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Response;
 
 class ApplicationController extends Controller
 {
+    public function downloadApplicationsCsv()
+    {
+        $applications = \App\Models\Application::all(); // Fetch all applications from the database
+
+        $csvHeader = [
+            'ID',
+            'User ID',
+            'Name',
+            'Country',
+            'Phone',
+            'Email',
+            'Address',
+            'Date of Birth',
+            'Passport',
+            'English',
+            'Application Number',
+            'Created At',
+            'Updated At'
+        ];
+
+        return Response::streamDownload(function () use ($applications, $csvHeader) {
+            $handle = fopen('php://output', 'w');
+
+            // Write CSV header
+            fputcsv($handle, $csvHeader);
+
+            // Write application data
+            foreach ($applications as $application) {
+                fputcsv($handle, [
+                    $application->id,
+                    $application->user_id,
+                    $application->name,
+                    $application->country,
+                    $application->phone,
+                    $application->email,
+                    $application->address,
+                    $application->dob,
+                    $application->passport,
+                    $application->english ? 'Yes' : 'No',
+                    $application->application_number,
+                    $application->created_at,
+                    $application->updated_at,
+                ]);
+            }
+
+            fclose($handle);
+        }, 'applications_data.csv', [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="applications_data.csv"',
+        ]);
+    }
     public function generateApplicationNumbers()
     {
         $applications = Application::whereNull('application_number')->get();
@@ -239,7 +291,7 @@ class ApplicationController extends Controller
                 ->get();
         } elseif ($authUser->user_type === 'teacher') {
             $applications = Application::with(['user', 'certificate', 'agent', 'vacancies'])->where('status', '1')
-            ->orderBy('created_at', 'desc')->get();
+                ->orderBy('created_at', 'desc')->get();
         } else {
             abort(403, 'Unauthorized access');
         }

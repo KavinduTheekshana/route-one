@@ -82,6 +82,7 @@ Route::middleware([
         Route::post('/user/{user}/update-password', [UserController::class, 'updatePassword'])->name('user.password.update')->middleware(['auth', 'superadmin']);
         Route::post('/member/store', [UserController::class, 'member_store'])->name('member.store')->middleware(['auth', 'superadmin']);
         Route::delete('/team/{user}', [UserController::class, 'destroy'])->name('team.destroy')->middleware(['auth', 'superadmin']);
+        Route::get('/download-users-csv', [UserController::class, 'downloadUsersCsv'])->name('download.users.csv');
 
         // admin, superadmin and agent
         Route::get('/user/create', [UserController::class, 'create'])->name('user.create')->middleware(['auth', 'role:superadmin|agent']);
@@ -141,7 +142,7 @@ Route::middleware([
         Route::get('/certificates/download', [CertificateController::class, 'downloadCertificate'])->name('certificates.download');
         Route::get('/admin/certificate', [CertificateController::class, 'certificate'])->name('admin.certificate');
         Route::post('/assign-position', [JobApplicationController::class, 'assignPosition'])->name('assign.position');
-
+        Route::get('/download-applications-csv', [ApplicationController::class, 'downloadApplicationsCsv'])->name('download.applications.csv');
 
         //  Calander application
         Route::get('/admin/calander', [CalanderController::class, 'index'])->name('admin.calander')->middleware(['auth', 'role:superadmin|teacher|agent']);

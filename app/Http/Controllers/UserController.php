@@ -14,9 +14,40 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Response;
 
 class UserController extends Controller
 {
+    public function downloadUsersCsv()
+{
+    $users = \App\Models\User::all(); // Fetch all users from the database
+
+    $csvHeader = ['ID', 'Name', 'Email', 'Phone', 'Country', 'Status'];
+
+    return Response::streamDownload(function () use ($users, $csvHeader) {
+        $handle = fopen('php://output', 'w');
+
+        // Write CSV header
+        fputcsv($handle, $csvHeader);
+
+        // Write user data
+        foreach ($users as $user) {
+            fputcsv($handle, [
+                $user->id,
+                $user->name,
+                $user->email,
+                $user->phone,
+                $user->country,
+                $user->status ? 'Active' : 'Inactive',
+            ]);
+        }
+
+        fclose($handle);
+    }, 'users_data.csv', [
+        'Content-Type' => 'text/csv',
+        'Content-Disposition' => 'attachment; filename="users_data.csv"',
+    ]);
+}
 
     public function storeOrUpdate(Request $request)
     {
@@ -142,7 +173,7 @@ class UserController extends Controller
             ->get();
 
         $jobs = Vacancies::get();
-        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs', 'notes', 'agent','certificate'));
+        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs', 'notes', 'agent', 'certificate'));
     }
 
     public function user_update(Request $request, $id)

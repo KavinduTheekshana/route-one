@@ -23,6 +23,24 @@
     @section('page_name', 'User Application Management')
     @include('backend.components.breadcrumb')
 
+    <!-- Breadcrumb Right Start -->
+    <div class="flex-align gap-8 flex-wrap">
+
+        <div
+    class="flex-align text-gray-500 text-13 border border-gray-100 rounded-4 ps-20 focus-border-main-600 bg-white">
+    <span class="text-lg"><i class="ph ph-download"></i></span>
+    <a href="{{ route('download.applications.csv') }}" class="form-control ps-8 pe-20 py-16 border-0 text-inherit rounded-4 text-center">
+        Download Application Data CSV
+    </a>
+</div>
+
+
+
+
+
+    </div>
+    <!-- Breadcrumb Right End -->
+
 </div>
 
 

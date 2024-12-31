@@ -43,8 +43,20 @@
 
         <div
             class="flex-align text-gray-500 text-13 border border-gray-100 rounded-4 ps-20 focus-border-main-600 bg-white">
+            <span class="text-lg"><i class="ph ph-download"></i></span>
+            <a href="{{ route('download.users.csv') }}"
+                class="form-control ps-8 pe-20 py-16 border-0 text-inherit rounded-4 text-center">
+                Download User's Details CSV
+            </a>
+        </div>
+
+
+
+        <div
+            class="flex-align text-gray-500 text-13 border border-gray-100 rounded-4 ps-20 focus-border-main-600 bg-white">
             <span class="text-lg"><i class="ph ph-plus"></i></span>
-            <a href="{{ route('user.create') }}" class="form-control ps-8 pe-20 py-16 border-0 text-inherit rounded-4 text-center">ADD USER</a>
+            <a href="{{ route('user.create') }}"
+                class="form-control ps-8 pe-20 py-16 border-0 text-inherit rounded-4 text-center">ADD USER</a>
         </div>
     </div>
     <!-- Breadcrumb Right End -->
@@ -74,8 +86,9 @@
             <tbody>
                 @foreach ($users as $user)
                     <tr>
-                        <td><img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('backend/images/thumbs/setting-profile-img.webp') }}" alt="Profile Image" width="50px"
-                                class="rounded-circle round-profile" height="50px"></td>
+                        <td><img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('backend/images/thumbs/setting-profile-img.webp') }}"
+                                alt="Profile Image" width="50px" class="rounded-circle round-profile" height="50px">
+                        </td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->phone ?? 'N/A' }}</td>
@@ -98,26 +111,27 @@
                         <td>{{ $user->created_at->format('Y-m-d') }}</td>
                         <td>
 
-                                @if ($user->status == 1)
-                                    <a href="{{ route('user.block', $user->id) }}" class="btn btn-danger btn-sm"><i class="ph ph-lock"></i></a>
-                                @else
-                                    <a href="{{ route('user.unblock', $user->id) }}" class="btn btn-success btn-sm"><i class="ph ph-lock-open"></i></a>
-                                @endif
+                            @if ($user->status == 1)
+                                <a href="{{ route('user.block', $user->id) }}" class="btn btn-danger btn-sm"><i
+                                        class="ph ph-lock"></i></a>
+                            @else
+                                <a href="{{ route('user.unblock', $user->id) }}" class="btn btn-success btn-sm"><i
+                                        class="ph ph-lock-open"></i></a>
+                            @endif
 
-                                <a href="{{ route('user.settings', $user->id) }}" class="btn btn-warning btn-sm"><i
-                                        class="ph ph-eye"></i></a>
-                                <!-- Delete Button -->
-                                <button class="btn btn-dark btn-sm" onclick="confirmDelete({{ $user->id }})">
-                                    <i class="ph ph-trash"></i>
-                                </button>
+                            <a href="{{ route('user.settings', $user->id) }}" class="btn btn-warning btn-sm"><i
+                                    class="ph ph-eye"></i></a>
+                            <!-- Delete Button -->
+                            <button class="btn btn-dark btn-sm" onclick="confirmDelete({{ $user->id }})">
+                                <i class="ph ph-trash"></i>
+                            </button>
 
-                                <!-- Delete Form -->
-                                <form id="delete-form-{{ $user->id }}"
-                                    action="{{ route('user.destroy', $user->id) }}" method="POST"
-                                    style="display: none;">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
+                            <!-- Delete Form -->
+                            <form id="delete-form-{{ $user->id }}" action="{{ route('user.destroy', $user->id) }}"
+                                method="POST" style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
 
                         </td>
                     </tr>
@@ -153,15 +167,38 @@
 <script>
     $(document).ready(function() {
         $('#example').DataTable({
-            columnDefs: [
-                { width: "7%", targets: 0 }, // Sets the width for the first column
-                { width: "18%", targets: 1 }, // Second column
-                { width: "15%", targets: 2 }, // Third column
-                { width: "10%", targets: 3 }, // Fourth column
-                { width: "10%", targets: 4 }, // Fifth column
-                { width: "10%", targets: 5 },  // Sixth column
-                { width: "10%", targets: 6 },  // Sixth column
-                { width: "20%", targets: 7 },  // Sixth column
+            columnDefs: [{
+                    width: "7%",
+                    targets: 0
+                }, // Sets the width for the first column
+                {
+                    width: "18%",
+                    targets: 1
+                }, // Second column
+                {
+                    width: "15%",
+                    targets: 2
+                }, // Third column
+                {
+                    width: "10%",
+                    targets: 3
+                }, // Fourth column
+                {
+                    width: "10%",
+                    targets: 4
+                }, // Fifth column
+                {
+                    width: "10%",
+                    targets: 5
+                }, // Sixth column
+                {
+                    width: "10%",
+                    targets: 6
+                }, // Sixth column
+                {
+                    width: "20%",
+                    targets: 7
+                }, // Sixth column
             ],
             autoWidth: false // Disable automatic column width calculation
         });
