@@ -19,14 +19,27 @@ class MailController extends Controller
         $body = $request->input('body');
         $emails = $request->input('emails'); // Array of emails and names
 
-        foreach ($emails as $user) {
-            // Replace {name} with the user's name in the email body
-            $emailBody = str_replace('{name}', $user['name'], $body);
+        $failedEmails = []; // To track emails that failed
 
-            // Send the email
-            Mail::to($user['email'])->send(new BulkEmail($subject, $emailBody));
+        foreach ($emails as $user) {
+            try {
+                // Replace {name} with the user's name in the email body
+                $emailBody = str_replace('{name}', $user['name'], $body);
+
+                // Send the email
+                Mail::to($user['email'])->send(new BulkEmail($subject, $emailBody));
+            } catch (\Exception $e) {
+                // Log the error or track the failed email
+                $failedEmails[] = $user['email'];
+            }
         }
 
-        return response()->json(['message' => 'Emails sent successfully']);
+        $responseMessage = [
+            'message' => 'Emails sent with some failures',
+            'failed_emails' => $failedEmails
+        ];
+
+        // Return the result, including any failed emails
+        return response()->json($responseMessage);
     }
 }
