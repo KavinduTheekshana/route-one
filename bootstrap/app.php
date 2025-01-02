@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => \App\Http\Middleware\Admin::class,
             'superadmin' => \App\Http\Middleware\SuperAdmin::class,
+            'unverifiedagent' => \App\Http\Middleware\UnverifiedAgent::class,
             'user' => \App\Http\Middleware\User::class,
             'agent' => \App\Http\Middleware\Agent::class,
             'teacher' => \App\Http\Middleware\Teacher::class,

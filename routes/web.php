@@ -44,6 +44,7 @@ Route::get('/agent/register', [HomeController::class, 'agentRegister'])->name('a
 Route::post('/agent/register', [HomeController::class, 'agentStore'])->name('agent.store');
 
 
+
 // Route::get('/generate-application-numbers', [ApplicationController::class, 'generateApplicationNumbers']);
 // Route::get('/generate-slugs', [HomeController::class, 'generateSlugs']);
 
@@ -65,8 +66,9 @@ Route::middleware([
     Route::delete('/user/application/destroy/{id}', [JobApplicationController::class, 'destroy'])->name('user.application.destroy');
     Route::post('/user/application/store', [ApplicationController::class, 'store'])->name('user.application.store');
     Route::post('/user/jobs/apply', [JobApplicationController::class, 'store'])->name('user.jobs.apply');
-    Route::middleware(['auth', 'status'])->group(function () {
+    Route::post('/agent/register/documents', [HomeController::class, 'agentStoreDocuments'])->name('agent.store.documents');
 
+    Route::middleware(['auth', 'status'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/admin/monthly-data', [DashboardController::class, 'getMonthlyData'])->name('admin.monthlyData');
 

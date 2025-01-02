@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\AgentRegisteredMail;
+use App\Models\Document;
 use App\Models\JobApplication;
 use App\Models\Testimonial;
 use App\Models\User;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -254,7 +256,7 @@ class HomeController extends Controller
             'email' => $validated['email'],
             'country' => $validated['country'],
             'password' => bcrypt($validated['password']),
-            'user_type' => 'agent',
+            'user_type' => 'unverifiedagent',
             // 'status' => true,
         ]);
 
@@ -266,4 +268,59 @@ class HomeController extends Controller
         // Redirect to a dashboard or success page
         return redirect()->route('dashboard')->with('success', 'Registration successful!');
     }
+    public function agentStoreDocuments(Request $request)
+    {
+        $request->validate([
+            'passport' => 'file|mimes:jpg,jpeg,png,webp,pdf|max:10240',
+            'br'       => 'file|mimes:jpg,jpeg,png,webp,pdf|max:10240',
+            'police'   => 'file|mimes:jpg,jpeg,png,webp,pdf|max:10240',
+            'address'  => 'file|mimes:jpg,jpeg,png,webp,pdf|max:10240',
+        ]);
+
+        $userId = auth()->id();
+        $documentTypes = ['passport', 'br', 'police', 'address'];
+
+        foreach ($documentTypes as $type) {
+            if ($request->hasFile($type)) {
+                $file = $request->file($type);
+
+                // Get file details
+                $filePath = $file->store('Documents');
+                $fileOriginalName = $file->getClientOriginalName();
+                $fileSize = $file->getSize(); // Get file size in bytes
+                $fileType = $file->getMimeType(); // Get MIME type
+
+                // Get existing document
+                $existingDocument = Document::where('user_id', $userId)
+                    ->where('document_type', $type)
+                    ->first();
+
+                if ($existingDocument) {
+                    // Delete old file
+                    Storage::delete($existingDocument->file_path);
+
+                    // Update existing record
+                    $existingDocument->update([
+                        'file_path' => $filePath,
+                        'file_original_name' => $fileOriginalName,
+                        'file_size' => $fileSize,
+                        'file_type' => $fileType,
+                    ]);
+                } else {
+                    // Create new record
+                    Document::create([
+                        'user_id' => $userId,
+                        'document_type' => $type,
+                        'file_path' => $filePath,
+                        'file_original_name' => $fileOriginalName,
+                        'file_size' => $fileSize,
+                        'file_type' => $fileType,
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->back()->with('success', 'Documents uploaded successfully.');
+    }
+
 }

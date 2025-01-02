@@ -32,7 +32,20 @@
     <link rel="stylesheet" href="{{ asset('backend/css/jquery-jvectormap-2.0.5.css') }}">
     <!-- Main css -->
     <link rel="stylesheet" href="{{ asset('backend/css/main.css') }}">
-    <link rel="shortcut icon" href="{{ asset('backend/images/logo/favicon.svg') }}">
+    <style>
+        .auth-center {
+            width: 100%;
+        }
+
+        .auth-right__logo {
+            display: flex;
+            justify-content: center;
+        }
+
+        .auth-right__inner {
+            max-width: 600px;
+        }
+    </style>
 </head>
 
 <body>
@@ -48,14 +61,14 @@
     <!--==================== Sidebar Overlay End ====================-->
 
     <section class="auth d-flex">
-        <div class="auth-right py-40 px-24 flex-center flex-column">
+        <div class="auth-center py-40 px-24 flex-center flex-column">
             <div class="auth-right__inner mx-auto w-100">
                 <a href="{{ route('/') }}" class="auth-right__logo">
-                    <img src="{{ asset('backend/images/logo/routeone_logo.svg') }}" alt="" style="width: 80%;">
+                    <img src="{{ asset('backend/images/logo/routeone_logo.svg') }}" alt="" style="width: 60%;">
                 </a>
                 <h2 class="mb-8">Become an Agent! 🇬🇧</h2>
-                <p class="text-gray-600 text-15 mb-32">Please sign up to your account to access the system and manage
-                    your agent related tasks efficiently.</p>
+                <p class="text-gray-600 text-15 mb-32">Please upload all the documents listed below. Our team will
+                    review them and get back to you shortly.</p>
 
                 @session('status')
                     <div class="mb-4 font-medium text-sm text-green-600">
@@ -78,85 +91,54 @@
                         </ul>
                     </div>
                 @endif
-
-                <form method="POST" action="{{ route('agent.store') }}">
+                <form method="POST" action="{{ route('agent.store.documents') }}" enctype="multipart/form-data">
                     @csrf
-                    <div class="mb-24">
-                        <label class="form-label mb-8 h6">Full Name</label>
-                        <div class="position-relative">
-                            <input type="text" class="form-control py-11 ps-40" id="name" name="name"
-                                placeholder="Type your full name" required>
-                            <span class="position-absolute top-50 translate-middle-y ms-16 text-gray-600 d-flex">
-                                <i class="ph ph-user"></i>
-                            </span>
-                        </div>
-                    </div>
 
-                    <div class="mb-24">
-                        <label class="form-label mb-8 h6">Email Address</label>
-                        <div class="position-relative">
-                            <input type="email" class="form-control py-11 ps-40" id="email" name="email"
-                                placeholder="Type your email address" required>
-                            <span class="position-absolute top-50 translate-middle-y ms-16 text-gray-600 d-flex">
-                                <i class="ph ph-envelope"></i>
-                            </span>
-                        </div>
-                    </div>
+                    @foreach (['passport' => 'Passport', 'br' => 'Business Registration', 'police' => 'Police Clearance', 'address' => 'Address Proof'] as $type => $label)
+                        @php
+                            $document = $userDocuments->firstWhere('document_type', $type);
+                        @endphp
 
-                    <div class="mb-24">
-                        <label class="form-label mb-8 h6">Country</label>
-                        <div class="position-relative">
-                            <input type="text" class="form-control py-11 ps-40" id="country" name="country"
-                                placeholder="Enter your country" required>
-                            {{-- <select class="form-control py-11 ps-40" id="country" name="country"
-                                placeholder="Enter your country" required>
-                                <option value="" disabled selected>Loading countries...</option>
-                            </select> --}}
-                            <span class="position-absolute top-50 translate-middle-y ms-16 text-gray-600 d-flex">
-                                <i class="ph ph-globe-hemisphere-east"></i>
-                            </span>
+                        <div class="mb-24">
+                            <label class="form-label mb-8 h6">{{ $label }}</label>
+                            <div class="position-relative">
+                                <div class="upload-card-item p-16 rounded-12 bg-main-50 mb-20 mt-4">
+                                    <div class="flex-align gap-10 flex-wrap">
+                                        <span class="w-36 h-36 text-lg rounded-circle bg-white flex-center text-main-600 flex-shrink-0">
+                                            <i class="ph ph-paperclip"></i>
+                                        </span>
+                                        <div class="upload-section">
+                                            <p class="text-15 text-gray-500">
+                                                Please upload a clear image of your <b> {{ $label }}</b>.
+                                                <label class="text-main-600 cursor-pointer file-label">Browse</label>
+                                                <input name="{{ $type }}" type="file" class="file-input"
+                                                    accept=".jpg,.jpeg,.png,.webp,.pdf" hidden>
+                                            </p>
+                                            <p class="text-13 text-gray-600">JPG, PNG, WEBP, or PDF format (max file size 10MB each)</p>
 
-                        </div>
-                    </div>
+                                            <span class="text-13 text-success d-block show-uploaded-passport-name d-none"></span> <!-- Display selected file name here -->
 
-                    <div class="mb-24">
-                        <label for="password" class="form-label mb-8 h6">Password</label>
-                        <div class="position-relative">
-                            <input type="password" class="form-control py-11 ps-40" id="password" name="password"
-                                placeholder="Password" required>
-                            <span class="position-absolute top-50 translate-middle-y ms-16 text-gray-600 d-flex">
-                                <i class="ph ph-lock"></i>
-                            </span>
+                                            @if ($document)
+                                                <span class="text-13 text-success d-block">
+                                                    Uploaded: {{ $document->file_original_name }}
+                                                &nbsp;
+                                                    <a href="{{ asset('storage/' . $document->file_path) }}" target="_blank" class="text-main-600">View</a>
+                                                </span>
+                                                <p class="text-13 text-muted mt-2">Uploading a new file will replace the existing one.</p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    @endforeach
 
-                    <div class="mb-24">
-                        <label for="password_confirmation" class="form-label mb-8 h6">Confirm Password</label>
-                        <div class="position-relative">
-                            <input type="password" class="form-control py-11 ps-40" id="password_confirmation"
-                                name="password_confirmation" placeholder="Confirm Password" required>
-                            <span class="position-absolute top-50 translate-middle-y ms-16 text-gray-600 d-flex">
-                                <i class="ph ph-lock"></i>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="mb-32 flex-between flex-wrap gap-8">
-                        <div class="form-check mb-0 flex-shrink-0 p-0">
-                            <p>If you already have an account? &nbsp;
-                                <a href="{{ route('login') }}"
-                                    class="text-main-600 hover-text-decoration-underline text-15 fw-medium">Login</a>
-                            </p>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-main rounded-pill w-100">Sign Up</button>
+                    <button type="submit" class="btn btn-main rounded-pill w-100">Submit Documents</button>
                 </form>
 
             </div>
         </div>
-        <div class="auth-left bg-main-50 flex-center p-24"
-            style="background-image: url('https://picsum.photos/1920/1080')">
-        </div>
+
 
     </section>
 
@@ -228,7 +210,46 @@
     </script>
  --}}
 
+    <script>
+        function handleFileInputChange(event) {
+            var fileInput = event.target;
+            var fileContainer = fileInput.closest('.upload-section');
+            var uploadedFileName = fileContainer.querySelector('.show-uploaded-passport-name');
 
+            var files = fileInput.files;
+
+            if (files.length > 0) {
+                var fileName = files[0].name; // Only one file
+                uploadedFileName.textContent = fileName;
+                uploadedFileName.classList.remove('d-none'); // Show the file name
+            } else {
+                uploadedFileName.textContent = '';
+                uploadedFileName.classList.add('d-none'); // Hide if no file selected
+            }
+        }
+
+        // Function to trigger the file input when "Browse" is clicked
+        function handleBrowseClick(event) {
+            var label = event.target;
+            var fileInput = label.closest('.upload-section').querySelector(
+                '.file-input'); // Find the correct input in the same section
+
+            fileInput.click(); // Trigger the hidden file input
+        }
+
+        // Attach event listeners after DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Attach event listeners to all labels with class 'file-label'
+            document.querySelectorAll('.file-label').forEach(label => {
+                label.addEventListener('click', handleBrowseClick);
+            });
+
+            // Handle file input changes
+            document.querySelectorAll('.file-input').forEach(input => {
+                input.addEventListener('change', handleFileInputChange);
+            });
+        });
+    </script>
 </body>
 
 </html>

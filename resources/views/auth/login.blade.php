@@ -32,6 +32,7 @@
     <link rel="stylesheet" href="{{ asset('backend/css/jquery-jvectormap-2.0.5.css') }}">
     <!-- Main css -->
     <link rel="stylesheet" href="{{ asset('backend/css/main.css') }}">
+    <link rel="shortcut icon" href="{{ asset('backend/images/logo/favicon.svg') }}">
 </head>
 
 <body>
@@ -53,8 +54,7 @@
         <div class="auth-right py-40 px-24 flex-center flex-column">
             <div class="auth-right__inner mx-auto w-100">
                 <a href="{{ route('/') }}" class="auth-right__logo">
-                    <img src="{{ asset('backend/images/logo/routeone_logo.svg') }}" alt=""
-                        style="width: 80%;">
+                    <img src="{{ asset('backend/images/logo/routeone_logo.svg') }}" alt="" style="width: 80%;">
                 </a>
                 <h2 class="mb-8">Welcome Back, Admin! 🇬🇧</h2>
                 <p class="text-gray-600 text-15 mb-32">Please sign in to your account to manage the system and continue
@@ -68,6 +68,16 @@
                 @if (session('error'))
                     <div style="color: red; background-color: #f8d7da; padding: 10px; border-radius: 5px;">
                         {{ session('error') }}
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 @endif
 
@@ -85,8 +95,8 @@
                     <div class="mb-24">
                         <label for="current-password" class="form-label mb-8 h6">Current Password</label>
                         <div class="position-relative">
-                            <input type="password" class="form-control py-11 ps-40" id="current-password" name="password"
-                                placeholder="Enter Current Password" value="">
+                            <input type="password" class="form-control py-11 ps-40" id="current-password"
+                                name="password" placeholder="Enter Current Password" value="">
                             <span
                                 class="toggle-password position-absolute top-50 inset-inline-end-0 me-16 translate-middle-y ph ph-eye-slash"
                                 id="#current-password"></span>
@@ -96,8 +106,8 @@
                     </div>
                     <div class="mb-32 flex-between flex-wrap gap-8">
                         <div class="form-check mb-0 flex-shrink-0">
-                            <input class="form-check-input flex-shrink-0 rounded-4" type="checkbox" value="" name="remember"
-                                id="remember">
+                            <input class="form-check-input flex-shrink-0 rounded-4" type="checkbox" value=""
+                                name="remember" id="remember">
                             <label class="form-check-label text-15 flex-grow-1" for="remember">Remember Me </label>
                         </div>
                         <a href="{{ route('password.request') }}"

@@ -23,7 +23,10 @@ class DashboardController extends Controller
         // elseif (Auth::user()->user_type === 'agent' && Auth::user()->agent_verification === 0) {
         //     dd('Agent status 0');
         // }
-         else {
+        elseif (Auth::user()->user_type === 'unverifiedagent') {
+            $userDocuments = Document::where('user_id', auth()->id())->get();
+            return view('auth.agent.document',compact('userDocuments'));
+        } else {
             $userCount = User::where('user_type', 'user')->count();
             $agentCount = User::where('user_type', 'agent')->count();
             $activeVacancies = Vacancies::where('status', '1')->count();
