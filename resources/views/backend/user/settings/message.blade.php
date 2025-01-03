@@ -82,7 +82,7 @@
 </div>
 
 @push('scripts')
-    <script src="https://cdn.tiny.cloud/1/mc59edcciy0vssoo3ojx1vwpo2jbsemez61eo60xxi6p5wse/tinymce/7/tinymce.min.js"
+    {{-- <script src="https://cdn.tiny.cloud/1/mc59edcciy0vssoo3ojx1vwpo2jbsemez61eo60xxi6p5wse/tinymce/7/tinymce.min.js"
         referrerpolicy="origin"></script>
 
     <script>
@@ -91,10 +91,10 @@
             plugins: 'code table lists',
             toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | table'
         });
-    </script>
-    {{-- <script>
-        $('#messageInput').trumbowyg();
     </script> --}}
+    <script>
+        $('#messageInput').trumbowyg();
+    </script>
 
     <script>
         $(document).ready(function() {
