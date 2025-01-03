@@ -80,6 +80,11 @@
 <div id="user-info" data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}"
     data-user-country="{{ $user->country }}">
 </div>
+@push('textarea')
+    <script>
+        $('#messageInput').trumbowyg();
+    </script>
+@endpush
 
 @push('scripts')
     {{-- <script src="https://cdn.tiny.cloud/1/mc59edcciy0vssoo3ojx1vwpo2jbsemez61eo60xxi6p5wse/tinymce/7/tinymce.min.js"
@@ -92,9 +97,9 @@
             toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | table'
         });
     </script> --}}
-    <script>
+    {{-- <script>
         $('#messageInput').trumbowyg();
-    </script>
+    </script> --}}
 
     <script>
         $(document).ready(function() {
@@ -195,12 +200,12 @@
                 const senderProfileImage = msg.sender.profile_image ?
                     `/storage/${msg.sender.profile_image}` :
                     '/backend/images/thumbs/setting-profile-img.webp';
-                    const senderName = msg.sender.name;
+                const senderName = msg.sender.name;
 
                 const receiverProfileImage = msg.receiver.profile_image ?
                     `/storage/${msg.receiver.profile_image}` :
                     '/backend/images/thumbs/setting-profile-img.webp';
-                    const receiverName = msg.receiver.name;
+                const receiverName = msg.receiver.name;
 
                 const messageItem = document.createElement('div');
                 messageItem.className =
