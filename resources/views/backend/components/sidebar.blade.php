@@ -32,6 +32,15 @@
                                     <span class="text">Team</span>
                                 </a>
                             </li>
+
+                            <li class="sidebar-menu__item">
+                                <a href="{{ route('agent.verification') }}"
+                                    class="sidebar-menu__link {{ request()->segment(1) === 'agent' ? 'activePage' : '' }}">
+                                    <span class="icon"><i class="ph ph-seal-check"></i></span>
+                                    <span class="text">Agent Verification</span>
+                                </a>
+                            </li>
+
                         @endif
                     @endauth
 

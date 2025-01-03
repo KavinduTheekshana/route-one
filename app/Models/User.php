@@ -97,4 +97,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Vacancies::class, 'job_applications', 'user_id', 'vacancies_id');
     }
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
 }

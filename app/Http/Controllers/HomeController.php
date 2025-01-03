@@ -257,7 +257,6 @@ class HomeController extends Controller
             'country' => $validated['country'],
             'password' => bcrypt($validated['password']),
             'user_type' => 'unverifiedagent',
-            // 'status' => true,
         ]);
 
         Mail::to($agent->email)->send(new AgentRegisteredMail($agent));
@@ -285,19 +284,19 @@ class HomeController extends Controller
                 $file = $request->file($type);
 
                 // Get file details
-                $filePath = $file->store('Documents');
+                $filePath = $file->store('Documents', 'public'); // Save to public disk
                 $fileOriginalName = $file->getClientOriginalName();
-                $fileSize = $file->getSize(); // Get file size in bytes
-                $fileType = $file->getMimeType(); // Get MIME type
+                $fileSize = $file->getSize();
+                $fileType = $file->getMimeType();
 
-                // Get existing document
+                // Check for existing document
                 $existingDocument = Document::where('user_id', $userId)
                     ->where('document_type', $type)
                     ->first();
 
                 if ($existingDocument) {
                     // Delete old file
-                    Storage::delete($existingDocument->file_path);
+                    Storage::disk('public')->delete($existingDocument->file_path);
 
                     // Update existing record
                     $existingDocument->update([

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AgentStatusUpdated;
 use App\Models\Application;
 use App\Models\Certificate;
 use App\Models\Document;
@@ -12,6 +13,7 @@ use App\Models\UserNotes;
 use App\Models\Vacancies;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
@@ -19,35 +21,35 @@ use Illuminate\Support\Facades\Response;
 class UserController extends Controller
 {
     public function downloadUsersCsv()
-{
-    $users = \App\Models\User::all(); // Fetch all users from the database
+    {
+        $users = \App\Models\User::all(); // Fetch all users from the database
 
-    $csvHeader = ['ID', 'Name', 'Email', 'Phone', 'Country', 'Status'];
+        $csvHeader = ['ID', 'Name', 'Email', 'Phone', 'Country', 'Status'];
 
-    return Response::streamDownload(function () use ($users, $csvHeader) {
-        $handle = fopen('php://output', 'w');
+        return Response::streamDownload(function () use ($users, $csvHeader) {
+            $handle = fopen('php://output', 'w');
 
-        // Write CSV header
-        fputcsv($handle, $csvHeader);
+            // Write CSV header
+            fputcsv($handle, $csvHeader);
 
-        // Write user data
-        foreach ($users as $user) {
-            fputcsv($handle, [
-                $user->id,
-                $user->name,
-                $user->email,
-                $user->phone,
-                $user->country,
-                $user->status ? 'Active' : 'Inactive',
-            ]);
-        }
+            // Write user data
+            foreach ($users as $user) {
+                fputcsv($handle, [
+                    $user->id,
+                    $user->name,
+                    $user->email,
+                    $user->phone,
+                    $user->country,
+                    $user->status ? 'Active' : 'Inactive',
+                ]);
+            }
 
-        fclose($handle);
-    }, 'users_data.csv', [
-        'Content-Type' => 'text/csv',
-        'Content-Disposition' => 'attachment; filename="users_data.csv"',
-    ]);
-}
+            fclose($handle);
+        }, 'users_data.csv', [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="users_data.csv"',
+        ]);
+    }
 
     public function storeOrUpdate(Request $request)
     {
@@ -105,6 +107,16 @@ class UserController extends Controller
         return view('backend.user.create.index');
     }
 
+    public function verification()
+    {
+        $users = User::where('user_type', 'unverifiedagent')
+            ->with('documents') // Eager load documents if needed in the view
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return view('backend.agent.index', compact('users'));
+    }
+
     public function details(Request $request)
     {
 
@@ -153,6 +165,23 @@ class UserController extends Controller
         $user->status = 1;
         $user->save();
         return redirect()->back()->with('success', 'User has been activate successfully.');
+    }
+
+    public function agent_block(User $user)
+    {
+        $user->agent_verification = 0;
+        $user->user_type = 'unverifiedagent';
+        $user->save();
+        return redirect()->back()->with('success', 'Agent has been disabled successfully.');
+    }
+
+    public function agent_unblock(User $user)
+    {
+        $user->user_type = 'agent';
+        $user->save();
+        $statusMessage = 'Your account has been activated and is now active.';
+        Mail::to($user->email)->send(new AgentStatusUpdated($user, $statusMessage));
+        return redirect()->back()->with('success', 'Agent has been activate successfully.');
     }
 
     public function user_settings($id)
@@ -226,7 +255,8 @@ class UserController extends Controller
     public function settings($id)
     {
         $user = User::findOrFail($id);
-        return view('backend.team.settings', compact('user'));
+        $documents = Document::where('user_id', $id)->get();
+        return view('backend.team.settings', compact('user', 'documents'));
     }
 
     public function update(Request $request, $id)

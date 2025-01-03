@@ -85,6 +85,9 @@ Route::middleware([
         Route::post('/member/store', [UserController::class, 'member_store'])->name('member.store')->middleware(['auth', 'superadmin']);
         Route::delete('/team/{user}', [UserController::class, 'destroy'])->name('team.destroy')->middleware(['auth', 'superadmin']);
         Route::get('/download-users-csv', [UserController::class, 'downloadUsersCsv'])->name('download.users.csv');
+        Route::get('/agent/verification', [UserController::class, 'verification'])->name('agent.verification');
+        Route::get('/agent/block/{user}', [UserController::class, 'agent_block'])->name('agent.block')->middleware(['auth', 'role:superadmin']);
+        Route::get('/agent/unblock/{user}', [UserController::class, 'agent_unblock'])->name('agent.unblock')->middleware(['auth', 'role:superadmin']);
 
         // admin, superadmin and agent
         Route::get('/user/create', [UserController::class, 'create'])->name('user.create')->middleware(['auth', 'role:superadmin|agent']);
