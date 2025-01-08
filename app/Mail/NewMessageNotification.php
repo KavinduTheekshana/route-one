@@ -33,37 +33,6 @@ class NewMessageNotification extends Mailable
                     ->with([
                         'messageContent' => $this->messageContent,
                         'sender' => $this->sender,
-                    ])
-                    ->html($this->messageContent); // Explicitly send as HTML
+                    ]);
     }
-
-    /**
-     * Get the message envelope.
-     */
-    // public function envelope(): Envelope
-    // {
-    //     return new Envelope(
-    //         subject: 'New Message Notification',
-    //     );
-    // }
-
-    /**
-     * Get the message content definition.
-     */
-    // public function content(): Content
-    // {
-    //     return new Content(
-    //         view: 'view.name',
-    //     );
-    // }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    // public function attachments(): array
-    // {
-    //     return [];
-    // }
 }
