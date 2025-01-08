@@ -26,6 +26,10 @@
             text-align: center;
             padding: 20px 10px;
         }
+        .email-header img {
+            max-width: 150px;
+            margin-bottom: 10px;
+        }
         .email-header h1 {
             margin: 0;
             font-size: 24px;
@@ -52,7 +56,7 @@
             border-radius: 5px;
         }
         .btn:hover {
-            background-color: #3e80f9;
+            background-color: #2c69e2;
         }
     </style>
 </head>
@@ -60,6 +64,7 @@
     <div class="email-container">
         <!-- Header Section -->
         <div class="email-header">
+            <!-- Company Logo -->
             <h1>Welcome to Our Platform!</h1>
         </div>
 
@@ -85,7 +90,7 @@
             <p>&copy; {{ date('Y') }} Your Company Name. All rights reserved.</p>
             <p>
                 <a href="http://routeonerecruitment.com" style="color: #3e80f9; text-decoration: none;">Visit our website</a> |
-                <a href="mailto:support@example.com" style="color: #3e80f9; text-decoration: none;">Contact Support</a>
+                <a href="mailto:info@routeonerecruitment.com" style="color: #3e80f9; text-decoration: none;">Contact Support</a>
             </p>
         </div>
     </div>
