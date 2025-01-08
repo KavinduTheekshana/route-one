@@ -24,8 +24,10 @@
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.0",
         "notifylk/notify-php": "*@dev",
+        "setasign/fpdf": "^1.8",
         "setasign/fpdi": "^2.6",
-        "symfony/mailer": "~7.1.0"
+        "symfony/mailer": "~7.1.0",
+        "tecnickcom/tcpdf": "^6.8"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.1",

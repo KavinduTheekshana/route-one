@@ -9,8 +9,10 @@ use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
-use setasign\Fpdi\Fpdi;
 use Fpdf\Fpdf;
+// use TCPDF;
+use setasign\Fpdi\Tcpdf\Fpdi;
+
 
 
 
@@ -28,6 +30,13 @@ class DocumentController extends Controller
         // Create a new FPDI instance
         $pdf = new Fpdi();
 
+        // Set document information
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor($user->name);
+        $pdf->SetTitle('Merged Documents');
+        $pdf->SetSubject('Merged Documents for ' . $user->name);
+
+        // Loop through each document
         foreach ($documents as $document) {
             $filePath = storage_path('app/public/' . $document->file_path);
 
@@ -37,29 +46,30 @@ class DocumentController extends Controller
                 // Check if the file is a PDF
                 if (str_contains($fileType, 'pdf')) {
                     try {
+                        // Get the number of pages in the PDF
                         $pageCount = $pdf->setSourceFile($filePath);
 
-                        // Import all pages from the PDF
+                        // Import each page and add it to the merged PDF
                         for ($i = 1; $i <= $pageCount; $i++) {
                             $templateId = $pdf->importPage($i);
                             $pdf->AddPage();
-                            $pdf->useTemplate($templateId); // Use the template only once per page
+                            $pdf->useTemplate($templateId);
                         }
                     } catch (\Exception $e) {
-                        // Log the error and continue with the next document
+                        // Log the error and add a placeholder page
                         Log::error('Failed to process PDF: ' . $filePath . ' - ' . $e->getMessage());
                         $pdf->AddPage();
-                        $pdf->SetFont('Arial', 'B', 16);
+                        $pdf->SetFont('helvetica', 'B', 16);
                         $pdf->Cell(0, 10, 'Unsupported PDF compression: ' . $document->file_original_name, 0, 1, 'C');
                     }
                 } elseif (str_contains($fileType, 'image')) {
                     // Handle image files
                     $pdf->AddPage();
-                    $pdf->Image($filePath, 10, 10, 190); // Adjust image placement and size
+                    $pdf->Image($filePath, 10, 10, 180); // Adjust image placement and size
                 } else {
                     // For unsupported types, add a placeholder
                     $pdf->AddPage();
-                    $pdf->SetFont('Arial', 'B', 16);
+                    $pdf->SetFont('helvetica', 'B', 16);
                     $pdf->Cell(0, 10, 'Unsupported file type: ' . $document->file_original_name, 0, 1, 'C');
                 }
             } else {
@@ -77,7 +87,6 @@ class DocumentController extends Controller
         // Return the merged PDF as a download
         return response()->download($mergedPdfPath)->deleteFileAfterSend(true);
     }
-
 
     public function generatePDF(User $user)
     {
