@@ -36,13 +36,21 @@ class DocumentController extends Controller
 
                 // Check if the file is a PDF
                 if (str_contains($fileType, 'pdf')) {
-                    $pageCount = $pdf->setSourceFile($filePath);
+                    try {
+                        $pageCount = $pdf->setSourceFile($filePath);
 
-                    // Import all pages from the PDF
-                    for ($i = 1; $i <= $pageCount; $i++) {
-                        $templateId = $pdf->importPage($i);
+                        // Import all pages from the PDF
+                        for ($i = 1; $i <= $pageCount; $i++) {
+                            $templateId = $pdf->importPage($i);
+                            $pdf->AddPage();
+                            $pdf->useTemplate($templateId); // Use the template only once per page
+                        }
+                    } catch (\Exception $e) {
+                        // Log the error and continue with the next document
+                        Log::error('Failed to process PDF: ' . $filePath . ' - ' . $e->getMessage());
                         $pdf->AddPage();
-                        $pdf->useTemplate($templateId); // Use the template only once per page
+                        $pdf->SetFont('Arial', 'B', 16);
+                        $pdf->Cell(0, 10, 'Unsupported PDF compression: ' . $document->file_original_name, 0, 1, 'C');
                     }
                 } elseif (str_contains($fileType, 'image')) {
                     // Handle image files
@@ -55,7 +63,7 @@ class DocumentController extends Controller
                     $pdf->Cell(0, 10, 'Unsupported file type: ' . $document->file_original_name, 0, 1, 'C');
                 }
             } else {
-                \Log::error('File not found: ' . $filePath);
+                Log::error('File not found: ' . $filePath);
             }
         }
 

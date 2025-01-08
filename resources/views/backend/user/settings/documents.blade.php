@@ -14,6 +14,7 @@
                   <a href="{{ route('documents.merge-pdf', $user->id) }}" class="btn btn-success">Download All Documents
                       as One PDF</a>
               @endif
+
           </div>
           <div class="card-body">
 
