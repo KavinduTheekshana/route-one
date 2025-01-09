@@ -45,6 +45,21 @@
         .auth-right__inner {
             max-width: 600px;
         }
+
+        .check-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            font-size: 12px;
+            background-color: #28a745;
+            /* Green background */
+            color: white;
+            /* White icon */
+            border-radius: 50%;
+            /* Circular shape */
+        }
     </style>
 </head>
 
@@ -91,10 +106,18 @@
                         </ul>
                     </div>
                 @endif
+
+
+                @if ($userDocuments->isNotEmpty())
+                    <div class="alert alert-info mb-24">
+                        Your documents have been uploaded. Our team will manually review them and update you via email.
+                        Once approved, you will gain access to the agent portal.
+                    </div>
+                @endif
                 <form method="POST" action="{{ route('agent.store.documents') }}" enctype="multipart/form-data">
                     @csrf
 
-                    @foreach (['passport' => 'Passport', 'br' => 'Business Registration', 'police' => 'Police Clearance', 'address' => 'Address Proof'] as $type => $label)
+                    @foreach (['passport' => 'Passport', 'br' => 'Business Registration (Optional)', 'police' => 'Police Clearance', 'address' => 'Address Proof'] as $type => $label)
                         @php
                             $document = $userDocuments->firstWhere('document_type', $type);
                         @endphp
@@ -104,27 +127,43 @@
                             <div class="position-relative">
                                 <div class="upload-card-item p-16 rounded-12 bg-main-50 mb-20 mt-4">
                                     <div class="flex-align gap-10 flex-wrap">
-                                        <span class="w-36 h-36 text-lg rounded-circle bg-white flex-center text-main-600 flex-shrink-0">
-                                            <i class="ph ph-paperclip"></i>
+                                        <!-- Icon Section -->
+                                        <span
+                                            class="w-36 h-36 text-lg rounded-circle flex-center flex-shrink-0 {{ $document ? 'bg-success' : 'bg-white' }}">
+                                            @if ($document)
+                                                <i class="ph ph-check text-white"></i> <!-- White check icon -->
+                                            @else
+                                                <i class="ph ph-paperclip text-main-600"></i> <!-- Paperclip icon -->
+                                            @endif
                                         </span>
+
+                                        <!-- Upload Section -->
                                         <div class="upload-section">
                                             <p class="text-15 text-gray-500">
-                                                Please upload a clear image of your <b> {{ $label }}</b>.
+                                                Please upload a clear image of your <b>{{ $label }}</b>.
                                                 <label class="text-main-600 cursor-pointer file-label">Browse</label>
                                                 <input name="{{ $type }}" type="file" class="file-input"
                                                     accept=".jpg,.jpeg,.png,.webp,.pdf" hidden>
                                             </p>
-                                            <p class="text-13 text-gray-600">JPG, PNG, WEBP, or PDF format (max file size 10MB each)</p>
+                                            <p class="text-13 text-gray-600">JPG, PNG, WEBP, or PDF format (max file
+                                                size 10MB each)</p>
 
-                                            <span class="text-13 text-success d-block show-uploaded-passport-name d-none"></span> <!-- Display selected file name here -->
+                                            <!-- Display selected file name -->
+                                            <span
+                                                class="text-13 text-success d-block show-uploaded-passport-name d-none"></span>
 
+                                            <!-- Display uploaded file details -->
                                             @if ($document)
-                                                <span class="text-13 text-success d-block">
-                                                    Uploaded: {{ $document->file_original_name }}
-                                                &nbsp;
-                                                    <a href="{{ asset('storage/' . $document->file_path) }}" target="_blank" class="text-main-600">View</a>
-                                                </span>
-                                                <p class="text-13 text-muted mt-2">Uploading a new file will replace the existing one.</p>
+                                                <div class="mt-2">
+                                                    <span class="text-13 text-success d-block">
+                                                        Uploaded: {{ $document->file_original_name }}
+                                                        &nbsp;
+                                                        <a href="{{ asset('storage/' . $document->file_path) }}"
+                                                            target="_blank" class="text-main-600">View</a>
+                                                    </span>
+                                                    <p class="text-13 text-muted mt-2">Uploading a new file will replace
+                                                        the existing one.</p>
+                                                </div>
                                             @endif
                                         </div>
                                     </div>
@@ -135,7 +174,6 @@
 
                     <button type="submit" class="btn btn-main rounded-pill w-100">Submit Documents</button>
                 </form>
-
             </div>
         </div>
 

@@ -319,7 +319,7 @@ class HomeController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Documents uploaded successfully.');
+        return redirect()->back()->with('success', 'Your documents have been uploaded. Our team will manually review them and update you via email. Once approved, you will gain access to the agent portal.');
     }
 
 }
