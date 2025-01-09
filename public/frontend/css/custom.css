@@ -326,4 +326,16 @@
     height: 100%;
     object-fit: cover;
 }
+.text-agent{
+    max-width: 50%;
+}
+.text-agent h3{
+    font-size: 45px;
+    font-weight: 800;
+    color: #fff;
+}
+.text-agent p{
+    font-size: 16px;
+    color: #d1d1d1;
+}
 

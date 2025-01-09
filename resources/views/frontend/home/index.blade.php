@@ -2,6 +2,7 @@
 
 @section('content')
     @include('frontend.home.slider')
+    @include('frontend.home.agent')
     @include('frontend.home.about')
     @include('frontend.home.service')
 
