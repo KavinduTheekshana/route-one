@@ -187,9 +187,9 @@ class HomeController extends Controller
                 ->toArray();
         }
 
-        // Get all vacancies with status 1
+        // Get all vacancies with status 1 and order them randomly
         $vacancies = Vacancies::where('status', 1)
-            ->orderBy('created_at', 'desc')
+            ->inRandomOrder() // This will shuffle the results randomly
             ->get();
 
         // Return the jobs index view with vacancies and applied job IDs
