@@ -122,12 +122,22 @@
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputCountry">Country <span class="text-danger">*</span></label>
 
+                                <select id="countrySelect" class="form-control" name="country" style="width: 100%;"
+                               >
+                                <option value="" disabled selected>Select a country</option>
+                                @foreach (['Afghanistan', 'Armenia', 'Azerbaijan', 'Bahrain', 'Bangladesh', 'Bhutan', 'Brunei', 'Cambodia', 'China', 'Cyprus', 'Georgia', 'India', 'Indonesia', 'Iran', 'Iraq', 'Israel', 'Japan', 'Jordan', 'Kazakhstan', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Lebanon', 'Malaysia', 'Maldives', 'Mongolia', 'Myanmar (Burma)', 'Nepal', 'North Korea', 'Oman', 'Pakistan', 'Palestine', 'Philippines', 'Qatar', 'Saudi Arabia', 'Singapore', 'South Korea', 'Sri Lanka', 'Syria', 'Tajikistan', 'Thailand', 'Timor-Leste', 'Turkey', 'Turkmenistan', 'United Arab Emirates', 'Uzbekistan', 'Vietnam', 'Yemen'] as $country)
+                                    <option value="{{ $country }}"
+                                        {{  auth()->user()->country == $country ? 'selected' : '' }}>
+                                        {{ $country }}
+                                    </option>
+                                @endforeach
+                            </select>
 
 
 
-                                <select id="countrySelect" class="form-control" name="country" style="width: 100%;">
+                                {{-- <select id="countrySelect" class="form-control" name="country" style="width: 100%;">
                                     <option value="" disabled selected>Loading countries...</option>
-                                </select>
+                                </select> --}}
 
                                 {{-- <select id="countries" class="form-control" name="country" style="width: 100%;">
                                     @foreach ($countries as $country)
@@ -215,7 +225,7 @@
     });
 </script> --}}
 
-<script>
+{{-- <script>
     // Fetch country data
     fetch('https://restcountries.com/v3.1/all')
         .then(response => response.json())
@@ -247,7 +257,7 @@
             const select = document.getElementById('countrySelect');
             select.innerHTML = '<option value="" disabled>Error loading countries</option>';
         });
-</script>
+</script> --}}
 
 
 

@@ -40,10 +40,24 @@
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputCountry">Country <span
                                         class="text-danger">*</span></label>
-                                <select id="countrySelect" class="form-control" name="country" style="width: 100%;"
+                                {{-- <select id="countrySelect" class="form-control" name="country" style="width: 100%;"
                                     {{ isset($application) && $application->status == 1 ? 'disabled' : '' }}>
                                     <option value="" disabled selected>Loading countries...</option>
+                                </select> --}}
+
+                                <select id="countrySelect" class="form-control" name="country" style="width: 100%;"
+                                    {{ isset($application) && $application->status == 1 ? 'disabled' : '' }}>
+                                    <option value="" disabled selected>Select a country</option>
+                                    @foreach (['Afghanistan', 'Armenia', 'Azerbaijan', 'Bahrain', 'Bangladesh', 'Bhutan', 'Brunei', 'Cambodia', 'China', 'Cyprus', 'Georgia', 'India', 'Indonesia', 'Iran', 'Iraq', 'Israel', 'Japan', 'Jordan', 'Kazakhstan', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Lebanon', 'Malaysia', 'Maldives', 'Mongolia', 'Myanmar (Burma)', 'Nepal', 'North Korea', 'Oman', 'Pakistan', 'Palestine', 'Philippines', 'Qatar', 'Saudi Arabia', 'Singapore', 'South Korea', 'Sri Lanka', 'Syria', 'Tajikistan', 'Thailand', 'Timor-Leste', 'Turkey', 'Turkmenistan', 'United Arab Emirates', 'Uzbekistan', 'Vietnam', 'Yemen'] as $country)
+                                        <option value="{{ $country }}"
+                                            {{ isset($application) && $application->country == $country ? 'selected' : '' }}>
+                                            {{ $country }}
+                                        </option>
+                                    @endforeach
                                 </select>
+
+
+
                                 {{-- <input class="form-control" name="country" type="text"
                                     placeholder="Enter your country" value="{{ $application->country ?? '' }}"
                                     {{ isset($application) && $application->status ? 'disabled' : '' }}> --}}
@@ -107,7 +121,7 @@
                             <div class="col-md-6">
                                 <label class="small mb-1">Application Number <span class="text-danger"></span></label>
                                 <input class="form-control" type="text" readonly
-                                     value="{{ $application->application_number ?? '' }}"
+                                    value="{{ $application->application_number ?? '' }}"
                                     {{ isset($application) && $application->status == 1 ? 'disabled' : '' }}>
                             </div>
 
@@ -131,7 +145,7 @@
 @endsection
 
 @push('scripts')
-<script>
+{{-- <script>
     // Fetch country data
     fetch('https://restcountries.com/v3.1/all')
         .then(response => response.json())
@@ -163,7 +177,7 @@
             const select = document.getElementById('countrySelect');
             select.innerHTML = '<option value="" disabled>Error loading countries</option>';
         });
-</script>
+</script> --}}
 
 <script src="{{ asset('frontend/js/calander.js') }}"></script>
 @endpush
