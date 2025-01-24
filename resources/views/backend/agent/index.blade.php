@@ -135,6 +135,10 @@
                         </td>
                         <td>{{ $user->created_at->format('Y-m-d') }}</td>
                         <td>
+
+                            <a href="{{ route('user.settings', $user->id) }}" class="btn btn-warning btn-sm"><i
+                                class="ph ph-eye"></i></a>
+
                             @if ($user->type == 'unverifiedagent')
                                 <a href="{{ route('agent.block', $user->id) }}" class="btn btn-danger btn-sm"><i
                                         class="ph ph-lock"></i></a>
