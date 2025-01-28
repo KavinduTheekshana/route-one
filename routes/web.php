@@ -100,6 +100,9 @@ Route::middleware([
         Route::put('/user/update/{user}', [UserController::class, 'user_update'])->name('user.update')->middleware(['auth', 'role:superadmin|agent']);
         Route::post('/user-notes', [UserController::class, 'storeOrUpdate'])->name('user.notes.storeOrUpdate');
 
+        // Staff Management
+        Route::get('/staff/manage', [UserController::class, 'staff'])->name('staff.manage')->middleware(['auth', 'role:superadmin']);
+
         Route::get('/admin/vacancies/list', [VacanciesController::class, 'list'])->name('admin.vacancies.list')->middleware(['auth', 'superadmin']);
         Route::get('/admin/vacancies/create', [VacanciesController::class, 'create'])->name('admin.vacancies.create')->middleware(['auth', 'superadmin']);
         Route::post('/admin/vacancies/store', [VacanciesController::class, 'store'])->name('admin.vacancies.store')->middleware(['auth', 'superadmin']);
@@ -136,6 +139,7 @@ Route::middleware([
         // Application
         Route::get('/admin/applications', [ApplicationController::class, 'applications'])->name('admin.applications')->middleware(['auth', 'role:superadmin|agent|teacher']);
         Route::post('/user/application/update', [ApplicationController::class, 'update'])->name('user.application.update')->middleware(['auth', 'role:superadmin|agent|teacher']);
+        Route::post('/user/application/create', [ApplicationController::class, 'create'])->name('user.application.create')->middleware(['auth', 'role:superadmin|agent|teacher']);
         Route::get('/application/approve/{id}', [ApplicationController::class, 'approve'])->name('application.approve')->middleware(['auth', 'role:superadmin|agent|teacher']);
         Route::get('/application/reject/{id}', [ApplicationController::class, 'reject'])->name('application.reject')->middleware(['auth', 'role:superadmin|agent|teacher']);
         Route::get('/applications/{id}', [ApplicationController::class, 'show'])->name('applications.show')->middleware(['auth', 'role:superadmin|agent|teacher']);
@@ -192,6 +196,7 @@ Route::middleware([
         Route::patch('admin/services/{service}/toggle-status', [ServicesController::class, 'toggleStatus'])->name('admin.services.toggleStatus');
 
         // Route::patch('admin/services/{service}/status', [ServicesController::class, 'changeStatus'])->name('admin.services.changeStatus');
+        Route::post('/update-staff-status', [UserController::class, 'updateStaffStatus'])->name('update.staff.status');
     });
 });
 

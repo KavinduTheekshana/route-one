@@ -41,6 +41,14 @@
                                 </a>
                             </li>
 
+                            <li class="sidebar-menu__item">
+                                <a href="{{ route('staff.manage') }}"
+                                    class="sidebar-menu__link {{ request()->segment(1) === 'staff' ? 'activePage' : '' }}">
+                                    <span class="icon"><i class="ph ph-users-four"></i></span>
+                                    <span class="text">Staff</span>
+                                </a>
+                            </li>
+
                         @endif
                     @endauth
 

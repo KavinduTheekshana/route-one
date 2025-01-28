@@ -102,6 +102,29 @@ class UserController extends Controller
         return view('backend.user.manage.manage', compact('users'));
     }
 
+    public function staff()
+    {
+        $authUser = auth()->user();
+
+        // Initialize the $users query
+        if ($authUser->user_type === 'superadmin') {
+            $users = User::where('user_type', '=', 'user')
+                ->orderBy('id', 'desc')
+                ->get();
+        } elseif ($authUser->user_type === 'agent') {
+            $users = User::where('user_type', 'user') // First condition
+                ->where('agent_id', Auth::id()) // Second condition (AND)
+                ->orderBy('id', 'desc') // Sort by id in descending order
+                ->get();
+        } else {
+            abort(403, 'Unauthorized access');
+        }
+
+
+
+        return view('backend.user.manage.manage', compact('users'));
+    }
+
     public function create()
     {
         return view('backend.user.create.index');
@@ -351,6 +374,23 @@ class UserController extends Controller
 
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Member created successfully!');
+    }
+
+    public function updateStaffStatus(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'is_staff' => 'required|boolean',
+        ]);
+
+        // Find the user and update the is_staff field
+        $user = User::find($request->user_id);
+        $user->is_staff = $request->is_staff;
+        $user->save();
+
+        // Return a success response
+        return response()->json(['success' => true]);
     }
 
     public function destroy(User $user)

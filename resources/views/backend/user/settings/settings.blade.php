@@ -47,6 +47,12 @@
                                 <span class="text-gray-600 d-flex text-15">Join
                                     {{ date('F Y', strtotime($user->created_at)) }}</span>
                             </div>
+                            <div class="form-switch switch-primary d-flex align-items-center gap-8">
+                                <input type="hidden" name="user_id" id="user_id" value="{{ $user->id }}">
+                                <input class="form-check-input" type="checkbox" role="switch" id="switch2" onchange="toggleStaffStatus(this)">
+                                <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="switch2" id="staffLabel">Not Staff</label>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -152,4 +158,54 @@
     uploadImageFunction('#coverImageUpload', '#coverImagePreview');
     uploadImageFunction('#imageUpload', '#profileImagePreview');
 </script>
+
+<script>
+    function toggleStaffStatus(switchElement) {
+        const hiddenUserIdField = document.getElementById('user_id'); // Get the hidden field
+        const userId = hiddenUserIdField.value; // Retrieve the user ID
+        const isStaff = switchElement.checked ? 1 : 0; // Get the switch state
+        const label = document.getElementById('staffLabel'); // Get the label element
+
+        // Update the label text
+        label.textContent = isStaff ? 'Staff' : 'Not Staff';
+
+        // Make an AJAX request to update the staff status
+        $.ajax({
+            url: '/update-staff-status', // Laravel route to handle the update
+            method: 'POST',
+            data: {
+                user_id: userId,
+                is_staff: isStaff,
+                _token: '{{ csrf_token() }}' // CSRF token for Laravel
+            },
+            success: function(response) {
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Staff status updated successfully!',
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        location.reload(); // Reload the page after SweetAlert confirmation
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to update staff status.',
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while updating staff status.',
+                });
+            }
+        });
+    }
+</script>
+
 @endpush

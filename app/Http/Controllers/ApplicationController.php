@@ -194,6 +194,36 @@ class ApplicationController extends Controller
         ]);
     }
 
+    public function create(Request $request)
+{
+    // Validate the request
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'country' => 'nullable|string|max:255',
+        'phone' => 'nullable|string|max:15',
+        'email' => 'required|email|unique:applications,email',
+        'address' => 'nullable|string|max:255',
+        'dob' => 'nullable|date',
+        'passport' => 'nullable|string|max:50',
+        'agent_id' => 'nullable|exists:users,id',
+    ]);
+
+    // Create a new application
+    $application = Application::create([
+        'user_id' => $request->user_id,
+        'name' => $request->name,
+        'country' => $request->country,
+        'phone' => $request->phone,
+        'email' => $request->email,
+        'address' => $request->address,
+        'dob' => $request->dob,
+        'passport' => $request->passport,
+        'agent_id' => $request->agent_id,
+    ]);
+
+    return redirect()->back()->with('success', 'Application created successfully.');
+}
+
     public function approve($id)
     {
         // Find the application by its ID

@@ -9,7 +9,9 @@
           </div>
           <div class="card-body">
               <div class="row">
-                  <form method="POST" action="{{ route('user.application.update') }}" enctype="multipart/form-data">
+                <form method="POST"
+                action="{{ isset($application) ? route('user.application.update') : route('user.application.create') }}"
+                enctype="multipart/form-data">
                       @csrf
                       <input type="hidden" name="user_id" value="{{ $user->id }}">
                       @if (isset($application) && $application->status == 1)
@@ -87,12 +89,25 @@
 
                       <br>
 
-                      @if (Auth::user()->user_type === 'superadmin' or Auth::user()->user_type === 'agent')
-                          <button class="btn btn-primary" type="submit"
-                              {{ isset($application) && $application->statu == 1 ? 'disabled' : '' }}>
-                              Update Application
+                      @if (isset($application))
+                          @if (Auth::user()->user_type === 'superadmin' or Auth::user()->user_type === 'agent')
+                              <button class="btn btn-primary" type="submit"
+                                  {{ $application->status == 1 ? 'disabled' : '' }}>
+                                  Update Application
+                              </button>
+                          @endif
+                      @else
+                          <button class="btn btn-success" type="submit">
+                              Create Application
                           </button>
                       @endif
+
+                      {{-- @if (Auth::user()->user_type === 'superadmin' or Auth::user()->user_type === 'agent')
+                          <button class="btn btn-primary" type="submit"
+                              {{ isset($application) && $application->status == 1 ? 'disabled' : '' }}>
+                              Update Application
+                          </button>
+                      @endif --}}
 
                       @if ($application)
 
