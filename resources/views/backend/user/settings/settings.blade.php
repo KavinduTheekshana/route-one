@@ -28,9 +28,9 @@
 
                     <div>
                         <h4 class="mb-8">{{ $user->name }}
-                            @if($application)
-                                <small
-                                    style="font-weight: 100; letter-spacing: 4px;"> - ({{ $application->application_number }})</small>
+                            @if ($application)
+                                <small style="font-weight: 100; letter-spacing: 4px;"> -
+                                    ({{ $application->application_number }})</small>
                             @endif
                         </h4>
                         <div class="setting-profile__infos flex-align flex-wrap gap-16">
@@ -47,11 +47,21 @@
                                 <span class="text-gray-600 d-flex text-15">Join
                                     {{ date('F Y', strtotime($user->created_at)) }}</span>
                             </div>
-                            <div class="form-switch switch-primary d-flex align-items-center gap-8">
-                                <input type="hidden" name="user_id" id="user_id" value="{{ $user->id }}">
-                                <input class="form-check-input" type="checkbox" role="switch" id="switch2" onchange="toggleStaffStatus(this)">
-                                <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="switch2" id="staffLabel">Not Staff</label>
-                            </div>
+                            @if (Auth::user()->user_type === 'superadmin')
+                                <div class="form-switch switch-primary d-flex align-items-center gap-8">
+                                    <input type="hidden" name="user_id" id="user_id" value="{{ $user->id }}">
+
+                                    <!-- Set the checkbox as checked if the user is staff -->
+                                    <input class="form-check-input" type="checkbox" role="switch" id="switch2"
+                                        onchange="toggleStaffStatus(this)" {{ $user->is_staff ? 'checked' : '' }}>
+
+                                    <!-- Dynamically change the label based on staff status -->
+                                    <label class="form-check-label line-height-1 fw-medium text-secondary-light"
+                                        for="switch2" id="staffLabel">
+                                        {{ $user->is_staff ? 'Staff' : 'Not Staff' }}
+                                    </label>
+                                </div>
+                            @endif
 
                         </div>
                     </div>
@@ -67,13 +77,13 @@
                     </button>
                 </li>
                 @if (Auth::user()->user_type === 'superadmin' or Auth::user()->user_type === 'agent')
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-password-tab" data-bs-toggle="pill"
-                        data-bs-target="#pills-password" type="button" role="tab" aria-controls="pills-password"
-                        aria-selected="false">
-                        Password
-                    </button>
-                </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-password-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-password" type="button" role="tab"
+                            aria-controls="pills-password" aria-selected="false">
+                            Password
+                        </button>
+                    </li>
                 @endif
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-documents-tab" data-bs-toggle="pill"
@@ -106,8 +116,9 @@
                 </li>
 
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-notes-tab" data-bs-toggle="pill" data-bs-target="#pills-notes"
-                        type="button" role="tab" aria-controls="pills-notes" aria-selected="true">
+                    <button class="nav-link" id="pills-notes-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-notes" type="button" role="tab" aria-controls="pills-notes"
+                        aria-selected="true">
                         Notes
                     </button>
                 </li>
@@ -207,5 +218,4 @@
         });
     }
 </script>
-
 @endpush

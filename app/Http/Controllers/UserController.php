@@ -106,21 +106,17 @@ class UserController extends Controller
     {
         $authUser = auth()->user();
 
-        // Initialize the $users query
+        // Check if the authenticated user is a superadmin
         if ($authUser->user_type === 'superadmin') {
-            $users = User::where('user_type', '=', 'user')
+            // Fetch users with user_type as 'user' and is_staff as 1
+            $users = User::where('user_type', 'user')
+                ->where('is_staff', 1)
                 ->orderBy('id', 'desc')
                 ->get();
-        } elseif ($authUser->user_type === 'agent') {
-            $users = User::where('user_type', 'user') // First condition
-                ->where('agent_id', Auth::id()) // Second condition (AND)
-                ->orderBy('id', 'desc') // Sort by id in descending order
-                ->get();
         } else {
+            // Abort if the user is not authorized
             abort(403, 'Unauthorized access');
         }
-
-
 
         return view('backend.user.manage.manage', compact('users'));
     }
