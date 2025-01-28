@@ -79,6 +79,12 @@
                     </div>
                 @endif
 
+                @if ($errors->has('captcha'))
+                    <div class="alert alert-danger">
+                        {{ $errors->first('captcha') }}
+                    </div>
+                @endif
+
                 <form method="POST" action="{{ route('agent.store') }}">
                     @csrf
                     <div class="mb-24">
@@ -141,6 +147,8 @@
                         </div>
                     </div>
 
+                    <div class="g-recaptcha" data-sitekey="6Lequ8UqAAAAAHBEB1dRaq2ydJ2855goX61BnxNu"></div>
+
                     <div class="mb-32 flex-between flex-wrap gap-8">
                         <div class="form-check mb-0 flex-shrink-0 p-0">
                             <p>If you already have an account? &nbsp;
@@ -189,6 +197,10 @@
 
     <!-- main js -->
     <script src="{{ asset('backend/js/main.js') }}"></script>
+
+    <!-- reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 
     {{-- <script>
         fetch('https://restcountries.com/v3.1/all')

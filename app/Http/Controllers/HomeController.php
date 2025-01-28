@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 
 class HomeController extends Controller
 {
@@ -248,7 +249,23 @@ class HomeController extends Controller
             'email' => 'required|email|unique:users,email|max:255',
             'country' => 'required|string|max:255',
             'password' => 'required|string|min:8|confirmed',
+            'g-recaptcha-response' => 'required', // Ensure reCAPTCHA is filled
         ]);
+
+
+        // Verify reCAPTCHA
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => env('RECAPTCHA_SECRET_KEY'),
+            'response' => $request->input('g-recaptcha-response'),
+            'remoteip' => $request->ip(),
+        ]);
+
+        $responseData = $response->json();
+
+        if (!$responseData['success']) {
+            return back()->withErrors(['captcha' => 'reCAPTCHA verification failed.'])->withInput();
+        }
+
 
         // Create the agent (Assume user_type is used to differentiate agent from others)
         $agent = User::create([
@@ -321,5 +338,4 @@ class HomeController extends Controller
 
         return redirect()->back()->with('success', 'Your documents have been uploaded. Our team will manually review them and update you via email. Once approved, you will gain access to the agent portal.');
     }
-
 }

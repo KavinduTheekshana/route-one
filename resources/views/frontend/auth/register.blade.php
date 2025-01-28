@@ -25,30 +25,46 @@
                             {{ $value }}
                         </div>
                     @endsession
+
                     @if (session('error'))
                         <div style="color: red; background-color: #f8d7da; padding: 10px; border-radius: 5px;">
                             {{ session('error') }}
                         </div>
                     @endif
+
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
+                        <!-- Name Field -->
                         <input type="text" class="form-control login-input" name="name" autofocus
                             autocomplete="name" required value="{{ old('name') }}" placeholder="Enter your name">
                         <div class="space20"></div>
+
+                        <!-- Email Field -->
                         <input type="email" class="form-control login-input" name="email" autofocus
                             autocomplete="username" required value="{{ old('email') }}" placeholder="Enter email">
                         <div class="space20"></div>
+
+                        <!-- Password Field -->
                         <input type="password" name="password" required autocomplete="current-password"
                             class="form-control login-input" placeholder="Password">
                         <div class="space20"></div>
-                        <input type="password" name="password_confirmation" required autocomplete="password_confirmation"
-                            class="form-control login-input" placeholder="Password confirmation">
+
+                        <!-- Password Confirmation Field -->
+                        <input type="password" name="password_confirmation" required
+                            autocomplete="password_confirmation" class="form-control login-input"
+                            placeholder="Password confirmation">
                         <div class="space10"></div>
 
+                        <!-- Google reCAPTCHA Widget -->
+                        <div class="g-recaptcha" data-sitekey="6Lequ8UqAAAAAHBEB1dRaq2ydJ2855goX61BnxNu"></div>
                         <div class="space20"></div>
-                        <button type="submit" class="btn btn-dark login-button">Sign Up</button>
 
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-dark login-button">Sign Up</button>
                     </form>
+
+                    <!-- Include reCAPTCHA Script -->
+
                     <div class="space20"></div>
                     <span>Already have an account? <a href="{{ route('user.login') }}">Sign In here</a></span>
 
@@ -68,3 +84,7 @@
 
 
 @endsection
+
+@push('scripts')
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+@endpush
