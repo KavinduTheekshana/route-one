@@ -24,13 +24,22 @@
                         <div class="mb-4 font-medium text-sm text-green-600 text-success">
                             {{ $value }}
                         </div>
+                        <br>
                     @endsession
 
                     @if (session('error'))
                         <div style="color: red; background-color: #f8d7da; padding: 10px; border-radius: 5px;">
                             {{ session('error') }}
                         </div>
+                        <br>
                     @endif
+                    @error('g-recaptcha-response')
+                        <div style="color: red; background-color: #f8d7da; padding: 10px; border-radius: 5px;">
+                            {{ $message }}
+                        </div>
+                        <br>
+                    @enderror
+
 
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
@@ -57,6 +66,8 @@
 
                         <!-- Google reCAPTCHA Widget -->
                         <div class="g-recaptcha" data-sitekey="6Lequ8UqAAAAAHBEB1dRaq2ydJ2855goX61BnxNu"></div>
+
+
                         <div class="space20"></div>
 
                         <!-- Submit Button -->
