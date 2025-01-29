@@ -27,8 +27,6 @@
                         <p class="text-13 text-gray-600">JPG, PNG, WEBP, or PDF format (max file size 10MB each)</p>
                         <span class="show-uploaded-passport-name d-none"></span>
                     </div>
-
-
                 </div>
             </div>
             <div class="col-12 mt-2-rem">

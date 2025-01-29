@@ -7,6 +7,7 @@ use App\Models\Application;
 use App\Models\Certificate;
 use App\Models\Document;
 use App\Models\JobApplication;
+use App\Models\Payslips;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserNotes;
@@ -214,6 +215,7 @@ class UserController extends Controller
 
         $notes = UserNotes::with('admin')->where('user_id', $id)->get();
         $certificate = Certificate::where('user_id', $id)->first();
+        $payslips = Payslips::where('user_id', $id)->orderBy('date', 'desc')->get();
 
         // Fetch the jobs that the user has applied for
         $vacancies = JobApplication::where('user_id', $user->id)
@@ -221,7 +223,7 @@ class UserController extends Controller
             ->get();
 
         $jobs = Vacancies::get();
-        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs', 'notes', 'agent', 'certificate'));
+        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs', 'notes', 'agent', 'certificate','payslips'));
     }
 
     public function user_update(Request $request, $id)

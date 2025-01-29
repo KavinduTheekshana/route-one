@@ -13,6 +13,7 @@ use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\JobsController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\PayslipsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\TestimonialController;
@@ -197,6 +198,8 @@ Route::middleware([
 
         // Route::patch('admin/services/{service}/status', [ServicesController::class, 'changeStatus'])->name('admin.services.changeStatus');
         Route::post('/update-staff-status', [UserController::class, 'updateStaffStatus'])->name('update.staff.status');
+        Route::post('/payslip/store', [PayslipsController::class, 'store'])->name('payslip.store')->middleware(['auth', 'superadmin']);
+        Route::resource('payslips', PayslipsController::class);
     });
 });
 
