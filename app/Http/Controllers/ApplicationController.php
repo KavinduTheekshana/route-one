@@ -348,10 +348,11 @@ class ApplicationController extends Controller
             ->get();
 
         $jobs = Vacancies::get();
+        $payslips = Payslips::where('user_id', $id)->orderBy('date', 'desc')->get();
 
         // Flash the session variable to indicate the application tab should be shown
         session()->flash('showApplicationTab', true);
 
-        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs', 'agent', 'notes', 'certificate'));
+        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs', 'agent', 'notes', 'certificate', 'payslips'));
     }
 }
