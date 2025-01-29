@@ -114,6 +114,15 @@
                         Message
                     </button>
                 </li>
+                @if ($user->is_staff)
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-payslips-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-payslips" type="button" role="tab" aria-controls="pills-payslips"
+                            aria-selected="true">
+                            Payslips
+                        </button>
+                    </li>
+                @endif
 
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-notes-tab" data-bs-toggle="pill"
@@ -140,7 +149,9 @@
     @include('backend.user.settings.jobs')
     @include('backend.user.settings.notes')
     @include('backend.user.settings.message')
+    @include('backend.user.settings.payslips')
     @include('backend.user.settings.documents')
+
 
 
 

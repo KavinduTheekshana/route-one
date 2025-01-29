@@ -208,6 +208,10 @@ class ApplicationController extends Controller
         'agent_id' => 'nullable|exists:users,id',
     ]);
 
+    $countryCode = $request->country ? Str::upper(Str::substr($request->country, 0, 3)) : 'XXX'; // Handle null or empty country
+    $randomNumber = mt_rand(10, 99);
+    $currentDate = now()->format('ymd'); // Format the current date as YYMMDD
+    $applicationNumber = "R1{$countryCode}{$currentDate}{$randomNumber}";
     // Create a new application
     $application = Application::create([
         'user_id' => $request->user_id,
@@ -219,6 +223,7 @@ class ApplicationController extends Controller
         'dob' => $request->dob,
         'passport' => $request->passport,
         'agent_id' => $request->agent_id,
+        'application_number' => $applicationNumber,
     ]);
 
     return redirect()->back()->with('success', 'Application created successfully.');
