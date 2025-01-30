@@ -49,8 +49,8 @@
                     </div>
 
                     <div class="col-md-7">
-                        @if ($documents->isEmpty())
-                        <p>No documents found for this user.</p>
+                        @if ($payslips->isEmpty())
+                        <p>No Payslips found for this user.</p>
                     @else
                         <ul>
                             <div class="row">
@@ -65,7 +65,7 @@
                                                         <i class="ph ph-file-jpg"></i>
                                                     @elseif($document->file_type == 'image/png')
                                                         <i class="ph ph-file-png"></i>
-                                                    @elseif($document->file_type == 'pdf')
+                                                    @elseif($document->file_type == 'application/pdf')
                                                         <i class="ph ph-file-pdf"></i>
                                                     @else
                                                         <i class="ph ph-paperclip"></i>

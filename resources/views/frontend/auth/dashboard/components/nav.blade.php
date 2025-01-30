@@ -6,6 +6,10 @@
         href="{{ route('user.documents') }}">Documents</a>
     <a class="nav-link {{ request()->is('user/applied/positions') ? 'active' : '' }}"
         href="{{ route('user.applied.positions') }}">Applied Positions</a>
+    @if (auth()->user()->is_staff)
+        <a class="nav-link {{ request()->is('user/payslips') ? 'active' : '' }}" href="{{ route('user.payslips') }}">My
+            Payslips</a>
+    @endif
     <a class="nav-link {{ request()->is('user/message') ? 'active' : '' }}"
         href="{{ route('user.message') }}">Message</a>
     <form method="POST" action="{{ route('logout') }}"
@@ -15,5 +19,3 @@
     </form>
 </nav>
 <hr class="mt-0 mb-4">
-
-

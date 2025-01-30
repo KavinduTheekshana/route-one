@@ -63,6 +63,7 @@ Route::middleware([
     Route::get('/user/documents', [ApplicationController::class, 'documents'])->name('user.documents');
     Route::get('/user/applied/positions', [JobApplicationController::class, 'positions'])->name('user.applied.positions');
     Route::get('/user/message', [JobApplicationController::class, 'message'])->name('user.message');
+    Route::get('/user/payslips', [JobApplicationController::class, 'payslips'])->name('user.payslips');
     Route::post('/user/message/save', [JobApplicationController::class, 'save'])->name('user.message.save');
     Route::delete('/user/application/destroy/{id}', [JobApplicationController::class, 'destroy'])->name('user.application.destroy');
     Route::post('/user/application/store', [ApplicationController::class, 'store'])->name('user.application.store');

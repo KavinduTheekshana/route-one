@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Application;
 use App\Models\JobApplication;
 use App\Models\Message;
+use App\Models\Payslips;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,6 +47,15 @@ class JobApplicationController extends Controller
 
             return view('frontend.auth.dashboard.message', compact('messages', 'agent', 'agent_name'));
         }
+    }
+
+    public function payslips()
+    {
+
+        $userid = auth()->id();
+        $user = User::findOrFail($userid);
+        $payslips = Payslips::where('user_id', $userid)->get();
+        return view('frontend.auth.dashboard.payslips', compact('user', 'payslips'));
     }
 
     public function save(Request $request)
