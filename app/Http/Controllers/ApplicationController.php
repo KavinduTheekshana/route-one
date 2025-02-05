@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NewMessageNotification;
 use App\Models\Certificate;
+use App\Models\CosDraft;
 use App\Models\Payslips;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,8 @@ use Illuminate\Support\Facades\Log;
 use NotifyLk\Api\SmsApi;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Response;
+use Barryvdh\DomPDF\Facade as PDF;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
 class ApplicationController extends Controller
 {
@@ -92,6 +95,132 @@ class ApplicationController extends Controller
 
         return 'Application numbers generated successfully!';
     }
+
+    public function createDraft($id)
+    {
+        $application = Application::findOrFail($id);
+        // $draft = CosDraft::where('application_id', $id)->first();
+        return view('backend.cos.draft', compact('application'));
+    }
+
+    // Store or update draft
+    public function storeDraft(Request $request)
+    {
+        // Validate form data
+        $request->validate([
+            'sponsor_license_number' => 'required|string',
+            'sponsor_name' => 'required|string',
+            'certificate_number' => 'nullable|string',
+            'current_certificate_status_date' => 'nullable|date',
+            'date_assign' => 'nullable|date',
+            'expire_date' => 'nullable|date',
+            'sponsor_note' => 'nullable|string',
+
+            // Personal information
+            'family_name' => 'required|string',
+            'given_name' => 'required|string',
+            'Other_names' => 'nullable|string',
+            'nationality' => 'required|string',
+            'place_of_birth' => 'required|string',
+            'country_of_birth' => 'required|string',
+            'dob' => 'nullable|date',
+            'gender' => 'required|string',
+            'country_of_residence' => 'required|string',
+
+            // Passport details
+            'passport' => 'required|string',
+            'issue_date' => 'nullable|date',
+            'expiry_date' => 'nullable|date',
+            'place_of_issue' => 'nullable|string',
+
+            // Address
+            'address' => 'required|string',
+            'city' => 'required|string',
+            'postcode' => 'nullable|string',
+            'country' => 'required|string',
+
+            // Work dates
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'hours_of_work' => 'required|string',
+
+            // Employment details
+            'job_title' => 'required|string',
+            'job_type' => 'required|string',
+            'description' => 'required|string',
+            'salary' => 'required|numeric',
+            'paye_reference' => 'nullable|string',
+        ]);
+
+        // Store data in the database
+        CosDraft::create([
+            'application_id' => $request->application_id, // Ensure this value is passed in the form
+            'sponsor_license_number' => $request->sponsor_license_number,
+            'sponsor_name' => $request->sponsor_name,
+            'certificate_number' => $request->certificate_number,
+            'status' => 'DRAFT', // Default status
+            'current_certificate_status_date' => $request->current_certificate_status_date,
+            'date_assign' => $request->date_assign,
+            'expire_date' => $request->expire_date,
+            'sponsor_note' => $request->sponsor_note,
+
+            // Personal information
+            'family_name' => $request->family_name,
+            'given_name' => $request->given_name,
+            'Other_names' => $request->Other_names ?? 'N/A',
+            'nationality' => $request->nationality,
+            'place_of_birth' => $request->place_of_birth,
+            'country_of_birth' => $request->country_of_birth,
+            'dob' => $request->dob,
+            'gender' => $request->gender,
+            'country_of_residence' => $request->country_of_residence,
+
+            // Passport details
+            'passport' => $request->passport,
+            'issue_date' => $request->issue_date,
+            'expiry_date' => $request->expiry_date,
+            'place_of_issue' => $request->place_of_issue,
+
+            // Address
+            'address' => $request->address,
+            'city' => $request->city,
+            'postcode' => $request->postcode,
+            'country' => $request->country,
+
+            // Work dates
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'hours_of_work' => $request->hours_of_work,
+
+            // Employment details
+            'job_title' => $request->job_title,
+            'job_type' => $request->job_type,
+            'description' => $request->description,
+            'salary' => $request->salary,
+            'paye_reference' => $request->paye_reference,
+        ]);
+
+        // Redirect back with success message
+        return redirect()->back()->with('success', 'COS Draft saved successfully.');
+    }
+
+    // Generate PDF
+    public function generateCosDraft($id)
+    {
+        $draft = CosDraft::where('application_id', $id)->firstOrFail();
+        $pdf = FacadePdf::loadView('pdf.cos_draft', compact('draft'));
+        return $pdf->stream("COS_Draft_{$id}.pdf");
+    }
+
+    // Download PDF
+    public function downloadCosDraft($id)
+    {
+        $draft = CosDraft::where('application_id', $id)->firstOrFail();
+        $pdf = FacadePdf::loadView('pdf.cos_draft', compact('draft'));
+        return $pdf->download("COS_Draft_{$id}.pdf");
+    }
+
+
 
     public function application()
     {
@@ -196,39 +325,39 @@ class ApplicationController extends Controller
     }
 
     public function create(Request $request)
-{
-    // Validate the request
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'country' => 'nullable|string|max:255',
-        'phone' => 'nullable|string|max:15',
-        'email' => 'required|email|unique:applications,email',
-        'address' => 'nullable|string|max:255',
-        'dob' => 'nullable|date',
-        'passport' => 'nullable|string|max:50',
-        'agent_id' => 'nullable|exists:users,id',
-    ]);
+    {
+        // Validate the request
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'country' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:15',
+            'email' => 'required|email|unique:applications,email',
+            'address' => 'nullable|string|max:255',
+            'dob' => 'nullable|date',
+            'passport' => 'nullable|string|max:50',
+            'agent_id' => 'nullable|exists:users,id',
+        ]);
 
-    $countryCode = $request->country ? Str::upper(Str::substr($request->country, 0, 3)) : 'XXX'; // Handle null or empty country
-    $randomNumber = mt_rand(10, 99);
-    $currentDate = now()->format('ymd'); // Format the current date as YYMMDD
-    $applicationNumber = "R1{$countryCode}{$currentDate}{$randomNumber}";
-    // Create a new application
-    $application = Application::create([
-        'user_id' => $request->user_id,
-        'name' => $request->name,
-        'country' => $request->country,
-        'phone' => $request->phone,
-        'email' => $request->email,
-        'address' => $request->address,
-        'dob' => $request->dob,
-        'passport' => $request->passport,
-        'agent_id' => $request->agent_id,
-        'application_number' => $applicationNumber,
-    ]);
+        $countryCode = $request->country ? Str::upper(Str::substr($request->country, 0, 3)) : 'XXX'; // Handle null or empty country
+        $randomNumber = mt_rand(10, 99);
+        $currentDate = now()->format('ymd'); // Format the current date as YYMMDD
+        $applicationNumber = "R1{$countryCode}{$currentDate}{$randomNumber}";
+        // Create a new application
+        $application = Application::create([
+            'user_id' => $request->user_id,
+            'name' => $request->name,
+            'country' => $request->country,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'address' => $request->address,
+            'dob' => $request->dob,
+            'passport' => $request->passport,
+            'agent_id' => $request->agent_id,
+            'application_number' => $applicationNumber,
+        ]);
 
-    return redirect()->back()->with('success', 'Application created successfully.');
-}
+        return redirect()->back()->with('success', 'Application created successfully.');
+    }
 
     public function approve($id)
     {

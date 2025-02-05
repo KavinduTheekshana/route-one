@@ -10,8 +10,7 @@
                 <div class="col-xxl-12 col-md-12 col-sm-12">
                     <div class="row g-20">
                         <div class="col-sm-6">
-                            <label for="courseTitle" class="h5 mb-8 fw-semibold font-heading">Full Name <span
-                                    class="text-13 text-red fw-medium">(Required)</span> </label>
+                            <label for="courseTitle" class="h5 mb-8 fw-semibold font-heading">Full Name <span class="text-13 text-red fw-medium">(Required)</span> </label>
                             <div class="position-relative">
                                 <input type="text" name="name" required class="text-counter placeholder-13 form-control py-11 pe-76" placeholder="Full Name">
                             </div>

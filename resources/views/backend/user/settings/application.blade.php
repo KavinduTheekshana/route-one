@@ -129,6 +129,12 @@
                                           class="btn btn-warning">
                                           Issue English Certificate
                                       </a>
+
+                                      <a href="{{ route('draft.create', $application->id) }}" class="btn btn-dark">
+                                        Create COS Draft
+                                    </a>
+
+
                                   @endif
                               @endif
                           @else

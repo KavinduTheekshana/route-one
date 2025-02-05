@@ -201,6 +201,11 @@ Route::middleware([
         Route::post('/update-staff-status', [UserController::class, 'updateStaffStatus'])->name('update.staff.status');
         Route::post('/payslip/store', [PayslipsController::class, 'store'])->name('payslip.store')->middleware(['auth', 'superadmin']);
         Route::resource('payslips', PayslipsController::class);
+
+        Route::get('/application/{id}/create-draft', [ApplicationController::class, 'createDraft'])->name('draft.create');
+        Route::post('/application/store-draft', [ApplicationController::class, 'storeDraft'])->name('draft.store');
+        Route::get('/application/{id}/cos-draft', [ApplicationController::class, 'generateCosDraft'])->name('draft.issue');
+        Route::get('/application/{id}/download-cos-draft', [ApplicationController::class, 'downloadCosDraft'])->name('draft.download');
     });
 });
 
