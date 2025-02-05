@@ -99,8 +99,9 @@ class ApplicationController extends Controller
     public function createDraft($id)
     {
         $application = Application::findOrFail($id);
+        $submittedData = CosDraft::where('id', $application->id)->first();
         // $draft = CosDraft::where('application_id', $id)->first();
-        return view('backend.cos.draft', compact('application'));
+        return view('backend.cos.draft', compact('application', 'submittedData'));
     }
 
     // Store or update draft
