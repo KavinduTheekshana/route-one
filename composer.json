@@ -23,6 +23,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.0",
+        "milon/barcode": "^11.0",
         "notifylk/notify-php": "*@dev",
         "setasign/fpdf": "^1.8",
         "setasign/fpdi": "^2.6",

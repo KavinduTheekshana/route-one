@@ -33,6 +33,7 @@ class CosDraft extends Model
         'city',
         'postcode',
         'country',
+        'county',
         'start_date',
         'end_date',
         'hours_of_work',

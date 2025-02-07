@@ -9,9 +9,9 @@
           </div>
           <div class="card-body">
               <div class="row">
-                <form method="POST"
-                action="{{ isset($application) ? route('user.application.update') : route('user.application.create') }}"
-                enctype="multipart/form-data">
+                  <form method="POST"
+                      action="{{ isset($application) ? route('user.application.update') : route('user.application.create') }}"
+                      enctype="multipart/form-data">
                       @csrf
                       <input type="hidden" name="user_id" value="{{ $user->id }}">
                       @if (isset($application) && $application->status == 1)
@@ -131,10 +131,8 @@
                                       </a>
 
                                       <a href="{{ route('draft.create', $application->id) }}" class="btn btn-dark">
-                                        Create COS Draft
-                                    </a>
-
-
+                                          Create COS Draft
+                                      </a>
                                   @endif
                               @endif
                           @else

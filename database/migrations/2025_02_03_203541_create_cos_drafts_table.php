@@ -41,6 +41,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('city');
             $table->string('postcode')->nullable();
+            $table->string('county');
             $table->string('country');
             // Work dates
             $table->date('start_date');

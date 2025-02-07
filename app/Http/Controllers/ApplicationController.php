@@ -99,8 +99,9 @@ class ApplicationController extends Controller
     public function createDraft($id)
     {
         $application = Application::findOrFail($id);
-        $submittedData = CosDraft::where('id', $application->id)->first();
+        $submittedData = CosDraft::where('application_id', $application->id)->first();
         // $draft = CosDraft::where('application_id', $id)->first();
+        // dd($submittedData);
         return view('backend.cos.draft', compact('application', 'submittedData'));
     }
 
@@ -139,6 +140,7 @@ class ApplicationController extends Controller
             'city' => 'required|string',
             'postcode' => 'nullable|string',
             'country' => 'required|string',
+            'country' => 'required|string',
 
             // Work dates
             'start_date' => 'required|date',
@@ -153,56 +155,163 @@ class ApplicationController extends Controller
             'paye_reference' => 'nullable|string',
         ]);
 
+        // Check if a COS Draft already exists for the application
+        $cosDraft = CosDraft::where('application_id', $request->application_id)->first();
+
+        if ($cosDraft) {
+            // Update existing record
+            $cosDraft->update([
+                'sponsor_license_number' => $request->sponsor_license_number,
+                'sponsor_name' => $request->sponsor_name,
+                'certificate_number' => $request->certificate_number,
+                'current_certificate_status_date' => $request->current_certificate_status_date,
+                'date_assign' => $request->date_assign,
+                'expire_date' => $request->expire_date,
+                'sponsor_note' => $request->sponsor_note,
+
+                // Personal information
+                'family_name' => $request->family_name,
+                'given_name' => $request->given_name,
+                'Other_names' => $request->Other_names ?? 'N/A',
+                'nationality' => $request->nationality,
+                'place_of_birth' => $request->place_of_birth,
+                'country_of_birth' => $request->country_of_birth,
+                'dob' => $request->dob,
+                'gender' => $request->gender,
+                'country_of_residence' => $request->country_of_residence,
+
+                // Passport details
+                'passport' => $request->passport,
+                'issue_date' => $request->issue_date,
+                'expiry_date' => $request->expiry_date,
+                'place_of_issue' => $request->place_of_issue,
+
+                // Address
+                'address' => $request->address,
+                'city' => $request->city,
+                'postcode' => $request->postcode,
+                'country' => $request->country,
+                'county' => $request->county,
+
+                // Work dates
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'hours_of_work' => $request->hours_of_work,
+
+                // Employment details
+                'job_title' => $request->job_title,
+                'job_type' => $request->job_type,
+                'description' => $request->description,
+                'salary' => $request->salary,
+                'paye_reference' => $request->paye_reference,
+            ]);
+
+            return redirect()->back()->with('success', 'COS Draft updated successfully.');
+        } else {
+            // Create new record
+            CosDraft::create([
+                'application_id' => $request->application_id,
+                'sponsor_license_number' => $request->sponsor_license_number,
+                'sponsor_name' => $request->sponsor_name,
+                'certificate_number' => $request->certificate_number,
+                'status' => 'DRAFT', // Default status
+                'current_certificate_status_date' => $request->current_certificate_status_date,
+                'date_assign' => $request->date_assign,
+                'expire_date' => $request->expire_date,
+                'sponsor_note' => $request->sponsor_note,
+
+                // Personal information
+                'family_name' => $request->family_name,
+                'given_name' => $request->given_name,
+                'Other_names' => $request->Other_names ?? 'N/A',
+                'nationality' => $request->nationality,
+                'place_of_birth' => $request->place_of_birth,
+                'country_of_birth' => $request->country_of_birth,
+                'dob' => $request->dob,
+                'gender' => $request->gender,
+                'country_of_residence' => $request->country_of_residence,
+
+                // Passport details
+                'passport' => $request->passport,
+                'issue_date' => $request->issue_date,
+                'expiry_date' => $request->expiry_date,
+                'place_of_issue' => $request->place_of_issue,
+
+                // Address
+                'address' => $request->address,
+                'city' => $request->city,
+                'postcode' => $request->postcode,
+                'country' => $request->country,
+                'county' => $request->county,
+
+                // Work dates
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'hours_of_work' => $request->hours_of_work,
+
+                // Employment details
+                'job_title' => $request->job_title,
+                'job_type' => $request->job_type,
+                'description' => $request->description,
+                'salary' => $request->salary,
+                'paye_reference' => $request->paye_reference,
+                'barcode' => 'R1' . str_pad(mt_rand(100000, 999999), 6, '0', STR_PAD_LEFT),
+            ]);
+
+            return redirect()->back()->with('success', 'COS Draft saved successfully.');
+        }
+
         // Store data in the database
-        CosDraft::create([
-            'application_id' => $request->application_id, // Ensure this value is passed in the form
-            'sponsor_license_number' => $request->sponsor_license_number,
-            'sponsor_name' => $request->sponsor_name,
-            'certificate_number' => $request->certificate_number,
-            'status' => 'DRAFT', // Default status
-            'current_certificate_status_date' => $request->current_certificate_status_date,
-            'date_assign' => $request->date_assign,
-            'expire_date' => $request->expire_date,
-            'sponsor_note' => $request->sponsor_note,
+        // CosDraft::create([
+        //     'application_id' => $request->application_id, // Ensure this value is passed in the form
+        //     'sponsor_license_number' => $request->sponsor_license_number,
+        //     'sponsor_name' => $request->sponsor_name,
+        //     'certificate_number' => $request->certificate_number,
+        //     'status' => 'DRAFT', // Default status
+        //     'current_certificate_status_date' => $request->current_certificate_status_date,
+        //     'date_assign' => $request->date_assign,
+        //     'expire_date' => $request->expire_date,
+        //     'sponsor_note' => $request->sponsor_note,
 
-            // Personal information
-            'family_name' => $request->family_name,
-            'given_name' => $request->given_name,
-            'Other_names' => $request->Other_names ?? 'N/A',
-            'nationality' => $request->nationality,
-            'place_of_birth' => $request->place_of_birth,
-            'country_of_birth' => $request->country_of_birth,
-            'dob' => $request->dob,
-            'gender' => $request->gender,
-            'country_of_residence' => $request->country_of_residence,
+        //     // Personal information
+        //     'family_name' => $request->family_name,
+        //     'given_name' => $request->given_name,
+        //     'Other_names' => $request->Other_names ?? 'N/A',
+        //     'nationality' => $request->nationality,
+        //     'place_of_birth' => $request->place_of_birth,
+        //     'country_of_birth' => $request->country_of_birth,
+        //     'dob' => $request->dob,
+        //     'gender' => $request->gender,
+        //     'country_of_residence' => $request->country_of_residence,
 
-            // Passport details
-            'passport' => $request->passport,
-            'issue_date' => $request->issue_date,
-            'expiry_date' => $request->expiry_date,
-            'place_of_issue' => $request->place_of_issue,
+        //     // Passport details
+        //     'passport' => $request->passport,
+        //     'issue_date' => $request->issue_date,
+        //     'expiry_date' => $request->expiry_date,
+        //     'place_of_issue' => $request->place_of_issue,
 
-            // Address
-            'address' => $request->address,
-            'city' => $request->city,
-            'postcode' => $request->postcode,
-            'country' => $request->country,
+        //     // Address
+        //     'address' => $request->address,
+        //     'city' => $request->city,
+        //     'postcode' => $request->postcode,
+        //     'country' => $request->country,
 
-            // Work dates
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'hours_of_work' => $request->hours_of_work,
+        //     // Work dates
+        //     'start_date' => $request->start_date,
+        //     'end_date' => $request->end_date,
+        //     'hours_of_work' => $request->hours_of_work,
 
-            // Employment details
-            'job_title' => $request->job_title,
-            'job_type' => $request->job_type,
-            'description' => $request->description,
-            'salary' => $request->salary,
-            'paye_reference' => $request->paye_reference,
-        ]);
+        //     // Employment details
+        //     'job_title' => $request->job_title,
+        //     'job_type' => $request->job_type,
+        //     'description' => $request->description,
+        //     'salary' => $request->salary,
+        //     'paye_reference' => $request->paye_reference,
+        //     'barcode' =>'R1' . str_pad(mt_rand(100000, 999999), 6, '0', STR_PAD_LEFT),
+        // ]);
 
         // Redirect back with success message
-        return redirect()->back()->with('success', 'COS Draft saved successfully.');
+        // return redirect()->back()->with('success', 'COS Draft saved successfully.');
     }
 
     // Generate PDF
