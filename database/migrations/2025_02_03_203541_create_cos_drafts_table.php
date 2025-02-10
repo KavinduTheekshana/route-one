@@ -47,6 +47,11 @@ return new class extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->string('hours_of_work')->nullable();
+            $table->string('work_address')->nullable();
+            $table->string('work_city')->nullable();
+            $table->string('work_county')->nullable();
+            $table->string('work_postcode')->nullable();
+
             // Migrant's employment
             $table->string('job_title')->nullable();
             $table->string('job_type')->nullable();

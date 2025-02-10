@@ -221,6 +221,34 @@
                         <h4 class="mt-40 text-dark">Work Details </h4>
                         <hr>
                         <div class="col-sm-6">
+                            <label class="h5 mb-8 fw-semibold font-heading">Work Address <span
+                                    class="text-13 text-red fw-medium">(Required)</span></label>
+                            <input type="text" name="work_address" class="form-control py-11 pe-76"
+                                value="{{ $submittedData->work_address ?? '' }}" placeholder="Work Address">
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="h5 mb-8 fw-semibold font-heading">City/Town <span
+                                    class="text-13 text-red fw-medium">(Required)</span></label>
+                            <input type="text" name="work_city" class="form-control py-11 pe-76"
+                                value="{{ $submittedData->work_city ?? '' }}" placeholder="City/Town">
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="h5 mb-8 fw-semibold font-heading">County <span
+                                    class="text-13 text-red fw-medium">(Required)</span></label>
+                            <input type="text" name="work_county" class="form-control py-11 pe-76"
+                                value="{{ $submittedData->work_county ?? '' }}" placeholder="County">
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="h5 mb-8 fw-semibold font-heading">Post Code <span
+                                    class="text-13 text-red fw-medium">(Required)</span></label>
+                            <input type="text" name="work_postcode" class="form-control py-11 pe-76"
+                                value="{{ $submittedData->work_postcode ?? '' }}" placeholder="Post Code">
+                        </div>
+
+                        <div class="col-sm-6">
                             <label class="h5 mb-8 fw-semibold font-heading">Start Date <span
                                     class="text-13 text-red fw-medium">(Required)</span></label>
                             <input type="date" name="start_date" class="form-control py-11 pe-76"
