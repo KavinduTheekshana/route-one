@@ -146,6 +146,10 @@ class ApplicationController extends Controller
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',
             'hours_of_work' => 'nullable|string',
+            'work_address' => 'nullable|string',
+            'work_city' => 'nullable|string',
+            'work_county' => 'nullable|string',
+            'work_postcode' => 'nullable|string',
 
             // Employment details
             'job_title' => 'nullable|string',
@@ -197,6 +201,10 @@ class ApplicationController extends Controller
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
                 'hours_of_work' => $request->hours_of_work,
+                'work_address' => $request->work_address,
+                'work_city' => $request->work_city,
+                'work_county' => $request->work_county,
+                'work_postcode' => $request->work_postcode,
 
                 // Employment details
                 'job_title' => $request->job_title,
@@ -248,6 +256,10 @@ class ApplicationController extends Controller
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
                 'hours_of_work' => $request->hours_of_work,
+                'work_address' => $request->work_address,
+                'work_city' => $request->work_city,
+                'work_county' => $request->work_county,
+                'work_postcode' => $request->work_postcode,
 
                 // Employment details
                 'job_title' => $request->job_title,
