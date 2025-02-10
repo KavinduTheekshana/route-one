@@ -111,7 +111,7 @@ class ApplicationController extends Controller
         // Validate form data
         $request->validate([
             'sponsor_license_number' => 'required|string',
-            'sponsor_name' => 'required|string',
+            'sponsor_name' => 'string',
             'certificate_number' => 'nullable|string',
             'current_certificate_status_date' => 'nullable|date',
             'date_assign' => 'nullable|date',
@@ -119,39 +119,39 @@ class ApplicationController extends Controller
             'sponsor_note' => 'nullable|string',
 
             // Personal information
-            'family_name' => 'required|string',
-            'given_name' => 'required|string',
-            'Other_names' => 'nullable|string',
-            'nationality' => 'required|string',
-            'place_of_birth' => 'required|string',
-            'country_of_birth' => 'required|string',
+            'family_name' => 'string',
+            'given_name' => 'string',
+            'Other_names' => 'string',
+            'nationality' => 'string',
+            'place_of_birth' => 'string',
+            'country_of_birth' => 'string',
             'dob' => 'nullable|date',
-            'gender' => 'required|string',
-            'country_of_residence' => 'required|string',
+            'gender' => 'string',
+            'country_of_residence' => 'string',
 
             // Passport details
-            'passport' => 'required|string',
+            'passport' => 'string',
             'issue_date' => 'nullable|date',
             'expiry_date' => 'nullable|date',
             'place_of_issue' => 'nullable|string',
 
             // Address
-            'address' => 'required|string',
-            'city' => 'required|string',
+            'address' => 'string',
+            'city' => 'string',
             'postcode' => 'nullable|string',
-            'country' => 'required|string',
-            'country' => 'required|string',
+            'country' => 'string',
+            'country' => 'string',
 
             // Work dates
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
-            'hours_of_work' => 'required|string',
+            'start_date' => 'date',
+            'end_date' => 'date',
+            'hours_of_work' => 'string',
 
             // Employment details
-            'job_title' => 'required|string',
-            'job_type' => 'required|string',
-            'description' => 'required|string',
-            'salary' => 'required|numeric',
+            'job_title' => 'string',
+            'job_type' => 'string',
+            'description' => 'string',
+            'salary' => 'numeric',
             'paye_reference' => 'nullable|string',
         ]);
 

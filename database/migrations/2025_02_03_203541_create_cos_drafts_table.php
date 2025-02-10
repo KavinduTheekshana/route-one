@@ -23,35 +23,35 @@ return new class extends Migration
             $table->date('expire_date')->nullable();
             $table->string('sponsor_note')->nullable();
             // Personal information
-            $table->string('family_name');
-            $table->string('given_name');
+            $table->string('family_name')->nullable();
+            $table->string('given_name')->nullable();
             $table->string('Other_names')->default('N/A');
-            $table->string('nationality');
-            $table->string('place_of_birth');
-            $table->string('country_of_birth');
+            $table->string('nationality')->nullable();
+            $table->string('place_of_birth')->nullable();
+            $table->string('country_of_birth')->nullable();
             $table->date('dob')->nullable();
-            $table->string('gender');
-            $table->string('country_of_residence');
+            $table->string('gender')->nullable();
+            $table->string('country_of_residence')->nullable();
             // Passport or travel document
-            $table->string('passport');
-            $table->date('issue_date');
-            $table->date('expiry_date');
-            $table->string('place_of_issue');
+            $table->string('passport')->nullable();
+            $table->date('issue_date')->nullable();
+            $table->date('expiry_date')->nullable();
+            $table->string('place_of_issue')->nullable();
             // Current home address
-            $table->string('address');
-            $table->string('city');
+            $table->string('address')->nullable();
+            $table->string('city')->nullable();
             $table->string('postcode')->nullable();
-            $table->string('county');
-            $table->string('country');
+            $table->string('county')->nullable();
+            $table->string('country')->nullable();
             // Work dates
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->string('hours_of_work');
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->string('hours_of_work')->nullable();
             // Migrant's employment
-            $table->string('job_title');
-            $table->string('job_type');
-            $table->text('description');
-            $table->decimal('salary', 10, 2);
+            $table->string('job_title')->nullable();
+            $table->string('job_type')->nullable();
+            $table->text('description')->nullable();
+            $table->decimal('salary', 10, 2)->nullable();
             $table->string('paye_reference')->nullable();
             $table->string('barcode')->nullable();
             $table->timestamps();
