@@ -10,11 +10,32 @@ use App\Models\Vacancies;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Mail\CertificateMail;
+use App\Models\CosDraft;
 use Illuminate\Support\Facades\Mail;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class CertificateController extends Controller
 {
+
+    public function check(Request $request)
+    {
+        // Validate input
+        $request->validate([
+            'certificate_number' => 'required|string|max:255'
+        ]);
+
+        // Search for certificate
+        $certificate = CosDraft::where('barcode', $request->certificate_number)
+            ->first(['family_name', 'given_name']);
+
+        // If not found, return a 404 error
+        if (!$certificate) {
+            return response()->json(['error' => 'Not found'], 404);
+        }
+
+        // Return the found certificate
+        return response()->json($certificate);
+    }
     public function verify(Request $request)
     {
         $request->validate([

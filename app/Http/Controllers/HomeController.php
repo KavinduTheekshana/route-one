@@ -164,6 +164,10 @@ class HomeController extends Controller
     {
         return view('frontend.verify.index');
     }
+    public function verifyCosDraft()
+    {
+        return view('frontend.verify.cosDraft');
+    }
     public function about()
     {
         $testimonials = Testimonial::where('status', 1)

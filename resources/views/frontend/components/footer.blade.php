@@ -32,6 +32,7 @@
                                      <li><a href="#">Q&A</a></li>
                                      <li><a href="#">Testimonial</a></li>
                                      <li><a href="{{ route('verify') }}">Verify Certificates</a></li>
+                                     <li><a href="{{ route('verify.draft') }}">Verify COS Draft</a></li>
                                 </ul>
                            </div>
                       </div>
