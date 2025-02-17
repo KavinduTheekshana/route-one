@@ -41,14 +41,44 @@
                                 </a>
                             </li>
 
-                            <li class="sidebar-menu__item">
+                            {{-- <li class="sidebar-menu__item">
                                 <a href="{{ route('staff.manage') }}"
                                     class="sidebar-menu__link {{ request()->segment(1) === 'staff' ? 'activePage' : '' }}">
                                     <span class="icon"><i class="ph ph-users-four"></i></span>
                                     <span class="text">Staff</span>
                                 </a>
-                            </li>
+                            </li> --}}
 
+                            {{-- <li class="sidebar-menu__item">
+                                <a href="{{ route('staff.hierarchy') }}"
+                                    class="sidebar-menu__link {{ request()->segment(1) === 'hierarchy' ? 'activePage' : '' }}">
+                                    <span class="icon"><i class="ph ph-users-four"></i></span>
+                                    <span class="text">Staff Hierarchy</span>
+                                </a>
+                            </li> --}}
+
+                            <li class="sidebar-menu__item has-dropdown">
+                                <a href="javascript:void(0)"
+                                    class="sidebar-menu__link {{ request()->segment(1) === 'staff' ? 'activePage' : '' }}">
+                                    <span class="icon"><i class="ph ph-users"></i></span>
+                                    <span class="text">Staff</span>
+                                </a>
+                                <!-- Submenu start -->
+                                <ul class="sidebar-submenu">
+                                    <li class="sidebar-submenu__item">
+                                    <li class="sidebar-submenu__item">
+                                        <a href="{{ route('staff.hierarchy') }}"
+                                            class="sidebar-submenu__link {{ request()->is('staff/hierarchy') ? 'active-sub-menu' : '' }}">
+                                            Hierarchy </a>
+                                    </li>
+                            </li>
+                            <li class="sidebar-submenu__item">
+                                <a href="{{ route('staff.create') }}"
+                                    class="sidebar-submenu__link {{ request()->is('staff/create') ? 'active-sub-menu' : '' }}">
+                                    Create Staff </a>
+                            </li>
+                    </ul>
+                    </li>
                         @endif
                     @endauth
 

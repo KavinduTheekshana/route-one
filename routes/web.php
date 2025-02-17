@@ -4,8 +4,10 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\CalanderController;
 use App\Http\Controllers\CertificateController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EnquiryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
@@ -16,11 +18,16 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PayslipsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServicesController;
+use App\Http\Controllers\StaffController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VacanciesController;
+use App\Models\Employee;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+
+
+
 
 
 Route::get('/', [HomeController::class, 'index'])->name('/');
@@ -106,6 +113,12 @@ Route::middleware([
 
         // Staff Management
         Route::get('/staff/manage', [UserController::class, 'staff'])->name('staff.manage')->middleware(['auth', 'role:superadmin']);
+        Route::get('staff/hierarchy', [UserController::class, 'staff_hierarchy'])->name('staff.hierarchy')->middleware(['auth', 'role:superadmin']);
+        Route::get('/staff/create', [StaffController::class, 'create'])->name('staff.create')->middleware(['auth', 'role:superadmin']);
+
+
+
+
 
         Route::get('/admin/vacancies/list', [VacanciesController::class, 'list'])->name('admin.vacancies.list')->middleware(['auth', 'superadmin']);
         Route::get('/admin/vacancies/create', [VacanciesController::class, 'create'])->name('admin.vacancies.create')->middleware(['auth', 'superadmin']);

@@ -6,8 +6,10 @@ use App\Mail\AgentStatusUpdated;
 use App\Models\Application;
 use App\Models\Certificate;
 use App\Models\Document;
+use App\Models\Employee;
 use App\Models\JobApplication;
 use App\Models\Payslips;
+use App\Models\Staff;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserNotes;
@@ -122,6 +124,24 @@ class UserController extends Controller
         return view('backend.user.manage.manage', compact('users'));
     }
 
+    public function staff_hierarchy()
+    {
+        $staff = Staff::with('subordinates')->whereNull('manager_id')->get();
+        $hierarchy = $this->buildHierarchy($staff);
+        return view('backend.user.manage.hierarchy', compact('hierarchy'));
+    }
+
+    private function buildHierarchy($staff)
+    {
+        return $staff->map(function ($member) {
+            return [
+                'name' => $member->name,
+                'position' => $member->position, // Include position
+                'image' => $member->image, // Include image
+                'children' => $member->subordinates->isEmpty() ? [] : $this->buildHierarchy($member->subordinates),
+            ];
+        });
+    }
     public function create()
     {
         return view('backend.user.create.index');
@@ -223,7 +243,7 @@ class UserController extends Controller
             ->get();
 
         $jobs = Vacancies::get();
-        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs', 'notes', 'agent', 'certificate','payslips'));
+        return view('backend.user.settings.settings', compact('user', 'documents', 'application', 'agents', 'vacancies', 'jobs', 'notes', 'agent', 'certificate', 'payslips'));
     }
 
     public function user_update(Request $request, $id)

@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "calendar-js": "^1.4.4",
+        "d3": "^7.9.0",
         "trumbowyg": "^2.28.0",
         "tui-calendar": "^1.15.3"
     }
