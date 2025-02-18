@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('position'); // Add this line
-            $table->string('image')->nullable(); // Add this line for image path/URL
             $table->unsignedBigInteger('manager_id')->nullable();
             $table->timestamps();
 

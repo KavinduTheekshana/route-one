@@ -75,7 +75,13 @@
                             <li class="sidebar-submenu__item">
                                 <a href="{{ route('staff.create') }}"
                                     class="sidebar-submenu__link {{ request()->is('staff/create') ? 'active-sub-menu' : '' }}">
-                                    Create Staff </a>
+                                    Create Hierarchy </a>
+                            </li>
+
+                            <li class="sidebar-submenu__item">
+                                <a href="{{ route('staff.manage') }}"
+                                    class="sidebar-submenu__link {{ request()->is('staff/manage') ? 'active-sub-menu' : '' }}">
+                                    Manage Staff </a>
                             </li>
                     </ul>
                     </li>
