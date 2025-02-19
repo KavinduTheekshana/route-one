@@ -179,6 +179,10 @@ class HomeController extends Controller
     {
         return view('frontend.contact.index');
     }
+    public function policy()
+    {
+        return view('frontend.policy.index');
+    }
     public function jobs()
     {
         // Get the currently authenticated user

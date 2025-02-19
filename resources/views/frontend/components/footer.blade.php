@@ -47,6 +47,7 @@
                                      <li><a href="{{ route('jobs') }}">Jobs</a></li>
                                      <li><a href="{{ route('services') }}">Service</a></li>
                                      <li><a href="{{ route('contact') }}">Contact US</a></li>
+                                     <li><a href="{{ route('policy') }}">Policy</a></li>
                                 </ul>
                            </div>
                       </div>

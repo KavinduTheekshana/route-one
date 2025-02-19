@@ -33,6 +33,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 Route::get('/', [HomeController::class, 'index'])->name('/');
 Route::get('about', [HomeController::class, 'about'])->name('about');
 Route::get('contact', [HomeController::class, 'contact'])->name('contact');
+Route::get('policy', [HomeController::class, 'policy'])->name('policy');
 Route::get('verify', [HomeController::class, 'verify'])->name('verify');
 Route::get('verify/draft', [HomeController::class, 'verifyCosDraft'])->name('verify.draft');
 Route::post('/contact/store', [EnquiryController::class, 'store'])->name('contact.store');
