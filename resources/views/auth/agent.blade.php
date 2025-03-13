@@ -53,7 +53,7 @@
                 <a href="{{ route('/') }}" class="auth-right__logo">
                     <img src="{{ asset('backend/images/logo/routeone_logo.svg') }}" alt="" style="width: 80%;">
                 </a>
-                <h2 class="mb-8">Become an Agent! 🇬🇧</h2>
+                <h2 class="mb-8">Become an Partnership! 🇬🇧</h2>
                 <p class="text-gray-600 text-15 mb-32">Please sign up to your account to access the system and manage
                     your agent related tasks efficiently.</p>
 
