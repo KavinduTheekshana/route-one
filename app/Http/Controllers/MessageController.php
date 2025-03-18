@@ -13,6 +13,14 @@ use NotifyLk\Api\SmsApi;
 
 class MessageController extends Controller
 {
+    public function markAsRead($sender_id)
+    {
+        // Mark all messages from the sender as read
+        Message::where('sender_id', $sender_id)->update(['status' => true]);
+
+        return response()->json(['success' => true]);
+    }
+
 
     public function index()
     {

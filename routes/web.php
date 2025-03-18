@@ -111,6 +111,10 @@ Route::middleware([
         Route::get('/user/settings/{user}', [UserController::class, 'user_settings'])->name('user.settings')->middleware(['auth', 'role:superadmin|agent']);
         Route::put('/user/update/{user}', [UserController::class, 'user_update'])->name('user.update')->middleware(['auth', 'role:superadmin|agent']);
         Route::post('/user-notes', [UserController::class, 'storeOrUpdate'])->name('user.notes.storeOrUpdate');
+        Route::post('/messages/{sender_id}/read', [MessageController::class, 'markAsRead'])->name('messages.read');
+
+
+
 
         // Staff Management
         Route::get('/staff/manage', [UserController::class, 'staff'])->name('staff.manage')->middleware(['auth', 'role:superadmin']);
