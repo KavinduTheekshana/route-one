@@ -429,6 +429,7 @@ class ApplicationController extends Controller
             'agent_id' => 'nullable|exists:users,id',
         ]);
 
+        dd($request->all());
         // Update the application with the validated data
         $application->update($request->all());
 

@@ -127,7 +127,7 @@
                             </p>
                             <p class="cs-invoice_date cs-primary_color cs-m0"><b class="cs-primary_color">Date:
                                 </b>
-                                <input type="date" name="date" value="{{ $currentDate }}"
+                                <input type="date" name="date" value="{{ $currentDate }}" required
                                     class="text-counter placeholder-13 form-control py-11 pe-76 input-custom">
                                 {{-- <span id="current-date">05.01.2022</span> --}}
                             </p>
