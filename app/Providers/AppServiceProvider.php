@@ -36,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
                     ->orderBy('m.created_at', 'desc');
 
                 // Check if the user is not a super admin
-                if (Auth::user()->user_type !== 'super_admin') {
+                if (Auth::user()->user_type !== 'superadmin') {
                     $query->where('m.receiver_id', Auth::id());
                 }
 
