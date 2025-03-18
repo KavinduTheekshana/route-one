@@ -55,7 +55,8 @@
                                                 <div class="flex-align gap-6 mt-8">
 
                                                     <div class="flex-align gap-4">
-                                                        <p class="text-gray-900 text-sm text-line-1">{{ Str::limit($message->message, 150, '...') }}</p>
+                                                        <p class="text-gray-900 text-sm text-line-1">{{ Str::limit(strip_tags($message->message), 150, '...') }}
+                                                        </p>
 
                                                     </div>
                                                 </div>
