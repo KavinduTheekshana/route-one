@@ -35,16 +35,43 @@ class MessageController extends Controller
         if ($authUser->user_type === 'superadmin') {
             if ($query) {
                 // Filter users based on the search query (name, email, or country) and user_type = 'user'
+                // $users = User::where('user_type', 'user')
+                //     ->where(function ($queryBuilder) use ($query) {
+                //         $queryBuilder->where('name', 'like', '%' . $query . '%')
+                //             ->orWhere('email', 'like', '%' . $query . '%')
+                //             ->orWhere('country', 'like', '%' . $query . '%');
+                //     })
+                //     ->get(['name', 'email', 'country', 'profile_image', 'id']);
                 $users = User::where('user_type', 'user')
+                    ->whereIn('id', function ($query) {
+                        $query->select('sender_id')->from('messages');
+                    })
                     ->where(function ($queryBuilder) use ($query) {
                         $queryBuilder->where('name', 'like', '%' . $query . '%')
                             ->orWhere('email', 'like', '%' . $query . '%')
                             ->orWhere('country', 'like', '%' . $query . '%');
                     })
+                    ->orderByDesc(
+                        Message::select('created_at')
+                            ->whereColumn('messages.sender_id', 'users.id')
+                            ->latest()
+                            ->take(1)
+                    )
                     ->get(['name', 'email', 'country', 'profile_image', 'id']);
             } else {
                 // Fetch all users where user_type is 'user' if no query is provided
+                // $users = User::where('user_type', 'user')
+                //     ->get(['name', 'email', 'country', 'profile_image', 'id']);
                 $users = User::where('user_type', 'user')
+                    ->whereIn('id', function ($query) {
+                        $query->select('sender_id')->from('messages');
+                    })
+                    ->orderByDesc(
+                        Message::select('created_at')
+                            ->whereColumn('messages.sender_id', 'users.id')
+                            ->latest()
+                            ->take(1)
+                    )
                     ->get(['name', 'email', 'country', 'profile_image', 'id']);
             }
         } elseif ($authUser->user_type === 'agent') {
