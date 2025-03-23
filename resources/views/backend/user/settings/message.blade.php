@@ -124,9 +124,7 @@
                         if (response.success) {
                             // alert('Message sent successfully!');
                             fetchMessages(receiver_id);
-                            tinymce.get('messageInput').setContent('');
-                            $('#messageInput').val(
-                                ''); // Clear input after successful submission
+                            $('#messageInput').trumbowyg('empty');
                         }
                     },
                     error: function(xhr) {
