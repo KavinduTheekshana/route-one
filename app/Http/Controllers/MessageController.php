@@ -185,7 +185,7 @@ class MessageController extends Controller
         // Send email notification to the receiver
         if ($receiver) {
             // Simulate a long message
-            Mail::to($receiver->email)->queue(new NewMessageNotification($messagecontent, auth()->user()));
+            Mail::to($receiver->email)->send(new NewMessageNotification($messagecontent, auth()->user()));
         } else {
             Log::error('User not found with ID: ' . $request->receiver_id);
         }
