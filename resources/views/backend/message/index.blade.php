@@ -62,7 +62,7 @@
             </div>
         </div>
         <div class="card-body p-0">
-            <div class="chat-box-item-wrapper overflow-y-auto scroll-sm p-24" id="chatBox">
+            <div class="chat-box-item-wrapper overflow-y-auto scroll-sm p-24" id="chatBox" style="flex-direction: column-reverse;scroll-behavior: smooth;">
             </div>
         </div>
         <div class="card-footer border-top border-gray-100">
@@ -114,7 +114,6 @@
 @endsection
 
 @push('scripts')
-
 {{-- <script src="https://cdn.tiny.cloud/1/mc59edcciy0vssoo3ojx1vwpo2jbsemez61eo60xxi6p5wse/tinymce/7/tinymce.min.js"
 referrerpolicy="origin"></script> --}}
 
@@ -273,29 +272,29 @@ tinymce.init({
 
     function renderMessages(messages, userId) {
         // console.log('Rendering messages:', userId);
-            // console.log(messages);
-            // Logic to render messages in your chat box
-            const chatBox = document.querySelector('.chat-box-item-wrapper'); // Adjust the selector as needed
-            chatBox.innerHTML = ''; // Clear previous messages
+        // console.log(messages);
+        // Logic to render messages in your chat box
+        const chatBox = document.querySelector('.chat-box-item-wrapper'); // Adjust the selector as needed
+        chatBox.innerHTML = ''; // Clear previous messages
 
-            messages.forEach(msg => {
-                const senderProfileImage = msg.sender.profile_image ?
-                    `/storage/${msg.sender.profile_image}` :
-                    '/backend/images/thumbs/setting-profile-img.webp';
-                    const senderName = msg.sender.name;
+        messages.forEach(msg => {
+            const senderProfileImage = msg.sender.profile_image ?
+                `/storage/${msg.sender.profile_image}` :
+                '/backend/images/thumbs/setting-profile-img.webp';
+            const senderName = msg.sender.name;
 
-                const receiverProfileImage = msg.receiver.profile_image ?
-                    `/storage/${msg.receiver.profile_image}` :
-                    '/backend/images/thumbs/setting-profile-img.webp';
-                    const receiverName = msg.receiver.name;
+            const receiverProfileImage = msg.receiver.profile_image ?
+                `/storage/${msg.receiver.profile_image}` :
+                '/backend/images/thumbs/setting-profile-img.webp';
+            const receiverName = msg.receiver.name;
 
-                    // console.log('reciver messages:', msg.receiver_id);
+            // console.log('reciver messages:', msg.receiver_id);
 
-                const messageItem = document.createElement('div');
-                messageItem.className =
-                    `${msg.receiver_id != userId ? 'chat-box-item' : 'chat-box-item right'} d-flex align-items-end gap-8 mb-15`;
+            const messageItem = document.createElement('div');
+            messageItem.className =
+                `${msg.receiver_id != userId ? 'chat-box-item' : 'chat-box-item right'} d-flex align-items-end gap-8 mb-15`;
 
-                messageItem.innerHTML = `
+            messageItem.innerHTML = `
             <div class="pb-20">
                 <img src="${msg.receiver_id === userId ? receiverProfileImage : senderProfileImage}" alt="Profile Image" class="w-40 h-40 rounded-circle object-fit-cover flex-shrink-0">
             </div>
@@ -306,8 +305,14 @@ tinymce.init({
             </div>
         `;
 
-                chatBox.appendChild(messageItem);
-            });
-        }
+            chatBox.appendChild(messageItem);
+        });
+             // Ensure scrolling happens after DOM update
+     requestAnimationFrame(() => {
+        chatBox.scrollTop = chatBox.scrollHeight;
+    });
+    }
+
+
 </script>
 @endpush
