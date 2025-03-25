@@ -60,11 +60,24 @@
 
                             <textarea name="message" id="messageInput" class="form-control w-100" style="width: 100%" rows="10"></textarea>
                             <br>
-                            <button type="submit" id="sendMessageButton"
-                                class="flex-shrink-0 submit-btn btn btn-main rounded-pill flex-align gap-4 py-15">
-                                Send Message <span class="d-flex text-md d-sm-flex d-none"><i
-                                        class="ph-fill ph-paper-plane-tilt"></i></span>
-                            </button>
+                            <div class="row">
+
+                                <div class="d-flex gap-3">
+                                    <button type="submit" id="sendMessageButton"
+                                    class="flex-shrink-0 submit-btn btn btn-main rounded-pill flex-align gap-4 py-15">
+                                    Send Message <span class="d-flex text-md d-sm-flex d-none"><i
+                                            class="ph-fill ph-paper-plane-tilt"></i></span>
+                                </button>
+
+                                    <button type="submit" id="sendMessageButton2"
+                                        class="flex-shrink-0 submit-btn btn btn-main rounded-pill flex-align gap-4 py-15">
+                                        Send Message <span class="d-flex text-md d-sm-flex d-none"><i class="ph-fill ph-paper-plane-tilt"></i></span>
+                                    </button>
+                                </div>
+
+
+                            </div>
+
 
                         </form>
 

@@ -62,7 +62,8 @@
             </div>
         </div>
         <div class="card-body p-0">
-            <div class="chat-box-item-wrapper overflow-y-auto scroll-sm p-24" id="chatBox" style="flex-direction: column-reverse;scroll-behavior: smooth;">
+            <div class="chat-box-item-wrapper overflow-y-auto scroll-sm p-24" id="chatBox"
+                style="flex-direction: column-reverse;scroll-behavior: smooth;">
             </div>
         </div>
         <div class="card-footer border-top border-gray-100">
@@ -152,6 +153,12 @@ tinymce.init({
                         // alert('Message sent successfully!');
                         fetchMessages(receiver_id);
                         $('#messageInput').trumbowyg('empty');
+
+                        fetch('/search-users') // No query, this fetches all users
+                            .then(response => response.json())
+                            .then(data => {
+                                renderUserList(data.users);
+                            });
 
                     }
                 },
@@ -307,12 +314,10 @@ tinymce.init({
 
             chatBox.appendChild(messageItem);
         });
-             // Ensure scrolling happens after DOM update
-     requestAnimationFrame(() => {
-        chatBox.scrollTop = chatBox.scrollHeight;
-    });
+        // Ensure scrolling happens after DOM update
+        requestAnimationFrame(() => {
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
     }
-
-
 </script>
 @endpush

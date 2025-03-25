@@ -59,20 +59,24 @@ class MessageController extends Controller
                     )
                     ->get(['name', 'email', 'country', 'profile_image', 'id']);
             } else {
-                // Fetch all users where user_type is 'user' if no query is provided
-                // $users = User::where('user_type', 'user')
-                //     ->get(['name', 'email', 'country', 'profile_image', 'id']);
                 $users = User::where('user_type', 'user')
-                    ->whereIn('id', function ($query) {
-                        $query->select('sender_id')->from('messages');
-                    })
-                    ->orderByDesc(
-                        Message::select('created_at')
-                            ->whereColumn('messages.sender_id', 'users.id')
-                            ->latest()
-                            ->take(1)
-                    )
-                    ->get(['name', 'email', 'country', 'profile_image', 'id']);
+                ->whereIn('id', function ($query) {
+                    $query->select('user_id')->fromSub(function ($subQuery) {
+                        $subQuery->select('sender_id as user_id')->from('messages')
+                            ->union(
+                                Message::select('receiver_id')->from('messages')
+                            );
+                    }, 'all_users');
+                })
+                ->orderByDesc(
+                    Message::whereColumn('messages.sender_id', 'users.id')
+                        ->orWhereColumn('messages.receiver_id', 'users.id')
+                        ->select('created_at')
+                        ->latest()
+                        ->take(1)
+                )
+                ->get(['name', 'email', 'country', 'profile_image', 'id']);
+
             }
         } elseif ($authUser->user_type === 'agent') {
             if ($query) {
