@@ -79,26 +79,63 @@
                 <form id="messageForm" class="chat-box-bottom w-100">
                     @csrf
                     <input type="hidden" id="selectedUserId" name="receiver_id" value="">
-                    <!-- Hidden field for receiver user ID -->
-
-                    {{-- <input type="text" id="messageInput" name="message"
-                        class="form-control h-48 border-transparent px-20 focus-border-main-600 bg-main-50 rounded-pill placeholder-15"
-                        placeholder="Type your message..."> --}}
-                    {{-- <textarea name="description" id="description" class="form-control" rows="3"></textarea> --}}
 
                     <textarea name="message" id="messageInput" class="form-control w-100" style="width: 100%" rows="10"></textarea>
                     <br>
-                    <button type="submit" id="sendMessageButton"
-                        class="flex-shrink-0 submit-btn btn btn-main rounded-pill flex-align gap-4 py-15">
-                        Send Message <span class="d-flex text-md d-sm-flex d-none"><i
-                                class="ph-fill ph-paper-plane-tilt"></i></span>
-                    </button>
 
+                    <div class="row">
+
+                        <div class="d-flex gap-3">
+
+                            <!-- Hidden file input -->
+                            <input type="file" id="fileInput" name="attachments[]" multiple
+                                class="form-control d-none">
+
+                            <!-- Custom Attachments Button -->
+                            <button type="button" id="attachmentBtn"
+                                class="flex-shrink-0 submit-btn btn btn-dark rounded-pill flex-align gap-4 py-15">
+                                Attachments <span class="d-flex text-md d-sm-flex d-none"><i
+                                        class="ph ph-paperclip"></i></span>
+                            </button>
+
+                            <!-- Selected Files Preview -->
+
+
+                            <button type="submit" id="sendMessageButton"
+                                class="flex-shrink-0 submit-btn btn btn-main rounded-pill flex-align gap-4 py-15">
+                                Send Message <span class="d-flex text-md d-sm-flex d-none"><i
+                                        class="ph-fill ph-paper-plane-tilt"></i></span>
+                            </button>
+
+                            {{-- <button class="flex-shrink-0 submit-btn btn btn-dark rounded-pill flex-align gap-4 py-15">
+                                Attachments <span class="d-flex text-md d-sm-flex d-none"><i
+                                        class="ph ph-paperclip"></i></span>
+                            </button>
+
+                            <input type="file" id="fileInput" name="attachments[]" multiple class="form-control"> --}}
+
+
+
+
+                        </div>
+                    </div>
+                    <br>
+                    <div id="selectedFiles" class="mt-2"></div>
+
+                    {{-- <div class="upload-card-item p-16 rounded-12 bg-main-50 mb-20 mt-4">
+                        <div class="flex-align gap-10 flex-wrap">
+                            <span class="w-36 h-36 text-lg rounded-circle bg-white flex-center text-main-600 flex-shrink-0">
+                                <i class="ph ph-paperclip"></i>
+                            </span>
+                            <div class="upload-section">
+                                <p class="text-15 text-gray-500">
+                                   Document Name neds to come here
+                                </p>
+                            </div>
+                        </div>
+                    </div> --}}
                 </form>
-
-
             </div>
-
         </div>
     </div>
 
@@ -125,6 +162,43 @@ tinymce.init({
     toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | table'
 });
 </script> --}}
+
+<script>
+    document.getElementById('attachmentBtn').addEventListener('click', function() {
+        document.getElementById('fileInput').click();
+    });
+
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+        const fileList = event.target.files;
+        const container = document.getElementById('selectedFiles');
+
+        container.innerHTML = ''; // Clear previous selections
+
+        for (let i = 0; i < fileList.length; i++) {
+            const fileName = fileList[i].name;
+
+            // Create a new file display card
+            const fileDiv = document.createElement('div');
+            fileDiv.className = 'upload-card-item p-16 rounded-12 bg-main-50 mb-20 mt-4';
+            fileDiv.innerHTML = `
+                <div class="flex-align gap-10 flex-wrap">
+                    <span class="w-36 h-36 text-lg rounded-circle bg-white flex-center text-main-600 flex-shrink-0">
+                        <i class="ph ph-paperclip"></i>
+                    </span>
+                    <div class="upload-section">
+                        <p class="text-15 text-gray-500">${fileName}</p>
+                    </div>
+                </div>
+            `;
+
+            // Append to container
+            container.appendChild(fileDiv);
+        }
+    });
+</script>
+
+
+
 <script>
     $('#messageInput').trumbowyg();
 </script>
@@ -132,34 +206,23 @@ tinymce.init({
 <script>
     $(document).ready(function() {
         $('#messageForm').on('submit', function(e) {
-            e.preventDefault(); // Prevent the form from submitting normally
+            e.preventDefault(); // Prevent normal submission
 
-            // Gather form data
-            var message = $('#messageInput').val();
-            var receiver_id = $('#selectedUserId').val();
-            var _token = $('input[name="_token"]').val(); // Get CSRF token
+            let formData = new FormData(this); // Create FormData object
+            formData.append('_token', $('input[name="_token"]').val());
 
-            // Send AJAX request to Laravel
             $.ajax({
-                url: "{{ route('messages.store') }}", // Your route for saving the message
+                url: "{{ route('messages.store') }}",
                 type: "POST",
-                data: {
-                    message: message,
-                    receiver_id: receiver_id,
-                    _token: _token
-                },
+                data: formData,
+                processData: false,
+                contentType: false,
                 success: function(response) {
                     if (response.success) {
-                        // alert('Message sent successfully!');
-                        fetchMessages(receiver_id);
+                        fetchMessages($('#selectedUserId').val());
                         $('#messageInput').trumbowyg('empty');
-
-                        fetch('/search-users') // No query, this fetches all users
-                            .then(response => response.json())
-                            .then(data => {
-                                renderUserList(data.users);
-                            });
-
+                        $('#fileInput').val(''); // Clear file input
+                        $('#selectedFiles').empty();
                     }
                 },
                 error: function(xhr) {
@@ -169,6 +232,7 @@ tinymce.init({
         });
     });
 </script>
+
 
 
 
@@ -277,6 +341,8 @@ tinymce.init({
             .catch(error => console.error('Error fetching messages:', error));
     }
 
+
+
     function renderMessages(messages, userId) {
         // console.log('Rendering messages:', userId);
         // console.log(messages);
@@ -301,6 +367,86 @@ tinymce.init({
             messageItem.className =
                 `${msg.receiver_id != userId ? 'chat-box-item' : 'chat-box-item right'} d-flex align-items-end gap-8 mb-15`;
 
+            // Initialize attachments container
+            let attachmentsHTML = '';
+
+if (msg.attachments) {
+    let attachments = typeof msg.attachments === 'string' ? JSON.parse(msg.attachments) : msg.attachments;
+    let imageCount = 0;
+
+    attachments.forEach((attachment, index) => {
+        let filePath = attachment.path;
+        let originalFileName = attachment.original_name; // Get the original file name
+        let fileExtension = filePath.split('.').pop().toLowerCase();
+        let fileUrl = `/storage/${filePath}`;
+
+        // Check if the file is an image
+        if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension)) {
+            if (imageCount % 2 === 0) {
+                // Start a new row for every two images
+                attachmentsHTML += `<div class="d-flex flex-wrap gap-2">`;
+            }
+
+            // Add the image with the file name displayed below the image
+            attachmentsHTML += `
+                <div class="d-inline-block p-2" style="width: 150px; height: 150px; object-fit: cover; border-radius: 15px;">
+                    <a href="${fileUrl}" target="_blank">
+                        <img src="${fileUrl}" class="chat-attachment-img w-100 h-100 mt-2 rounded" style="
+                            width: 150px !important;
+                            height: 150px !important;
+                            overflow: hidden;
+                            padding: 2px !important;
+                            object-fit: cover;
+                            border-radius: 20px !important;">
+                    </a>
+
+                </div>`;
+
+            // Increment the counter after adding each image
+            imageCount++;
+
+            // Close the row after every 2 images
+            if (imageCount % 2 === 0) {
+                attachmentsHTML += `</div>`;
+            }
+        } else if (['mp4', 'webm', 'ogg'].includes(fileExtension)) {
+            attachmentsHTML += `<video controls class="chat-attachment-video w-100 mt-2 rounded" style="max-width: 200px;">
+                        <source src="${fileUrl}" type="video/${fileExtension}">
+                        Your browser does not support the video tag.
+                    </video>`;
+        } else {
+            // If it's not an image or video, display it as a downloadable file with the name
+            // attachmentsHTML += `<a href="${fileUrl}" class="chat-attachment-link d-block mt-2 text-primary" target="_blank">
+            //             <i class="fas fa-file-alt"></i> ${originalFileName}
+            //         </a>`;
+
+                    attachmentsHTML += `<div class="upload-card-item p-16 rounded-12 bg-main-50 mt-4">
+                                <div class="flex-align gap-10 flex-wrap">
+                                    <span class="w-36 h-36 text-lg rounded-circle bg-white flex-center text-main-600 flex-shrink-0">
+                                        <i class="ph ph-paperclip"></i>
+                                    </span>
+                                    <div class="upload-section">
+                                        <p class="text-15 text-gray-500">
+                                           ${originalFileName}<br>
+                                        <a href="${fileUrl}" target="_blank"><label class="text-main-600 cursor-pointer file-label">Download</label></a>
+
+                                        </p>
+
+
+                                    </div>
+                                </div>
+                            </div>`;
+        }
+    });
+
+    // Ensure that the last div is closed if there was an odd number of images
+    if (imageCount % 2 !== 0) {
+        attachmentsHTML += `</div>`;
+    }
+}
+
+
+
             messageItem.innerHTML = `
             <div class="pb-20">
                 <img src="${msg.receiver_id === userId ? receiverProfileImage : senderProfileImage}" alt="Profile Image" class="w-40 h-40 rounded-circle object-fit-cover flex-shrink-0">
@@ -308,7 +454,10 @@ tinymce.init({
             <div class="chat-box-item__content">
          <div class="chat-box-item__text py-16 px-16 px-lg-4 text-left"> <b> ${msg.receiver_id === userId? receiverName : senderName}</b> <br>
                     ${msg.message}</div>
+
+                     ${attachmentsHTML}
                 <span class="text-gray-200 text-13 mt-2 d-block">${new Date(msg.created_at).toLocaleString()}</span>
+                <hr>
             </div>
         `;
 

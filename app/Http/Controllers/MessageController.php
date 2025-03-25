@@ -60,23 +60,22 @@ class MessageController extends Controller
                     ->get(['name', 'email', 'country', 'profile_image', 'id']);
             } else {
                 $users = User::where('user_type', 'user')
-                ->whereIn('id', function ($query) {
-                    $query->select('user_id')->fromSub(function ($subQuery) {
-                        $subQuery->select('sender_id as user_id')->from('messages')
-                            ->union(
-                                Message::select('receiver_id')->from('messages')
-                            );
-                    }, 'all_users');
-                })
-                ->orderByDesc(
-                    Message::whereColumn('messages.sender_id', 'users.id')
-                        ->orWhereColumn('messages.receiver_id', 'users.id')
-                        ->select('created_at')
-                        ->latest()
-                        ->take(1)
-                )
-                ->get(['name', 'email', 'country', 'profile_image', 'id']);
-
+                    ->whereIn('id', function ($query) {
+                        $query->select('user_id')->fromSub(function ($subQuery) {
+                            $subQuery->select('sender_id as user_id')->from('messages')
+                                ->union(
+                                    Message::select('receiver_id')->from('messages')
+                                );
+                        }, 'all_users');
+                    })
+                    ->orderByDesc(
+                        Message::whereColumn('messages.sender_id', 'users.id')
+                            ->orWhereColumn('messages.receiver_id', 'users.id')
+                            ->select('created_at')
+                            ->latest()
+                            ->take(1)
+                    )
+                    ->get(['name', 'email', 'country', 'profile_image', 'id']);
             }
         } elseif ($authUser->user_type === 'agent') {
             if ($query) {
@@ -164,13 +163,35 @@ class MessageController extends Controller
         $request->validate([
             'message' => 'required|string|max:65535',
             'receiver_id' => 'required|integer',
+            'attachments.*' => 'file|max:2048', // 2MB per file
         ]);
+
+        // Initialize attachments array
+        $attachments = [];
+
+        // Check if there are any files uploaded
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $file) {
+                // Store the file in the 'public/attachments' directory and get the file path
+                $path = $file->store('attachments', 'public');
+
+                // Get the original file name
+                $originalFileName = $file->getClientOriginalName();
+
+                // Save both the file path and the original file name in the array
+                $attachments[] = [
+                    'path' => $path,
+                    'original_name' => $originalFileName
+                ];
+            }
+        }
 
         // Save the message
         $message = new Message();
         $message->sender_id = auth()->user()->id; // Assuming the sender is the logged-in user
         $message->receiver_id = $request->receiver_id;
         $message->message = $request->message;
+        $message->attachments = count($attachments) > 0 ? json_encode($attachments) : null;
         $message->save();
 
         // Get the receiver's email

@@ -17,7 +17,9 @@ return new class extends Migration
             $table->foreignId('receiver_id')->constrained('users')->onDelete('cascade');
             $table->longText('message');
             $table->boolean('status')->default(0);
+            $table->json('attachments')->nullable()->after('message');
             $table->timestamps();
+
         });
     }
 
