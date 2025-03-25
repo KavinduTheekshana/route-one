@@ -211,6 +211,7 @@ class MessageController extends Controller
         if ($receiver) {
             // Simulate a long message
             Mail::to($receiver->email)->send(new NewMessageNotification($messagecontent, auth()->user()));
+            // Mail::to($receiver->email)->send(new NewMessageNotification($messagecontent, auth()->user(), $attachments));
         } else {
             Log::error('User not found with ID: ' . $request->receiver_id);
         }
