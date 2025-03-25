@@ -370,25 +370,26 @@ tinymce.init({
             // Initialize attachments container
             let attachmentsHTML = '';
 
-if (msg.attachments) {
-    let attachments = typeof msg.attachments === 'string' ? JSON.parse(msg.attachments) : msg.attachments;
-    let imageCount = 0;
+            if (msg.attachments) {
+                let attachments = typeof msg.attachments === 'string' ? JSON.parse(msg.attachments) : msg
+                    .attachments;
+                let imageCount = 0;
 
-    attachments.forEach((attachment, index) => {
-        let filePath = attachment.path;
-        let originalFileName = attachment.original_name; // Get the original file name
-        let fileExtension = filePath.split('.').pop().toLowerCase();
-        let fileUrl = `/storage/${filePath}`;
+                attachments.forEach((attachment, index) => {
+                    let filePath = attachment.path;
+                    let originalFileName = attachment.original_name; // Get the original file name
+                    let fileExtension = filePath.split('.').pop().toLowerCase();
+                    let fileUrl = `/storage/${filePath}`;
 
-        // Check if the file is an image
-        if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension)) {
-            if (imageCount % 2 === 0) {
-                // Start a new row for every two images
-                attachmentsHTML += `<div class="d-flex flex-wrap gap-2">`;
-            }
+                    // Check if the file is an image
+                    if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension)) {
+                        if (imageCount % 2 === 0) {
+                            // Start a new row for every two images
+                            attachmentsHTML += `<div class="d-flex flex-wrap gap-2">`;
+                        }
 
-            // Add the image with the file name displayed below the image
-            attachmentsHTML += `
+                        // Add the image with the file name displayed below the image
+                        attachmentsHTML += `
                 <div class="d-inline-block p-2" style="width: 150px; height: 150px; object-fit: cover; border-radius: 15px;">
                     <a href="${fileUrl}" target="_blank">
                         <img src="${fileUrl}" class="chat-attachment-img w-100 h-100 mt-2 rounded" style="
@@ -402,25 +403,25 @@ if (msg.attachments) {
 
                 </div>`;
 
-            // Increment the counter after adding each image
-            imageCount++;
+                        // Increment the counter after adding each image
+                        imageCount++;
 
-            // Close the row after every 2 images
-            if (imageCount % 2 === 0) {
-                attachmentsHTML += `</div>`;
-            }
-        } else if (['mp4', 'webm', 'ogg'].includes(fileExtension)) {
-            attachmentsHTML += `<video controls class="chat-attachment-video w-100 mt-2 rounded" style="max-width: 200px;">
+                        // Close the row after every 2 images
+                        if (imageCount % 2 === 0) {
+                            attachmentsHTML += `</div>`;
+                        }
+                    } else if (['mp4', 'webm', 'ogg'].includes(fileExtension)) {
+                        attachmentsHTML += `<video controls class="chat-attachment-video w-100 mt-2 rounded" style="max-width: 200px;">
                         <source src="${fileUrl}" type="video/${fileExtension}">
                         Your browser does not support the video tag.
                     </video>`;
-        } else {
-            // If it's not an image or video, display it as a downloadable file with the name
-            // attachmentsHTML += `<a href="${fileUrl}" class="chat-attachment-link d-block mt-2 text-primary" target="_blank">
-            //             <i class="fas fa-file-alt"></i> ${originalFileName}
-            //         </a>`;
+                    } else {
+                        // If it's not an image or video, display it as a downloadable file with the name
+                        // attachmentsHTML += `<a href="${fileUrl}" class="chat-attachment-link d-block mt-2 text-primary" target="_blank">
+                        //             <i class="fas fa-file-alt"></i> ${originalFileName}
+                        //         </a>`;
 
-                    attachmentsHTML += `<div class="upload-card-item p-16 rounded-12 bg-main-50 mt-4">
+                        attachmentsHTML += `<div class="upload-card-item p-16 rounded-12 bg-main-50 mt-4">
                                 <div class="flex-align gap-10 flex-wrap">
                                     <span class="w-36 h-36 text-lg rounded-circle bg-white flex-center text-main-600 flex-shrink-0">
                                         <i class="ph ph-paperclip"></i>
@@ -436,14 +437,14 @@ if (msg.attachments) {
                                     </div>
                                 </div>
                             </div>`;
-        }
-    });
+                    }
+                });
 
-    // Ensure that the last div is closed if there was an odd number of images
-    if (imageCount % 2 !== 0) {
-        attachmentsHTML += `</div>`;
-    }
-}
+                // Ensure that the last div is closed if there was an odd number of images
+                if (imageCount % 2 !== 0) {
+                    attachmentsHTML += `</div>`;
+                }
+            }
 
 
 

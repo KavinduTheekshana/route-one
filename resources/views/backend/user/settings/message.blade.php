@@ -63,20 +63,41 @@
                             <div class="row">
 
                                 <div class="d-flex gap-3">
-                                    <button type="submit" id="sendMessageButton"
-                                    class="flex-shrink-0 submit-btn btn btn-main rounded-pill flex-align gap-4 py-15">
-                                    Send Message <span class="d-flex text-md d-sm-flex d-none"><i
-                                            class="ph-fill ph-paper-plane-tilt"></i></span>
-                                </button>
 
-                                    <button type="submit" id="sendMessageButton2"
-                                        class="flex-shrink-0 submit-btn btn btn-main rounded-pill flex-align gap-4 py-15">
-                                        Send Message <span class="d-flex text-md d-sm-flex d-none"><i class="ph-fill ph-paper-plane-tilt"></i></span>
+                                    <!-- Hidden file input -->
+                                    <input type="file" id="fileInput" name="attachments[]" multiple
+                                        class="form-control d-none">
+
+                                    <!-- Custom Attachments Button -->
+                                    <button type="button" id="attachmentBtn"
+                                        class="flex-shrink-0 submit-btn btn btn-dark rounded-pill flex-align gap-4 py-15">
+                                        Attachments <span class="d-flex text-md d-sm-flex d-none"><i
+                                                class="ph ph-paperclip"></i></span>
                                     </button>
+
+                                    <!-- Selected Files Preview -->
+
+
+                                    <button type="submit" id="sendMessageButton"
+                                        class="flex-shrink-0 submit-btn btn btn-main rounded-pill flex-align gap-4 py-15">
+                                        Send Message <span class="d-flex text-md d-sm-flex d-none"><i
+                                                class="ph-fill ph-paper-plane-tilt"></i></span>
+                                    </button>
+
+                                    {{-- <button class="flex-shrink-0 submit-btn btn btn-dark rounded-pill flex-align gap-4 py-15">
+                                        Attachments <span class="d-flex text-md d-sm-flex d-none"><i
+                                                class="ph ph-paperclip"></i></span>
+                                    </button>
+
+                                    <input type="file" id="fileInput" name="attachments[]" multiple class="form-control"> --}}
+
+
+
+
                                 </div>
-
-
                             </div>
+                            <br>
+                            <div id="selectedFiles" class="mt-2"></div>
 
 
                         </form>
@@ -100,6 +121,41 @@
 @endpush
 
 @push('scripts')
+
+<script>
+    document.getElementById('attachmentBtn').addEventListener('click', function() {
+        document.getElementById('fileInput').click();
+    });
+
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+        const fileList = event.target.files;
+        const container = document.getElementById('selectedFiles');
+
+        container.innerHTML = ''; // Clear previous selections
+
+        for (let i = 0; i < fileList.length; i++) {
+            const fileName = fileList[i].name;
+
+            // Create a new file display card
+            const fileDiv = document.createElement('div');
+            fileDiv.className = 'upload-card-item p-16 rounded-12 bg-main-50 mb-20 mt-4';
+            fileDiv.innerHTML = `
+                <div class="flex-align gap-10 flex-wrap">
+                    <span class="w-36 h-36 text-lg rounded-circle bg-white flex-center text-main-600 flex-shrink-0">
+                        <i class="ph ph-paperclip"></i>
+                    </span>
+                    <div class="upload-section">
+                        <p class="text-15 text-gray-500">${fileName}</p>
+                    </div>
+                </div>
+            `;
+
+            // Append to container
+            container.appendChild(fileDiv);
+        }
+    });
+</script>
+
     {{-- <script src="https://cdn.tiny.cloud/1/mc59edcciy0vssoo3ojx1vwpo2jbsemez61eo60xxi6p5wse/tinymce/7/tinymce.min.js"
         referrerpolicy="origin"></script>
 
@@ -138,6 +194,7 @@
                             // alert('Message sent successfully!');
                             fetchMessages(receiver_id);
                             $('#messageInput').trumbowyg('empty');
+                            $('#selectedFiles').empty();
                         }
                     },
                     error: function(xhr) {
@@ -221,6 +278,88 @@
                 const messageItem = document.createElement('div');
                 messageItem.className =
                     `${msg.receiver_id != userId ? 'chat-box-item' : 'chat-box-item right'} d-flex align-items-end gap-8 mb-15`;
+
+
+                    // Initialize attachments container
+            let attachmentsHTML = '';
+
+if (msg.attachments) {
+    let attachments = typeof msg.attachments === 'string' ? JSON.parse(msg.attachments) : msg
+        .attachments;
+    let imageCount = 0;
+
+    attachments.forEach((attachment, index) => {
+        let filePath = attachment.path;
+        let originalFileName = attachment.original_name; // Get the original file name
+        let fileExtension = filePath.split('.').pop().toLowerCase();
+        let fileUrl = `/storage/${filePath}`;
+
+        // Check if the file is an image
+        if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension)) {
+            if (imageCount % 2 === 0) {
+                // Start a new row for every two images
+                attachmentsHTML += `<div class="d-flex flex-wrap gap-2">`;
+            }
+
+            // Add the image with the file name displayed below the image
+            attachmentsHTML += `
+    <div class="d-inline-block p-2" style="width: 150px; height: 150px; object-fit: cover; border-radius: 15px;">
+        <a href="${fileUrl}" target="_blank">
+            <img src="${fileUrl}" class="chat-attachment-img w-100 h-100 mt-2 rounded" style="
+                width: 150px !important;
+                height: 150px !important;
+                overflow: hidden;
+                padding: 2px !important;
+                object-fit: cover;
+                border-radius: 20px !important;">
+        </a>
+
+    </div>`;
+
+            // Increment the counter after adding each image
+            imageCount++;
+
+            // Close the row after every 2 images
+            if (imageCount % 2 === 0) {
+                attachmentsHTML += `</div>`;
+            }
+        } else if (['mp4', 'webm', 'ogg'].includes(fileExtension)) {
+            attachmentsHTML += `<video controls class="chat-attachment-video w-100 mt-2 rounded" style="max-width: 200px;">
+            <source src="${fileUrl}" type="video/${fileExtension}">
+            Your browser does not support the video tag.
+        </video>`;
+        } else {
+            // If it's not an image or video, display it as a downloadable file with the name
+            // attachmentsHTML += `<a href="${fileUrl}" class="chat-attachment-link d-block mt-2 text-primary" target="_blank">
+            //             <i class="fas fa-file-alt"></i> ${originalFileName}
+            //         </a>`;
+
+            attachmentsHTML += `<div class="upload-card-item p-16 rounded-12 bg-main-50 mt-4">
+                    <div class="flex-align gap-10 flex-wrap">
+                        <span class="w-36 h-36 text-lg rounded-circle bg-white flex-center text-main-600 flex-shrink-0">
+                            <i class="ph ph-paperclip"></i>
+                        </span>
+                        <div class="upload-section">
+                            <p class="text-15 text-gray-500">
+                               ${originalFileName}<br>
+                            <a href="${fileUrl}" target="_blank"><label class="text-main-600 cursor-pointer file-label">Download</label></a>
+
+                            </p>
+
+
+                        </div>
+                    </div>
+                </div>`;
+        }
+    });
+
+    // Ensure that the last div is closed if there was an odd number of images
+    if (imageCount % 2 !== 0) {
+        attachmentsHTML += `</div>`;
+    }
+}
+
+
 
                 messageItem.innerHTML = `
             <div class="pb-20">
