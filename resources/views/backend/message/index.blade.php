@@ -5,9 +5,6 @@
 
 @section('content')
 
-<div id="loadingSpinner" style="display: none;">
-    <img src="{{ asset('frontend/Animation.gif') }}" alt="Loading...">
-</div>
 
     <div class="breadcrumb-with-buttons mb-24 flex-between flex-wrap gap-8">
         {{-- Breadcrumb  --}}
@@ -211,7 +208,6 @@ tinymce.init({
     $(document).ready(function() {
         $('#messageForm').on('submit', function(e) {
             e.preventDefault(); // Prevent normal submission
-            $('#loadingSpinner').show();
             let formData = new FormData(this); // Create FormData object
             formData.append('_token', $('input[name="_token"]').val());
 
@@ -222,8 +218,8 @@ tinymce.init({
                 processData: false,
                 contentType: false,
                 success: function(response) {
+                    console.log(response);
                     if (response.success) {
-                        $('#loadingSpinner').hide();
                         fetchMessages($('#selectedUserId').val());
                         $('#messageInput').trumbowyg('empty');
                         $('#fileInput').val(''); // Clear file input
