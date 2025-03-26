@@ -5,7 +5,6 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -17,8 +16,7 @@ class NewMessageNotification extends Mailable
 
     public $messageContent; // Variable to hold the message content
     public $sender; // Variable to hold the sender information
-    public $attachments;
-
+    public $attachments; // Variable to hold attachments
     /**
      * Create a new message instance.
      */
@@ -26,43 +24,27 @@ class NewMessageNotification extends Mailable
     {
         $this->messageContent = $messageContent;
         $this->sender = $sender; // Store sender object
-        $this->attachments = $attachments;
+        $this->attachments = $attachments; // Store attachments array
     }
 
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'New Message Notification',
-        );
-    }
+        $email = $this->from(config('mail.from.address'), config('mail.from.name'))
+                    ->subject('You Have a New Message')
+                    ->view('emails.new_message')
+                    ->with([
+                        'messageContent' => $this->messageContent,
+                        'sender' => $this->sender,
+                        'attachments' => $this->attachments,
+                    ]);
 
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'emails.new-message', // Make sure you have this view
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        $emailAttachments = [];
-
+        // Attach each file
         foreach ($this->attachments as $attachment) {
-            $emailAttachments[] = Attachment::fromStorageDisk('public', $attachment['path'])
-                ->as($attachment['original_name']);
+            $email->attachFromStorageDisk('public', $attachment['path'], [
+                'as' => $attachment['original_name']
+            ]);
         }
 
-        return $emailAttachments;
+        return $email;
     }
 }
