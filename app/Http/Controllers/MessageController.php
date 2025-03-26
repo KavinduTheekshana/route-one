@@ -199,20 +199,20 @@ class MessageController extends Controller
         $messagecontent = $request->message;
         $phone = $receiver->phone;
 
-        // if (str_starts_with($phone, '0') && strlen($phone) === 10) {
-        //     $phone = '94' . substr($phone, 1);
-        //     // Send SMS notification to the receiver
-        //     $this->sendTextMessage($phone, $receiver->name);
-        // } elseif (str_starts_with($phone, '+94') && strlen($phone) === 12) {
-        //     $phone = substr($phone, 1);
-        //     $this->sendTextMessage($phone, $receiver->name);
-        // }
+        if (str_starts_with($phone, '0') && strlen($phone) === 10) {
+            $phone = '94' . substr($phone, 1);
+            // Send SMS notification to the receiver
+            $this->sendTextMessage($phone, $receiver->name);
+        } elseif (str_starts_with($phone, '+94') && strlen($phone) === 12) {
+            $phone = substr($phone, 1);
+            $this->sendTextMessage($phone, $receiver->name);
+        }
         // Send email notification to the receiver
 
         // return response()->json($attachments);
         if ($receiver) {
             // Send email with attachment download links
-            Mail::to($receiver->email)->send(new NewMessageNotification($messagecontent, auth()->user(), $attachments));
+            Mail::to($receiver->email)->send(new NewMessageNotification($messagecontent, auth()->user()));
         } else {
             Log::error('User not found with ID: ' . $request->receiver_id);
         }
