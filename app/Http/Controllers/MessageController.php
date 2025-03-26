@@ -211,11 +211,8 @@ class MessageController extends Controller
 
         // return response()->json($attachments);
         if ($receiver) {
-            Mail::to($receiver->email)->send(new NewMessageNotification(
-                $messagecontent,
-                auth()->user(),
-                $attachments // Pass the attachments array to the Mailable
-            ));
+            // Send email with attachment download links
+            Mail::to($receiver->email)->send(new NewMessageNotification($messagecontent, auth()->user(), $attachments));
         } else {
             Log::error('User not found with ID: ' . $request->receiver_id);
         }
