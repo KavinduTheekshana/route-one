@@ -13,41 +13,41 @@ class MessageNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $message;
-    public $sender;
-    public $attachments;
-
     /**
      * Create a new message instance.
      */
-    public function __construct($message, $sender, $attachments)
+    public function __construct()
     {
-        $this->message = $message;
-        $this->sender = $sender;
-        $this->attachments = $attachments;
+        //
     }
-
 
     /**
      * Get the message envelope.
      */
-    public function build()
+    public function envelope(): Envelope
     {
-        $email = $this->from('your-email@example.com', 'Your App Name')
-            ->subject('New Message Received')
-            ->view('emails.message_notification')
-            ->with([
-                'message' => $this->message,
-                'sender' => $this->sender,
-            ]);
+        return new Envelope(
+            subject: 'Message Notification',
+        );
+    }
 
-        // Attach uploaded files if available
-        foreach ($this->attachments as $attachment) {
-            $email->attach(storage_path('app/public/' . $attachment['path']), [
-                'as' => $attachment['original_name']
-            ]);
-        }
+    /**
+     * Get the message content definition.
+     */
+    public function content(): Content
+    {
+        return new Content(
+            view: 'view.name',
+        );
+    }
 
-        return $email;
+    /**
+     * Get the attachments for the message.
+     *
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     */
+    public function attachments(): array
+    {
+        return [];
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\MessageNotification;
 use App\Mail\NewMessageNotification;
 use App\Models\Message;
 use App\Models\User;
@@ -189,40 +188,35 @@ class MessageController extends Controller
 
         // Save the message
         $message = new Message();
-        $message->sender_id = auth()->user()->id;
+        $message->sender_id = auth()->user()->id; // Assuming the sender is the logged-in user
         $message->receiver_id = $request->receiver_id;
         $message->message = $request->message;
         $message->attachments = count($attachments) > 0 ? json_encode($attachments) : null;
         $message->save();
 
-        // Get the receiver's details
+        // Get the receiver's email
         $receiver = User::find($request->receiver_id);
-        $messageContent = $request->message;
+        $messagecontent = $request->message;
         $phone = $receiver->phone;
 
-        // Send SMS notification
         if (str_starts_with($phone, '0') && strlen($phone) === 10) {
             $phone = '94' . substr($phone, 1);
+            // Send SMS notification to the receiver
             $this->sendTextMessage($phone, $receiver->name);
         } elseif (str_starts_with($phone, '+94') && strlen($phone) === 12) {
             $phone = substr($phone, 1);
             $this->sendTextMessage($phone, $receiver->name);
         }
+        // Send email notification to the receiver
+        if ($receiver) {
+            // Simulate a long message
+            Mail::to($receiver->email)->send(new NewMessageNotification($messagecontent, auth()->user()));
+            // Mail::to($receiver->email)->send(new NewMessageNotification($messagecontent, auth()->user(), $attachments));
+        } else {
+            Log::error('User not found with ID: ' . $request->receiver_id);
+        }
 
-        // Send email notification
-        Mail::send([], [], function ($mail) use ($receiver, $messageContent, $attachments) {
-            $mail->to($receiver->email)
-                ->subject('New Message Received')
-                ->setBody('<p>You have received a new message:</p><blockquote>' . $messageContent . '</blockquote><p>Check your inbox for more details.</p>', 'text/html');
-
-            // Attach uploaded files if available
-            foreach ($attachments as $attachment) {
-                $mail->attach(storage_path('app/public/' . $attachment['path']), [
-                    'as' => $attachment['original_name']
-                ]);
-            }
-        });
-
+        // Return a JSON response for AJAX
         return response()->json(['success' => true]);
     }
 

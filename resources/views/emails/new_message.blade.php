@@ -64,8 +64,6 @@
             <h1>You have a new message from Route One Recruitment!</h1>
             <p><strong>From:</strong> {{ $sender->name }} ({{ $sender->email }})</p>
             <p>{!! $messageContent !!}</p>
-
-
         </div>
 
         <!-- Footer Section -->
