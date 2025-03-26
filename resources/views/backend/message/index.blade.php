@@ -218,8 +218,9 @@ tinymce.init({
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    console.log(response);
+                    console.log('FUCK',response);
                     if (response.success) {
+
                         fetchMessages($('#selectedUserId').val());
                         $('#messageInput').trumbowyg('empty');
                         $('#fileInput').val(''); // Clear file input
