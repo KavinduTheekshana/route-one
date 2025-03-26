@@ -210,8 +210,22 @@ class MessageController extends Controller
         // Send email notification to the receiver
         if ($receiver) {
             // Simulate a long message
-            Mail::to($receiver->email)->send(new NewMessageNotification($messagecontent, auth()->user()));
+            // Mail::to($receiver->email)->send(new NewMessageNotification($messagecontent, auth()->user()));
             // Mail::to($receiver->email)->send(new NewMessageNotification($messagecontent, auth()->user(), $attachments));
+
+            // Send email notification without using Mailable
+            Mail::send([], [], function ($mail) use ($receiver, $messagecontent, $attachments) {
+                $mail->to($receiver->email)
+                    ->subject('New Message Received')
+                    ->setBody('<p>You have received a new message:</p><blockquote>' . $messagecontent . '</blockquote><p>Check your inbox for more details.</p>', 'text/html');
+
+                // Attach uploaded files if available
+                foreach ($attachments as $attachment) {
+                    $mail->attach(storage_path('app/public/' . $attachment['path']), [
+                        'as' => $attachment['original_name']
+                    ]);
+                }
+            });
         } else {
             Log::error('User not found with ID: ' . $request->receiver_id);
         }
