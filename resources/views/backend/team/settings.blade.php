@@ -125,6 +125,9 @@
                                     Super Admin</option>
                                 <option value="teacher" {{ $user->user_type === 'teacher' ? 'selected' : '' }}>Teacher
                                 </option>
+
+                                <option value="user" {{ $user->user_type === 'user' ? 'selected' : '' }}>User
+                                </option>
                             </select>
                         </div>
 

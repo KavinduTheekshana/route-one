@@ -5,10 +5,14 @@
 </head>
 <body>
     <p>Hello,</p>
-    <p>You have received a new message from <strong>{{ $sender }}</strong>:</p>
+    <p>You have received a new message from <strong>{{ $sender->name }}</strong>:</p>
     <blockquote>
-        "{{ $message }}"
+        "{{ $messageContent }}"
     </blockquote>
     <p>Check your inbox for more details.</p>
+
+
+
+
 </body>
 </html>
