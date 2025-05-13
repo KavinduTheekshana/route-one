@@ -14,18 +14,22 @@ class BulkEmail extends Mailable
     use Queueable, SerializesModels;
 
     public $subject;
-    public $body;
+    public $htmlContent;
 
-    public function __construct($subject, $body)
+      public function __construct($subject, $htmlContent)
     {
         $this->subject = $subject;
-        $this->body = $body;
+        $this->htmlContent = $htmlContent;
     }
 
     public function build()
     {
-        return $this->subject($this->subject)
-            ->view('emails.bulk_email')
-            ->with('body', $this->body);
+        // return $this->subject($this->subject)
+        //     ->view('emails.bulk_email')
+        //     ->with('body', $this->body);
+
+             return $this->subject($this->subject)
+                ->view('emails.bulk_email')
+                ->with(['htmlContent' => $this->htmlContent]);
     }
 }

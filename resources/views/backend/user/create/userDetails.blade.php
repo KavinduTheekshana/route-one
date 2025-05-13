@@ -6,7 +6,6 @@
         <form action="{{ route('user.submit.details') }}" method="POST" class="form-content pt-4">
             @csrf
             <div class="row gy-20">
-
                 <div class="col-xxl-12 col-md-12 col-sm-12">
                     <div class="row g-20">
                         <div class="col-sm-6">

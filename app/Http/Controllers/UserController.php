@@ -159,6 +159,7 @@ class UserController extends Controller
 
     public function details(Request $request)
     {
+    
 
         // Validate the form input
         $validatedData = $request->validate([

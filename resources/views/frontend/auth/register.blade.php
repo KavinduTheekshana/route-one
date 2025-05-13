@@ -65,7 +65,7 @@
                         <div class="space10"></div>
 
                         <!-- Google reCAPTCHA Widget -->
-                        <div class="g-recaptcha" data-sitekey="6Lequ8UqAAAAAHBEB1dRaq2ydJ2855goX61BnxNu"></div>
+                        {{-- <div class="g-recaptcha" data-sitekey="6Lequ8UqAAAAAHBEB1dRaq2ydJ2855goX61BnxNu"></div> --}}
 
 
                         <div class="space20"></div>
@@ -97,5 +97,5 @@
 @endsection
 
 @push('scripts')
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{{-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> --}}
 @endpush

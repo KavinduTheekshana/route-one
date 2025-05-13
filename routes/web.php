@@ -120,7 +120,7 @@ Route::middleware([
         Route::get('/staff/manage', [UserController::class, 'staff'])->name('staff.manage')->middleware(['auth', 'role:superadmin']);
         Route::get('staff/hierarchy', [UserController::class, 'staff_hierarchy'])->name('staff.hierarchy')->middleware(['auth', 'role:superadmin']);
         Route::get('/staff/create', [StaffController::class, 'create'])->name('staff.create')->middleware(['auth', 'role:superadmin']);
-        Route::post('/staff/store', [StaffController::class, 'store'])->name('user.submit.details');
+        Route::post('/staff/store', [StaffController::class, 'store'])->name('staff.submit.details');
         Route::delete('/staff/{id}', [StaffController::class, 'destroy'])->name('staff.destroy');
 
 

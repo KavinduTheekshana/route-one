@@ -32,7 +32,7 @@
         <h5 class="mb-0">Create Staff Hierarchy</h5>
     </div>
     <div class="card-body">
-        <form action="{{ route('user.submit.details') }}" method="POST" class="form-content pt-4">
+        <form action="{{ route('staff.submit.details') }}" method="POST" class="form-content pt-4">
             @csrf
             <div class="row gy-20">
                 <div class="col-xxl-12 col-md-12 col-sm-12">

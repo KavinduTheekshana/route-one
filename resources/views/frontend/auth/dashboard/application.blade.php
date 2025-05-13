@@ -38,7 +38,7 @@
 
                         <div class="row gx-3 mb-3">
                             <div class="col-md-6">
-                                <label class="small mb-1" for="inputCountry">Country <span
+                                <label class="small mb-1" for="inputCountry">Nationality <span
                                         class="text-danger">*</span></label>
                                 {{-- <select id="countrySelect" class="form-control" name="country" style="width: 100%;"
                                     {{ isset($application) && $application->status == 1 ? 'disabled' : '' }}>
@@ -47,7 +47,7 @@
 
                                 <select id="countrySelect" class="form-control" name="country" style="width: 100%;"
                                     {{ isset($application) && $application->status == 1 ? 'disabled' : '' }}>
-                                    <option value="" disabled selected>Select a country</option>
+                                    <option value="" disabled selected>Select Nationality</option>
                                     @foreach (['Afghanistan', 'Armenia', 'Azerbaijan', 'Bahrain', 'Bangladesh', 'Bhutan', 'Brunei', 'Cambodia', 'China', 'Cyprus', 'Georgia', 'India', 'Indonesia', 'Iran', 'Iraq', 'Israel', 'Japan', 'Jordan', 'Kazakhstan', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Lebanon', 'Malaysia', 'Maldives', 'Mongolia', 'Myanmar (Burma)', 'Nepal', 'North Korea', 'Oman', 'Pakistan', 'Palestine', 'Philippines', 'Qatar', 'Saudi Arabia', 'Singapore', 'South Korea', 'Sri Lanka', 'Syria', 'Tajikistan', 'Thailand', 'Timor-Leste', 'Turkey', 'Turkmenistan', 'United Arab Emirates', 'Uzbekistan', 'Vietnam', 'Yemen'] as $country)
                                         <option value="{{ $country }}"
                                             {{ isset($application) && $application->country == $country ? 'selected' : '' }}>
