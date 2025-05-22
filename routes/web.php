@@ -42,6 +42,7 @@ Route::get('/vacancies/{slug}', [HomeController::class, 'vacancy'])->name('vacan
 Route::get('services', [HomeController::class, 'services'])->name('services');
 Route::get('user/login', [HomeController::class, 'login'])->name('user.login');
 Route::get('user/register', [HomeController::class, 'register'])->name('user.register');
+Route::post('user/register', [UserController::class, 'register'])->name('user.register');
 Route::get('user/forgot', [HomeController::class, 'forgot'])->name('user.forgot');
 Route::post('user/password/email', [HomeController::class, 'sendResetLink'])->name('user.password.email');
 Route::get('password/reset/{token}', [HomeController::class, 'showResetForm'])->name('password.reset');

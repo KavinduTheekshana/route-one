@@ -23,6 +23,29 @@ use Illuminate\Support\Facades\Response;
 
 class UserController extends Controller
 {
+    public function register(Request $request)
+    {
+        // Validation
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|confirmed|min:6',
+        ]);
+
+        // Create user
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'status' => 1, // Assuming 1 means active
+            'password' => Hash::make($request->password),
+        ]);
+
+        // Log the user in (optional)
+        auth()->login($user);
+
+        // Redirect to home/dashboard or wherever
+        return redirect()->route('dashboard')->with('success', 'Registration successful!');
+    }
     public function downloadUsersCsv()
     {
         $users = \App\Models\User::all(); // Fetch all users from the database

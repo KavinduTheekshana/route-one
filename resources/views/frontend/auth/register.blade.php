@@ -33,15 +33,27 @@
                         </div>
                         <br>
                     @endif
-                    @error('g-recaptcha-response')
+
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+
+                    <!-- @error('g-recaptcha-response')
                         <div style="color: red; background-color: #f8d7da; padding: 10px; border-radius: 5px;">
                             {{ $message }}
                         </div>
                         <br>
-                    @enderror
+                    @enderror -->
 
 
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="{{ route('user.register') }}">
                         @csrf
                         <!-- Name Field -->
                         <input type="text" class="form-control login-input" name="name" autofocus
@@ -64,8 +76,8 @@
                             placeholder="Password confirmation">
                         <div class="space10"></div>
 
-                        <!-- Google reCAPTCHA Widget -->
-                        {{-- <div class="g-recaptcha" data-sitekey="6Lequ8UqAAAAAHBEB1dRaq2ydJ2855goX61BnxNu"></div> --}}
+                  
+                   
 
 
                         <div class="space20"></div>
