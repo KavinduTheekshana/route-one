@@ -15,6 +15,7 @@
     ],
     "require": {
         "php": "^8.2",
+        "anhskohbo/no-captcha": "^3.7",
         "barryvdh/laravel-dompdf": "^3.0",
         "fpdf/fpdf": "^1.86",
         "guzzlehttp/guzzle": "^7.9",

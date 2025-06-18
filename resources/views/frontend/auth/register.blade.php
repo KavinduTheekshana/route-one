@@ -53,7 +53,7 @@
                     @enderror -->
 
 
-                    <form method="POST" action="{{ route('user.register') }}">
+                    <form method="POST" action="{{ route('user.register') }}" id="registrationForm">
                         @csrf
                         <!-- Name Field -->
                         <input type="text" class="form-control login-input" name="name" autofocus
@@ -76,7 +76,12 @@
                             placeholder="Password confirmation">
                         <div class="space10"></div>
 
-                  
+                    <div class="mb-24">
+                        <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}" data-callback="recaptchaCallback"></div>
+                        <div id="recaptcha-error" class="text-danger mt-2" style="display: none;">
+                            Please complete the reCAPTCHA verification.
+                        </div>
+                    </div>
                    
 
 
@@ -109,5 +114,34 @@
 @endsection
 
 @push('scripts')
-{{-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> --}}
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+ <script>
+        // reCAPTCHA callback function
+        function recaptchaCallback(response) {
+            if (response.length > 0) {
+                document.getElementById('recaptcha-error').style.display = 'none';
+            }
+        }
+
+        // Form submission validation
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            var recaptchaResponse = grecaptcha.getResponse();
+            
+            if (recaptchaResponse.length === 0) {
+                e.preventDefault();
+                document.getElementById('recaptcha-error').style.display = 'block';
+                document.getElementById('recaptcha-error').scrollIntoView({ behavior: 'smooth' });
+                return false;
+            }
+            
+            return true;
+        });
+
+        // Optional: Reset reCAPTCHA on form reset
+        function resetRecaptcha() {
+            grecaptcha.reset();
+            document.getElementById('recaptcha-error').style.display = 'none';
+        }
+    </script>
 @endpush

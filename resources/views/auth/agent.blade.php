@@ -85,7 +85,7 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('agent.store') }}">
+                <form method="POST" action="{{ route('agent.store') }}" id="registrationForm">
                     @csrf
                     <div class="mb-24">
                         <label class="form-label mb-8 h6">Full Name</label>
@@ -114,14 +114,9 @@
                         <div class="position-relative">
                             <input type="text" class="form-control py-11 ps-40" id="country" name="country"
                                 placeholder="Enter your country" required>
-                            {{-- <select class="form-control py-11 ps-40" id="country" name="country"
-                                placeholder="Enter your country" required>
-                                <option value="" disabled selected>Loading countries...</option>
-                            </select> --}}
                             <span class="position-absolute top-50 translate-middle-y ms-16 text-gray-600 d-flex">
                                 <i class="ph ph-globe-hemisphere-east"></i>
                             </span>
-
                         </div>
                     </div>
 
@@ -147,7 +142,13 @@
                         </div>
                     </div>
 
-                    <div class="g-recaptcha" data-sitekey="6Lequ8UqAAAAAHBEB1dRaq2ydJ2855goX61BnxNu"></div>
+                    <!-- reCAPTCHA -->
+                    <div class="mb-24">
+                        <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}" data-callback="recaptchaCallback"></div>
+                        <div id="recaptcha-error" class="text-danger mt-2" style="display: none;">
+                            Please complete the reCAPTCHA verification.
+                        </div>
+                    </div>
 
                     <div class="mb-32 flex-between flex-wrap gap-8">
                         <div class="form-check mb-0 flex-shrink-0 p-0">
@@ -157,7 +158,7 @@
                             </p>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-main rounded-pill w-100">Sign Up</button>
+                    <button type="submit" class="btn btn-main rounded-pill w-100" id="submitBtn">Sign Up</button>
                 </form>
 
             </div>
@@ -201,105 +202,35 @@
     <!-- reCAPTCHA -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
+    <script>
+        // reCAPTCHA callback function
+        function recaptchaCallback(response) {
+            if (response.length > 0) {
+                document.getElementById('recaptcha-error').style.display = 'none';
+            }
+        }
 
-    {{-- <script>
-        fetch('https://restcountries.com/v3.1/all')
-            .then(response => {
-                console.log("Response Status:", response.status);
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                return response.json();
-            })
-            .then(data => {
-                const select = document.getElementById('country');
-                select.innerHTML = ''; // Clear the placeholder
+        // Form submission validation
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            var recaptchaResponse = grecaptcha.getResponse();
+            
+            if (recaptchaResponse.length === 0) {
+                e.preventDefault();
+                document.getElementById('recaptcha-error').style.display = 'block';
+                document.getElementById('recaptcha-error').scrollIntoView({ behavior: 'smooth' });
+                return false;
+            }
+            
+            return true;
+        });
 
-                // Sort countries alphabetically by name
-                data.sort((a, b) => a.name.common.localeCompare(b.name.common));
-
-                // Add a default option
-                const defaultOption = document.createElement('option');
-                defaultOption.value = "";
-                defaultOption.disabled = true;
-                defaultOption.selected = true;
-                defaultOption.textContent = "Select your country";
-                select.appendChild(defaultOption);
-
-                // Populate the dropdown with country options
-                data.forEach(country => {
-                    const option = document.createElement('option');
-                    option.value = country.name.common; // Use the country name as the value
-                    option.textContent = country.name.common; // Display the country name
-                    select.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching countries:', error);
-                const select = document.getElementById('country');
-                select.innerHTML = '<option value="" disabled>Error loading countries</option>';
-            });
+        // Optional: Reset reCAPTCHA on form reset
+        function resetRecaptcha() {
+            grecaptcha.reset();
+            document.getElementById('recaptcha-error').style.display = 'none';
+        }
     </script>
- --}}
-
 
 </body>
 
 </html>
-
-
-
-
-{{-- <x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
-
-        <x-validation-errors class="mb-4" />
-
-        @session('status')
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ $value }}
-            </div>
-        @endsession
-        @if (session('error'))
-            <div style="color: red; background-color: #f8d7da; padding: 10px; border-radius: 5px;">
-                {{ session('error') }}
-            </div>
-        @endif
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
-
-            <div>
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required
-                    autofocus autocomplete="username" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required
-                    autocomplete="current-password" />
-            </div>
-
-            <div class="block mt-4">
-                <label for="remember_me" class="flex items-center">
-                    <x-checkbox id="remember_me" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
-
-                <x-button class="ms-4">
-                    {{ __('Log in') }}
-                </x-button>
-            </div>
-        </form>
-    </x-authentication-card>
-</x-guest-layout> --}}
