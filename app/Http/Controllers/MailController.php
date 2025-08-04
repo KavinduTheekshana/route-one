@@ -6,6 +6,7 @@ use App\Mail\BulkEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class MailController extends Controller
 {
@@ -13,36 +14,6 @@ class MailController extends Controller
     {
         return view('backend.mail.index');
     }
-
-    // public function sendBulkEmails(Request $request)
-    // {
-    //     $subject = $request->input('subject');
-    //     $body = $request->input('body');
-    //     $emails = $request->input('emails'); // Array of emails and names
-
-    //     $failedEmails = []; // To track emails that failed
-
-    //     foreach ($emails as $user) {
-    //         try {
-    //             // Replace {name} with the user's name in the email body
-    //             $emailBody = str_replace('{name}', $user['name'], $body);
-
-    //             // Send the email
-    //             Mail::to($user['email'])->send(new BulkEmail($subject, $emailBody));
-    //         } catch (\Exception $e) {
-    //             // Log the error or track the failed email
-    //             $failedEmails[] = $user['email'];
-    //         }
-    //     }
-
-    //     $responseMessage = [
-    //         'message' => 'Emails sent with some failures',
-    //         'failed_emails' => $failedEmails
-    //     ];
-
-    //     // Return the result, including any failed emails
-    //     return response()->json($responseMessage);
-    // }
 
     public function sendBulkEmails(Request $request)
     {
@@ -53,24 +24,41 @@ class MailController extends Controller
             'emails' => 'required|array',
             'emails.*.name' => 'sometimes|string',
             'emails.*.email' => 'required|email',
+            'attachments.*' => 'nullable|file|max:10240', // Max 10MB per file
         ]);
 
         $subject = $request->subject;
         $body = $request->body;
         $emailsList = $request->emails;
+        $attachments = [];
+
+        // Handle file uploads
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $file) {
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('bulk_mail_attachments', $filename, 'public');
+                
+                $attachments[] = [
+                    'path' => $path,
+                    'original_name' => $file->getClientOriginalName(),
+                    'mime_type' => $file->getMimeType()
+                ];
+            }
+        }
 
         $failedEmails = [];
+        $successCount = 0;
 
         foreach ($emailsList as $recipient) {
             try {
                 // Replace {name} placeholder with recipient's name
                 $personalizedBody = str_replace('{name}', $recipient['name'] ?? '', $body);
 
-                // Send the email
+                // Send the email with attachments
                 Mail::to($recipient['email'])
-                    ->send(new BulkEmail($subject, $personalizedBody));
+                    ->send(new BulkEmail($subject, $personalizedBody, $attachments));
 
-            
+                $successCount++;
 
                 // Optional: Add a small delay to prevent overwhelming the mail server
                 usleep(100000); // 100ms delay
@@ -81,9 +69,16 @@ class MailController extends Controller
             }
         }
 
+        // Clean up temporary files after sending
+        foreach ($attachments as $attachment) {
+            Storage::disk('public')->delete($attachment['path']);
+        }
+
         return response()->json([
             'success' => true,
-            'message' => 'Emails sent successfully',
+            'message' => "Emails sent successfully. Success: {$successCount}, Failed: " . count($failedEmails),
+            'success_count' => $successCount,
+            'failed_count' => count($failedEmails),
             'failed_emails' => $failedEmails
         ]);
     }
