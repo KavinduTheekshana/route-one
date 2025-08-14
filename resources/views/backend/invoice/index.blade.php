@@ -251,8 +251,9 @@
 
                                 <p class="cs-mb0 mt-30"><b>Bank Details:</b> (United Kingdom)</p>
                                 <p class="cs-m0">ROUTE ONE RECRUITMENT SERVICES LTD</p>
-                                <p class="cs-m0">Sort Code: 04-06-05</p>
-                                <p class="cs-m0">Account Number: 24161040</p>
+                                <p class="cs-m0">Sort Code: 20 05 73</p>
+                                <p class="cs-m0">Account Number: 30959731</p>
+                                <p class="cs-m0">Bank: Barclays Business Banking.</p>
                             </div>
                             <div class="cs-right_footer">
                                 <table>
