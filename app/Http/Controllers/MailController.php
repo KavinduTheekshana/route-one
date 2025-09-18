@@ -25,12 +25,16 @@ class MailController extends Controller
             'emails.*.name' => 'sometimes|string',
             'emails.*.email' => 'required|email',
             'attachments.*' => 'nullable|file|max:10240', // Max 10MB per file
+            'logos.*.file' => 'nullable|image|max:5120', // Max 5MB per image
+            'logos.*.cid' => 'sometimes|string',
+            'logos.*.name' => 'sometimes|string',
         ]);
 
         $subject = $request->subject;
         $body = $request->body;
         $emailsList = $request->emails;
         $attachments = [];
+        $logos = [];
 
         // Handle file uploads
         if ($request->hasFile('attachments')) {
@@ -46,6 +50,31 @@ class MailController extends Controller
             }
         }
 
+        // Handle logo uploads
+        if ($request->has('logos')) {
+            Log::info('Processing logos:', ['logos_input' => $request->input('logos', [])]);
+            foreach ($request->input('logos', []) as $index => $logoData) {
+                Log::info('Processing logo index:', ['index' => $index, 'logoData' => $logoData]);
+                if ($request->hasFile("logos.{$index}.file")) {
+                    $file = $request->file("logos.{$index}.file");
+                    $cid = $logoData['cid'] ?? 'logo_' . time() . '_' . $index;
+                    $filename = $cid . '_' . $file->getClientOriginalName();
+                    $path = $file->storeAs('bulk_mail_logos', $filename, 'public');
+                    
+                    $logos[] = [
+                        'cid' => $cid,
+                        'path' => $path,
+                        'original_name' => $logoData['name'] ?? $file->getClientOriginalName(),
+                        'mime_type' => $file->getMimeType()
+                    ];
+                    Log::info('Logo processed:', ['cid' => $cid, 'path' => $path, 'filename' => $filename]);
+                }
+            }
+        }
+        
+        Log::info('Final logos array:', ['logos' => $logos]);
+        Log::info('Request body content:', ['body' => $body]);
+
         $failedEmails = [];
         $successCount = 0;
 
@@ -54,9 +83,9 @@ class MailController extends Controller
                 // Replace {name} placeholder with recipient's name
                 $personalizedBody = str_replace('{name}', $recipient['name'] ?? '', $body);
 
-                // Send the email with attachments
+                // Send the email with attachments and logos
                 Mail::to($recipient['email'])
-                    ->send(new BulkEmail($subject, $personalizedBody, $attachments));
+                    ->send(new BulkEmail($subject, $personalizedBody, $attachments, $logos));
 
                 $successCount++;
 
@@ -72,6 +101,10 @@ class MailController extends Controller
         // Clean up temporary files after sending
         foreach ($attachments as $attachment) {
             Storage::disk('public')->delete($attachment['path']);
+        }
+        
+        foreach ($logos as $logo) {
+            Storage::disk('public')->delete($logo['path']);
         }
 
         return response()->json([

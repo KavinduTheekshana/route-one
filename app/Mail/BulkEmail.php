@@ -3,13 +3,10 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Attachment;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class BulkEmail extends Mailable
 {
@@ -18,19 +15,42 @@ class BulkEmail extends Mailable
     public $subject;
     public $htmlContent;
     public $emailAttachments;
+    public $emailLogos;
 
-    public function __construct($subject, $htmlContent, $attachments = [])
+    public function __construct($subject, $htmlContent, $attachments = [], $logos = [])
     {
         $this->subject = $subject;
         $this->htmlContent = $htmlContent;
         $this->emailAttachments = $attachments;
+        $this->emailLogos = $logos;
     }
 
     public function build()
     {
-        $email = $this->subject($this->subject)
-            ->view('emails.bulk_email')
-            ->with(['htmlContent' => $this->htmlContent]);
+        // Debug logging
+        Log::info('BulkEmail build - Original content:', ['content' => $this->htmlContent]);
+        Log::info('BulkEmail build - Logos:', ['logos' => $this->emailLogos]);
+        
+        // Check if content is a complete HTML document
+        $isCompleteHtml = $this->isCompleteHtmlDocument($this->htmlContent);
+        
+        $email = $this->subject($this->subject);
+        
+        if ($isCompleteHtml) {
+            // For complete HTML documents, use raw template and ensure proper content type
+            $email->view('emails.raw_html_email')
+                ->with([
+                    'htmlContent' => $this->htmlContent,
+                    'emailLogos' => $this->emailLogos
+                ]);
+        } else {
+            // Use the wrapped template for partial HTML content
+            $email->view('emails.bulk_email')
+                ->with([
+                    'htmlContent' => $this->htmlContent,
+                    'emailLogos' => $this->emailLogos
+                ]);
+        }
 
         // Add attachments if any
         foreach ($this->emailAttachments as $attachment) {
@@ -41,6 +61,19 @@ class BulkEmail extends Mailable
         }
 
         return $email;
+    }
+    
+    /**
+     * Check if the content is a complete HTML document
+     */
+    private function isCompleteHtmlDocument($content)
+    {
+        $content = trim($content);
+        return (
+            stripos($content, '<!doctype') === 0 || 
+            stripos($content, '<!DOCTYPE') === 0 || 
+            (stripos($content, '<html') !== false && stripos($content, '</html>') !== false)
+        );
     }
 
     /**

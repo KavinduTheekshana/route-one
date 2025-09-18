@@ -38,17 +38,40 @@
                     </div>
                 </div>
 
+                <!-- Logo Upload Section -->
+                <div class="upload-card-item p-16 rounded-12 bg-warning-50 mb-20">
+                    <div class="flex-align gap-10 flex-wrap">
+                        <span
+                            class="w-36 h-36 text-lg rounded-circle bg-white flex-center text-warning-600 flex-shrink-0">
+                            <i class="ph ph-image"></i>
+                        </span>
+                        <div class="upload-section">
+                            <p class="text-15 text-gray-500">
+                                Upload Email Logos (Optional)
+                                <label class="text-warning-600 cursor-pointer logo-label">Browse Images</label>
+                                <input name="logos" type="file" class="logo-input" multiple accept="image/*"
+                                    hidden="">
+                            </p>
+                            <p class="text-13 text-gray-600">Images for embedding in emails (JPG, PNG, GIF - max 5MB
+                                each)</p>
+                            <div class="logo-list mt-2"></div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Attachments Upload Section -->
                 <div class="upload-card-item p-16 rounded-12 bg-success-50 mb-20">
                     <div class="flex-align gap-10 flex-wrap">
-                        <span class="w-36 h-36 text-lg rounded-circle bg-white flex-center text-success-600 flex-shrink-0">
+                        <span
+                            class="w-36 h-36 text-lg rounded-circle bg-white flex-center text-success-600 flex-shrink-0">
                             <i class="ph ph-upload"></i>
                         </span>
                         <div class="upload-section">
                             <p class="text-15 text-gray-500">
                                 Add Email Attachments (Optional)
                                 <label class="text-success-600 cursor-pointer attachment-label">Browse Files</label>
-                                <input name="attachments" type="file" class="attachment-input" multiple hidden="">
+                                <input name="attachments" type="file" class="attachment-input" multiple
+                                    hidden="">
                             </p>
                             <p class="text-13 text-gray-600">Multiple files allowed (max 10MB each)</p>
                             <div class="attachment-list mt-2"></div>
@@ -96,20 +119,24 @@
                         <p class="text-gray"> <small>
                                 You can personalize your email by including the recipient's name in the email body.
                                 Simply add <span class="text-13 text-red fw-medium">{name}</span> wherever you want the
-                                recipient's name to appear in your email content. The system will automatically replace {name} with each person's name when sending the email.</small></p>
-                        
+                                recipient's name to appear in your email content. The system will automatically replace
+                                {name} with each person's name when sending the email.</small></p>
+
                         <!-- Template Type Selector -->
                         <div class="mb-3">
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="template_type" id="rich_text" value="rich_text" checked>
+                                <input class="form-check-input" type="radio" name="template_type" id="rich_text"
+                                    value="rich_text" checked>
                                 <label class="form-check-label" for="rich_text">Rich Text Editor</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="template_type" id="html_code" value="html_code">
+                                <input class="form-check-input" type="radio" name="template_type" id="html_code"
+                                    value="html_code">
                                 <label class="form-check-label" for="html_code">HTML Code</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="template_type" id="predefined" value="predefined">
+                                <input class="form-check-input" type="radio" name="template_type" id="predefined"
+                                    value="predefined">
                                 <label class="form-check-label" for="predefined">Predefined Templates</label>
                             </div>
                         </div>
@@ -121,31 +148,27 @@
 
                         <!-- HTML Code Editor -->
                         <div id="html-code-editor" class="editor-section" style="display: none;">
-                            <textarea id="html-content" class="form-control" rows="15" placeholder="Paste your HTML template here...
-Example:
-<!DOCTYPE html>
-<html>
-<head>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        .header { background-color: #3e80f9; color: white; padding: 20px; text-align: center; }
-        .content { padding: 20px; }
-        .footer { background-color: #f4f4f4; padding: 10px; text-align: center; font-size: 12px; }
-    </style>
-</head>
-<body>
-    <div class='header'>
-        <h1>Welcome {name}!</h1>
-    </div>
-    <div class='content'>
-        <p>Dear {name},</p>
-        <p>Your custom message here...</p>
-    </div>
-    <div class='footer'>
-        <p>&copy; 2025 Your Company Name</p>
-    </div>
-</body>
-</html>"></textarea>
+                            <div class="mb-2">
+                                <small class="text-muted">
+                                    <strong>Important:</strong> Don't use external image URLs (they get blocked). Upload
+                                    logos above and use <code>cid:YOUR_CID</code> instead.
+                                    <br>Example: Replace <code>src="https://example.com/logo.png"</code> with
+                                    <code>src="cid:logo_12345"</code>
+                                </small>
+                                <div class="mt-2">
+                                    <button type="button" class="btn btn-sm bg-warning" id="insert-logo-btn"
+                                        style="opacity: 1; visibility: visible;">
+                                        <i class="ph ph-image"></i> Insert Logo at Cursor
+                                    </button>
+                                    <select id="logo-selector" class="form-select form-select-sm d-inline-block"
+                                        style="width: auto; margin-left: 10px; opacity: 1; visibility: visible;">
+                                        <option value="">Select a logo...</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <textarea id="html-content" class="form-control" rows="15"
+                                placeholder="Paste your complete HTML template here...
+"></textarea>
                         </div>
 
                         <!-- Predefined Templates -->
@@ -157,14 +180,15 @@ Example:
                                 <option value="announcement">Announcement</option>
                                 <option value="invitation">Event Invitation</option>
                             </select>
-                            <div id="template-preview" class="border p-3" style="min-height: 200px; background-color: #f9f9f9;">
+                            <div id="template-preview" class="border p-3"
+                                style="min-height: 200px; background-color: #f9f9f9;">
                                 <p class="text-muted">Select a template to preview</p>
                             </div>
                         </div>
 
                         <!-- Preview Button -->
                         <div class="mt-3">
-                            <button type="button" class="btn btn-outline-primary" id="preview-email">
+                            <button type="button" class="btn btn-primary" id="preview-email">
                                 <i class="ph ph-eye"></i> Preview Email
                             </button>
                         </div>
@@ -191,6 +215,7 @@ Example:
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     let selectedAttachments = [];
+    let selectedLogos = [];
 
     // Predefined email templates
     const emailTemplates = {
@@ -362,7 +387,8 @@ Example:
         templateSelector.addEventListener('change', function() {
             const selectedTemplate = this.value;
             if (selectedTemplate && emailTemplates[selectedTemplate]) {
-                templatePreview.innerHTML = `<pre style="white-space: pre-wrap; font-size: 12px;">${emailTemplates[selectedTemplate]}</pre>`;
+                templatePreview.innerHTML =
+                    `<pre style="white-space: pre-wrap; font-size: 12px;">${emailTemplates[selectedTemplate]}</pre>`;
             } else {
                 templatePreview.innerHTML = '<p class="text-muted">Select a template to preview</p>';
             }
@@ -373,18 +399,48 @@ Example:
             const content = getEmailContent();
             if (content) {
                 // Replace {name} with a sample name for preview
-                const previewContent = content.replace(/{name}/g, 'John Doe');
-                
-                Swal.fire({
-                    title: 'Email Preview',
-                    html: `<div style="max-height: 400px; overflow-y: auto; text-align: left;">${previewContent}</div>`,
-                    width: '80%',
-                    showCloseButton: true,
-                    showConfirmButton: false,
-                    customClass: {
-                        htmlContainer: 'swal-html-container'
+                let previewContent = content.replace(/{name}/g, 'John Doe');
+
+                // Replace logo CIDs with sample images for preview
+                selectedLogos.forEach(logo => {
+                    const cidPattern = new RegExp('cid:' + logo.cid.replace(
+                        /[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+                    // Create a data URL from the file for preview
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewContent = previewContent.replace(cidPattern, e.target
+                        .result);
+                    };
+                    if (logo.file) {
+                        reader.readAsDataURL(logo.file);
                     }
                 });
+
+                // Check if it's a complete HTML document
+                const isCompleteHtml = (
+                    previewContent.trim().toLowerCase().indexOf('<!doctype') === 0 ||
+                    previewContent.trim().toLowerCase().indexOf('<!DOCTYPE') === 0 ||
+                    (previewContent.includes('<html') && previewContent.includes('</html>'))
+                );
+
+                if (isCompleteHtml) {
+                    // Open in new window for complete HTML documents to preserve CSS
+                    const newWindow = window.open('', '_blank');
+                    newWindow.document.write(previewContent);
+                    newWindow.document.close();
+                } else {
+                    // Use SweetAlert for partial HTML
+                    Swal.fire({
+                        title: 'Email Preview',
+                        html: `<div style="max-height: 400px; overflow-y: auto; text-align: left;">${previewContent}</div>`,
+                        width: '80%',
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                        customClass: {
+                            htmlContainer: 'swal-html-container'
+                        }
+                    });
+                }
             } else {
                 Swal.fire('Error', 'Please create your email content first.', 'error');
             }
@@ -394,7 +450,7 @@ Example:
     // Function to get email content based on selected type
     function getEmailContent() {
         const selectedType = document.querySelector('input[name="template_type"]:checked').value;
-        
+
         if (selectedType === 'rich_text') {
             return document.getElementById('description').value;
         } else if (selectedType === 'html_code') {
@@ -403,7 +459,7 @@ Example:
             const selectedTemplate = document.getElementById('template-selector').value;
             return emailTemplates[selectedTemplate] || '';
         }
-        
+
         return '';
     }
 
@@ -411,19 +467,20 @@ Example:
     function handleAttachmentSelection(event) {
         const files = Array.from(event.target.files);
         const attachmentList = document.querySelector('.attachment-list');
-        
+
         files.forEach(file => {
             // Check file size (10MB limit)
             if (file.size > 10 * 1024 * 1024) {
                 Swal.fire('Error', `File "${file.name}" is too large. Maximum size is 10MB.`, 'error');
                 return;
             }
-            
+
             selectedAttachments.push(file);
-            
+
             // Create attachment item display
             const attachmentItem = document.createElement('div');
-            attachmentItem.className = 'attachment-item d-flex justify-content-between align-items-center p-2 bg-light rounded mb-2';
+            attachmentItem.className =
+                'attachment-item d-flex justify-content-between align-items-center p-2 bg-light rounded mb-2';
             attachmentItem.innerHTML = `
                 <span class="text-sm">${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
                 <button type="button" class="btn btn-sm btn-danger remove-attachment" data-filename="${file.name}">
@@ -432,10 +489,10 @@ Example:
             `;
             attachmentList.appendChild(attachmentItem);
         });
-        
+
         // Clear the input
         event.target.value = '';
-        
+
         // Attach remove event listeners
         attachRemoveAttachmentListeners();
     }
@@ -449,6 +506,176 @@ Example:
                 this.closest('.attachment-item').remove();
             });
         });
+    }
+
+    // Function to handle logo selection
+    function handleLogoSelection(event) {
+        const files = Array.from(event.target.files);
+        const logoList = document.querySelector('.logo-list');
+
+        files.forEach(file => {
+            // Check if it's an image
+            if (!file.type.startsWith('image/')) {
+                Swal.fire('Error', `File "${file.name}" is not an image.`, 'error');
+                return;
+            }
+
+            // Check file size (5MB limit for images)
+            if (file.size > 5 * 1024 * 1024) {
+                Swal.fire('Error', `Image "${file.name}" is too large. Maximum size is 5MB.`, 'error');
+                return;
+            }
+
+            // Generate a unique CID for this logo
+            const cid = 'logo_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+
+            selectedLogos.push({
+                file: file,
+                cid: cid,
+                name: file.name
+            });
+
+            // Create logo item display with preview
+            const logoItem = document.createElement('div');
+            logoItem.className =
+                'logo-item d-flex justify-content-between align-items-center p-2 bg-light rounded mb-2';
+
+            // Create image preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                logoItem.innerHTML = `
+                    <div class="d-flex align-items-center">
+                        <img src="${e.target.result}" alt="${file.name}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px; margin-right: 10px;">
+                        <div>
+                            <div class="text-sm">${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)</div>
+                            <div class="text-xs text-muted">CID: ${cid}</div>
+                            <button type="button" class="btn btn-xs btn-outline-secondary copy-cid" data-cid="${cid}">
+                                Copy CID
+                            </button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-danger remove-logo" data-cid="${cid}">
+                        <i class="ph ph-x"></i>
+                    </button>
+                `;
+                logoList.appendChild(logoItem);
+
+                // Attach event listeners
+                attachRemoveLogoListeners();
+                attachCopyCidListeners();
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Clear the input
+        event.target.value = '';
+
+        // Update logo selector
+        updateLogoSelector();
+    }
+
+    // Function to remove logos
+    function attachRemoveLogoListeners() {
+        document.querySelectorAll('.remove-logo').forEach(button => {
+            button.addEventListener('click', function() {
+                const cid = this.getAttribute('data-cid');
+                selectedLogos = selectedLogos.filter(logo => logo.cid !== cid);
+                this.closest('.logo-item').remove();
+                updateLogoSelector();
+            });
+        });
+    }
+
+    // Function to copy CID to clipboard
+    function attachCopyCidListeners() {
+        document.querySelectorAll('.copy-cid').forEach(button => {
+            button.addEventListener('click', function() {
+                const cid = this.getAttribute('data-cid');
+                const cidText = `cid:${cid}`;
+
+                navigator.clipboard.writeText(cidText).then(function() {
+                    // Show temporary success message
+                    const originalText = button.textContent;
+                    button.textContent = 'Copied!';
+                    button.classList.add('btn-success');
+                    button.classList.remove('btn-outline-secondary');
+
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.classList.remove('btn-success');
+                        button.classList.add('btn-outline-secondary');
+                    }, 2000);
+                }).catch(function() {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = cidText;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+
+                    Swal.fire('Copied!', `CID "${cidText}" copied to clipboard`, 'success');
+                });
+            });
+        });
+    }
+
+    // Function to update logo selector dropdown
+    function updateLogoSelector() {
+        const logoSelector = document.getElementById('logo-selector');
+        const insertBtn = document.getElementById('insert-logo-btn');
+
+        // Clear existing options
+        logoSelector.innerHTML = '<option value="">Select a logo...</option>';
+
+        // Add logo options
+        selectedLogos.forEach(logo => {
+            const option = document.createElement('option');
+            option.value = logo.cid;
+            option.textContent = logo.name;
+            logoSelector.appendChild(option);
+        });
+
+        // Enable/disable controls - keep button visible but functional based on logo availability
+        const hasLogos = selectedLogos.length > 0;
+        logoSelector.disabled = !hasLogos;
+        insertBtn.disabled = !hasLogos;
+    }
+
+    // Function to insert logo at cursor position
+    function insertLogoAtCursor() {
+        const logoSelector = document.getElementById('logo-selector');
+        const htmlContent = document.getElementById('html-content');
+        const selectedCid = logoSelector.value;
+
+        if (selectedLogos.length === 0) {
+            Swal.fire('Error', 'Please upload a logo first.', 'error');
+            return;
+        }
+
+        if (!selectedCid) {
+            Swal.fire('Error', 'Please select a logo from the dropdown.', 'error');
+            return;
+        }
+
+        const cidCode = `cid:${selectedCid}`;
+
+        // Insert at cursor position
+        const startPos = htmlContent.selectionStart;
+        const endPos = htmlContent.selectionEnd;
+        const textBefore = htmlContent.value.substring(0, startPos);
+        const textAfter = htmlContent.value.substring(endPos);
+
+        htmlContent.value = textBefore + cidCode + textAfter;
+
+        // Move cursor to end of inserted text
+        const newCursorPos = startPos + cidCode.length;
+        htmlContent.setSelectionRange(newCursorPos, newCursorPos);
+        htmlContent.focus();
+
+        // Reset selector
+        logoSelector.value = '';
+        document.getElementById('insert-logo-btn').disabled = true;
     }
 
     // Function to handle file input changes for CSV
@@ -534,6 +761,12 @@ Example:
         fileInput.click();
     }
 
+    function handleLogoBrowseClick(event) {
+        var label = event.target;
+        var fileInput = label.closest('.upload-section').querySelector('.logo-input');
+        fileInput.click();
+    }
+
     // Function to handle sending bulk emails with attachments
     function sendBulkEmails() {
         var emails = [];
@@ -579,12 +812,28 @@ Example:
             formData.append(`attachments[${index}]`, file);
         });
 
+        // Add logos to FormData with their CIDs
+        selectedLogos.forEach((logo, index) => {
+            formData.append(`logos[${index}][file]`, logo.file);
+            formData.append(`logos[${index}][cid]`, logo.cid);
+            formData.append(`logos[${index}][name]`, logo.name);
+        });
+
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         // Show loading alert
+        let loadingText = `Preparing to send ${emails.length} emails`;
+        if (selectedAttachments.length > 0) {
+            loadingText += ` with ${selectedAttachments.length} attachment(s)`;
+        }
+        if (selectedLogos.length > 0) {
+            loadingText += ` and ${selectedLogos.length} embedded logo(s)`;
+        }
+        loadingText += '...';
+
         Swal.fire({
             title: 'Sending Emails...',
-            text: `Preparing to send ${emails.length} emails${selectedAttachments.length > 0 ? ' with ' + selectedAttachments.length + ' attachment(s)' : ''}...`,
+            text: loadingText,
             allowOutsideClick: false,
             didOpen: () => {
                 Swal.showLoading();
@@ -613,15 +862,18 @@ Example:
                         message += `. ${result.failed_count} emails failed to send.`;
                     }
                     Swal.fire('Success', message, 'success');
-                    
+
                     // Clear form
                     document.querySelector('input[name="subject"]').value = '';
                     document.getElementById('description').value = '';
                     document.getElementById('html-content').value = '';
                     document.getElementById('template-selector').value = '';
-                    document.getElementById('template-preview').innerHTML = '<p class="text-muted">Select a template to preview</p>';
+                    document.getElementById('template-preview').innerHTML =
+                        '<p class="text-muted">Select a template to preview</p>';
                     selectedAttachments = [];
+                    selectedLogos = [];
                     document.querySelector('.attachment-list').innerHTML = '';
+                    document.querySelector('.logo-list').innerHTML = '';
                     document.getElementById('csv-table').style.display = 'none';
                 } else {
                     Swal.fire('Error', result.message || 'An error occurred while sending emails.', 'error');
@@ -630,7 +882,9 @@ Example:
             .catch(error => {
                 Swal.close();
                 console.error('Error:', error);
-                Swal.fire('Error', 'An error occurred while sending emails. Please check the console for more details.', 'error');
+                Swal.fire('Error',
+                    'An error occurred while sending emails. Please check the console for more details.',
+                    'error');
             });
     }
 
@@ -653,6 +907,26 @@ Example:
         document.querySelectorAll('.attachment-input').forEach(input => {
             input.addEventListener('change', handleAttachmentSelection);
         });
+
+        // Logo file upload
+        document.querySelectorAll('.logo-label').forEach(label => {
+            label.addEventListener('click', handleLogoBrowseClick);
+        });
+
+        document.querySelectorAll('.logo-input').forEach(input => {
+            input.addEventListener('change', handleLogoSelection);
+        });
+
+        // Logo selector event listeners
+        const logoSelector = document.getElementById('logo-selector');
+        const insertLogoBtn = document.getElementById('insert-logo-btn');
+
+        logoSelector.addEventListener('change', function() {
+            // Only disable if no logos uploaded, not based on selection
+            insertLogoBtn.disabled = selectedLogos.length === 0;
+        });
+
+        insertLogoBtn.addEventListener('click', insertLogoAtCursor);
 
         // Send bulk emails button
         document.querySelector('.btn-main').addEventListener('click', sendBulkEmails);
