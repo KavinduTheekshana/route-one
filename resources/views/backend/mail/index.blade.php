@@ -863,18 +863,17 @@
                     }
                     Swal.fire('Success', message, 'success');
 
-                    // Clear form
-                    document.querySelector('input[name="subject"]').value = '';
-                    document.getElementById('description').value = '';
-                    document.getElementById('html-content').value = '';
-                    document.getElementById('template-selector').value = '';
-                    document.getElementById('template-preview').innerHTML =
-                        '<p class="text-muted">Select a template to preview</p>';
-                    selectedAttachments = [];
-                    selectedLogos = [];
-                    document.querySelector('.attachment-list').innerHTML = '';
-                    document.querySelector('.logo-list').innerHTML = '';
+                    // Only clear CSV-related data to allow uploading a new email list
+                    // Keep subject, email content, attachments, and logos intact
+                    
+                    // Clear CSV table and file input
                     document.getElementById('csv-table').style.display = 'none';
+                    document.getElementById('csv-table').querySelector('tbody').innerHTML = '';
+                    
+                    // Clear CSV file input and uploaded file name display
+                    document.querySelector('.file-input').value = '';
+                    document.querySelector('.show-uploaded-passport-name').textContent = '';
+                    document.querySelector('.show-uploaded-passport-name').classList.add('d-none');
                 } else {
                     Swal.fire('Error', result.message || 'An error occurred while sending emails.', 'error');
                 }
