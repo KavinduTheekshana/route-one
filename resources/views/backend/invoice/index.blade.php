@@ -245,13 +245,13 @@
                         <div class="cs-invoice_footer">
                             <div class="cs-left_footer cs-mobile_hide" style="color: #777777 !important">
                                 <p class="cs-mb0"><b>Bank Details:</b> (International)</p>
-                                <p class="cs-m0">ROUTE ONE RECRUITMENT SERVICES LTD</p>
-                                <p class="cs-m0">IBAN: GB68CLRB04060524161040</p>
-                                <p class="cs-m0">SWIFT code: CLRBGB22</p>
+                                <p class="cs-m0">ROUTE ONE RECRUITMENT SERVICES LTD TRADING AS ROUTE ONE RECRUITMENT</p>
+                                <p class="cs-m0">IBAN: GB51 BUKB 2005 7330 9597 31</p>
+                                <p class="cs-m0">SWIFT code: BUKBGB22</p>
 
                                 <p class="cs-mb0 mt-30"><b>Bank Details:</b> (United Kingdom)</p>
                                 <p class="cs-m0">ROUTE ONE RECRUITMENT SERVICES LTD</p>
-                                <p class="cs-m0">Sort Code: 20 05 73</p>
+                                <p class="cs-m0">Sort Code: 20-05-73</p>
                                 <p class="cs-m0">Account Number: 30959731</p>
                                 <p class="cs-m0">Bank: Barclays Business Banking.</p>
                             </div>
