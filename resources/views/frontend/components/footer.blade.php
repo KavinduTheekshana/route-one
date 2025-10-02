@@ -64,7 +64,7 @@
                                 <img src="{{ asset('frontend/img/icons/phone-svgrepo-com.svg') }}" alt="">
                             </div>
                             <div class="pera">
-                                <a href="tel:+442031378313">+44 20 313 78 313</a>
+                                <a href="tel:+442071836484">+44 20 7183 6484</a>
                             </div>
                         </div>
 
@@ -73,7 +73,7 @@
                                 <img src="{{ asset('frontend/img/icons/whatsapp-svgrepo-com.svg') }}" alt="">
                             </div>
                             <div class="pera">
-                                <a href="https://wa.me/447361496391">+44 7361 496391</a>
+                                <a href="https://wa.me/447376288689">+44 7376 288 689</a>
                             </div>
                         </div>
 

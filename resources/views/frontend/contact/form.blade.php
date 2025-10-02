@@ -20,7 +20,7 @@
                             </div>
                             <div class="heading4">
                                 <h6>Give Us a Call</h6>
-                                <h4><a href="tel:+442031378313">+44 20 313 78 313</a></h4>
+                                <h4><a href="tel:+442071836484">+44 20 7183 6484</a></h4>
                             </div>
                         </div>
 
@@ -31,7 +31,7 @@
                             </div>
                             <div class="heading4">
                                 <h6>Message Us on WhatsApp</h6>
-                                <h4><a href="https://wa.me/447361496391" target="_blank">+44 7361 496391</a></h4>
+                                <h4><a href="https://wa.me/447376288689" target="_blank">+44 7376 288 689</a></h4>
                             </div>
                         </div>
 
