@@ -91,6 +91,7 @@
                             <th style="border: 1px solid #ddd; padding: 8px;">#</th>
                             <th style="border: 1px solid #ddd; padding: 8px;">Name</th>
                             <th style="border: 1px solid #ddd; padding: 8px;">Email</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Status</th>
                             <th style="border: 1px solid #ddd; padding: 8px;">Action</th>
                         </tr>
                     </thead>
@@ -197,6 +198,9 @@
 
                 <br>
                 <div class="flex-align justify-content-end gap-8">
+                    <button type="button" id="download-report-btn" class="btn btn-success rounded-pill py-9" style="display: none;">
+                        <i class="ph ph-download"></i> Download Report
+                    </button>
                     <button type="submit" class="btn btn-main rounded-pill py-9">Send Bulk</button>
                 </div>
             </div>
@@ -718,6 +722,9 @@
                             <td style="border: 1px solid #ddd; padding: 8px;">${index + 1}</td>
                             <td style="border: 1px solid #ddd; padding: 8px;">${name}</td>
                             <td style="border: 1px solid #ddd; padding: 8px;">${email}</td>
+                            <td style="border: 1px solid #ddd; padding: 8px; text-align: center;" class="status-cell">
+                                <span class="badge bg-secondary">Pending</span>
+                            </td>
                             <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">
                                 <button type="button" class="remove-btn" style="color: red; cursor: pointer;">Remove</button>
                             </td>
@@ -767,8 +774,59 @@
         fileInput.click();
     }
 
-    // Function to handle sending bulk emails with attachments
-    function sendBulkEmails() {
+    // Global variable to store the latest batch ID
+    let currentBatchId = null;
+
+    // Function to generate UUID for batch ID
+    function generateUUID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
+    // Function to send a single email
+    async function sendSingleEmailRequest(emailData, batchId, subject, body, attachmentPaths, logoPaths) {
+        const formData = new FormData();
+        formData.append('batch_id', batchId);
+        formData.append('subject', subject);
+        formData.append('body', body);
+        formData.append('name', emailData.name);
+        formData.append('email', emailData.email);
+
+        // Add attachment and logo paths
+        if (attachmentPaths.length > 0) {
+            formData.append('attachments', JSON.stringify(attachmentPaths));
+        }
+        if (logoPaths.length > 0) {
+            formData.append('logos', JSON.stringify(logoPaths));
+        }
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        try {
+            const response = await fetch('/send-single-email', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: formData
+            });
+
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            return {
+                success: false,
+                status: 'failed',
+                message: error.message,
+                email: emailData.email
+            };
+        }
+    }
+
+    // Function to handle sending bulk emails with live updates
+    async function sendBulkEmails() {
         var emails = [];
         var tableRows = document.querySelectorAll('#csv-table tbody tr');
         tableRows.forEach(function(row) {
@@ -778,7 +836,8 @@
             if (email) {
                 emails.push({
                     name: name,
-                    email: email
+                    email: email,
+                    row: row
                 });
             }
         });
@@ -789,102 +848,100 @@
         }
 
         var subject = document.querySelector('input[name="subject"]').value;
-        var body = getEmailContent(); // Use the new function to get content
+        var body = getEmailContent();
 
         if (!subject || !body) {
             Swal.fire('Error', 'Please fill in the subject and email content.', 'error');
             return;
         }
 
-        // Create FormData object to handle file uploads
-        var formData = new FormData();
-        formData.append('subject', subject);
-        formData.append('body', body);
+        // Generate batch ID
+        currentBatchId = generateUUID();
 
-        // Append emails array properly to FormData
-        emails.forEach((email, index) => {
-            formData.append(`emails[${index}][name]`, email.name);
-            formData.append(`emails[${index}][email]`, email.email);
-        });
+        // Process attachments and logos (upload them first if needed)
+        const attachmentPaths = [];
+        const logoPaths = [];
 
-        // Add attachments to FormData
-        selectedAttachments.forEach((file, index) => {
-            formData.append(`attachments[${index}]`, file);
-        });
-
-        // Add logos to FormData with their CIDs
-        selectedLogos.forEach((logo, index) => {
-            formData.append(`logos[${index}][file]`, logo.file);
-            formData.append(`logos[${index}][cid]`, logo.cid);
-            formData.append(`logos[${index}][name]`, logo.name);
-        });
-
-        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-        // Show loading alert
-        let loadingText = `Preparing to send ${emails.length} emails`;
-        if (selectedAttachments.length > 0) {
-            loadingText += ` with ${selectedAttachments.length} attachment(s)`;
-        }
-        if (selectedLogos.length > 0) {
-            loadingText += ` and ${selectedLogos.length} embedded logo(s)`;
-        }
-        loadingText += '...';
+        // Show progress modal
+        let progressHtml = `
+            <div style="text-align: left; max-height: 400px; overflow-y: auto;">
+                <p><strong>Total Emails:</strong> ${emails.length}</p>
+                <p><strong>Progress:</strong> <span id="email-progress">0/${emails.length}</span></p>
+                <hr>
+                <div id="email-status-list"></div>
+            </div>
+        `;
 
         Swal.fire({
             title: 'Sending Emails...',
-            text: loadingText,
+            html: progressHtml,
             allowOutsideClick: false,
+            showConfirmButton: false,
             didOpen: () => {
                 Swal.showLoading();
             }
         });
 
-        // Send the request
-        fetch('/send-bulk-emails', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(result => {
-                Swal.close();
-                if (result.success) {
-                    let message = `Successfully sent ${result.success_count} emails`;
-                    if (result.failed_count > 0) {
-                        message += `. ${result.failed_count} emails failed to send.`;
-                    }
-                    Swal.fire('Success', message, 'success');
+        // Track results
+        let successCount = 0;
+        let failedCount = 0;
+        const failedEmails = [];
 
-                    // Only clear CSV-related data to allow uploading a new email list
-                    // Keep subject, email content, attachments, and logos intact
-                    
-                    // Clear CSV table and file input
-                    document.getElementById('csv-table').style.display = 'none';
-                    document.getElementById('csv-table').querySelector('tbody').innerHTML = '';
-                    
-                    // Clear CSV file input and uploaded file name display
-                    document.querySelector('.file-input').value = '';
-                    document.querySelector('.show-uploaded-passport-name').textContent = '';
-                    document.querySelector('.show-uploaded-passport-name').classList.add('d-none');
-                } else {
-                    Swal.fire('Error', result.message || 'An error occurred while sending emails.', 'error');
-                }
-            })
-            .catch(error => {
-                Swal.close();
-                console.error('Error:', error);
-                Swal.fire('Error',
-                    'An error occurred while sending emails. Please check the console for more details.',
-                    'error');
-            });
+        // Send emails sequentially
+        for (let i = 0; i < emails.length; i++) {
+            const emailData = emails[i];
+            const statusCell = emailData.row.cells[3];
+
+            // Update status to "Sending..."
+            statusCell.innerHTML = '<span class="badge bg-info">Sending...</span>';
+
+            // Update progress in modal
+            document.getElementById('email-progress').textContent = `${i + 1}/${emails.length}`;
+
+            const statusList = document.getElementById('email-status-list');
+            const statusItem = document.createElement('div');
+            statusItem.id = `status-${i}`;
+            statusItem.innerHTML = `<small>${i + 1}. ${emailData.email} - <span class="text-info">Sending...</span></small>`;
+            statusList.appendChild(statusItem);
+
+            // Send the email
+            const result = await sendSingleEmailRequest(emailData, currentBatchId, subject, body, attachmentPaths, logoPaths);
+
+            // Update status based on result
+            if (result.success) {
+                successCount++;
+                statusCell.innerHTML = '<span class="badge bg-success">Sent</span>';
+                document.getElementById(`status-${i}`).innerHTML = `<small>${i + 1}. ${emailData.email} - <span class="text-success">✓ Sent</span></small>`;
+            } else {
+                failedCount++;
+                failedEmails.push(emailData.email);
+                statusCell.innerHTML = '<span class="badge bg-danger">Failed</span>';
+                document.getElementById(`status-${i}`).innerHTML = `<small>${i + 1}. ${emailData.email} - <span class="text-danger">✗ Failed</span></small>`;
+            }
+
+            // Small delay between emails
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+
+        // All emails sent, show final result
+        Swal.close();
+
+        let message = `Successfully sent ${successCount} emails`;
+        if (failedCount > 0) {
+            message += `. ${failedCount} emails failed to send.`;
+        }
+
+        // Show download report button
+        document.getElementById('download-report-btn').style.display = 'inline-block';
+
+        Swal.fire({
+            title: failedCount === 0 ? 'Success!' : 'Completed with errors',
+            html: `
+                <p>${message}</p>
+                ${failedCount > 0 ? '<p><strong>Failed emails:</strong> ' + failedEmails.join(', ') + '</p>' : ''}
+            `,
+            icon: failedCount === 0 ? 'success' : 'warning'
+        });
     }
 
     // Attach event listeners after DOM is loaded
@@ -929,6 +986,17 @@
 
         // Send bulk emails button
         document.querySelector('.btn-main').addEventListener('click', sendBulkEmails);
+
+        // Download report button
+        document.getElementById('download-report-btn').addEventListener('click', function() {
+            if (currentBatchId) {
+                // Download report for current batch
+                window.location.href = `/admin/bulk/mail/report/${currentBatchId}`;
+            } else {
+                // Download all reports for current user
+                window.location.href = '/admin/bulk/mail/report';
+            }
+        });
     });
 </script>
 @endpush

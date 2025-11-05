@@ -204,6 +204,8 @@ Route::middleware([
 
         Route::get('/admin/bulk/mail', [MailController::class, 'index'])->name('admin.bulk.mail')->middleware(['auth', 'superadmin']);
         Route::POST('/send-bulk-emails', [MailController::class, 'sendBulkEmails'])->middleware(['auth', 'superadmin']);
+        Route::POST('/send-single-email', [MailController::class, 'sendSingleEmail'])->middleware(['auth', 'superadmin']);
+        Route::get('/admin/bulk/mail/report/{batchId?}', [MailController::class, 'downloadReport'])->name('admin.bulk.mail.report')->middleware(['auth', 'superadmin']);
 
 
         // Route::resource('admin/services', ServicesController::class)->names('admin.services')->middleware(['auth', 'role:superadmin|agent']);
