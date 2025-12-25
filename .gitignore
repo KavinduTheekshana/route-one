@@ -19,7 +19,6 @@ yarn-error.log
 /.idea
 /.vscode
 /.zed
-/resources/views/layouts
 # resources/views/layouts/backend.blade.php
 # /Users/kavindutheekshana/Documents/Codexer/route-one/resources/views/layouts/backend.blade.php
 # resources/views/layouts/backend.blade.php
