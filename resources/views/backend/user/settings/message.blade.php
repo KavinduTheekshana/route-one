@@ -114,10 +114,81 @@
 <div id="user-info" data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}"
     data-user-country="{{ $user->country }}">
 </div>
+@push('styles')
+    <style>
+        /* Fix Summernote text color visibility */
+        .note-editor.note-frame {
+            border: 1px solid #ddd;
+        }
+        .note-editor .note-editable {
+            color: #000 !important;
+            background-color: #fff !important;
+        }
+        .note-editor .note-editable p,
+        .note-editor .note-editable div,
+        .note-editor .note-editable span,
+        .note-editor .note-editable * {
+            color: #000 !important;
+        }
+        /* Fix placeholder text */
+        .note-editor .note-placeholder {
+            color: #999 !important;
+        }
+        /* Fix dropdown text color */
+        .note-editor .dropdown-menu {
+            background-color: #fff !important;
+        }
+        .note-editor .dropdown-item {
+            color: #000 !important;
+            background-color: #fff !important;
+        }
+        .note-editor .dropdown-item:hover {
+            background-color: #f1f1f1 !important;
+        }
+        /* Fix toolbar */
+        .note-toolbar {
+            background-color: #f8f9fa !important;
+            border-bottom: 1px solid #ddd !important;
+        }
+        .note-toolbar .note-btn {
+            color: #000 !important;
+        }
+        /* Fix status bar */
+        .note-statusbar {
+            background-color: #f8f9fa !important;
+            border-top: 1px solid #ddd !important;
+        }
+    </style>
+@endpush
+
 @push('textarea')
     <script>
         $(document).ready(function() {
-            $('#messageInput').trumbowyg();
+            $('#messageInput').summernote({
+                height: 200,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ],
+                callbacks: {
+                    onInit: function() {
+                        // Force black text color on init
+                        $('.note-editable').css({
+                            'color': '#000',
+                            'background-color': '#fff'
+                        });
+                    },
+                    onFocus: function() {
+                        // Ensure black text when focused
+                        $(this).css('color', '#000');
+                    }
+                }
+            });
         });
     </script>
 @endpush
@@ -195,7 +266,7 @@
                         if (response.success) {
                             // alert('Message sent successfully!');
                             fetchMessages(receiver_id);
-                            $('#messageInput').trumbowyg('empty');
+                            $('#messageInput').summernote('reset');
                             $('#selectedFiles').empty();
                         }
                     },
