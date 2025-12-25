@@ -116,7 +116,9 @@
 </div>
 @push('textarea')
     <script>
-        $('#messageInput').trumbowyg();
+        $(document).ready(function() {
+            $('#messageInput').trumbowyg();
+        });
     </script>
 @endpush
 
